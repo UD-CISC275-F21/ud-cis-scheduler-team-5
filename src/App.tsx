@@ -12,6 +12,7 @@ function App(): JSX.Element {
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
                 <p>Daniel Li was here</p>
+                <p>Charles Adams was lost, but finally made it</p>
             </header>
         </div>
     );
