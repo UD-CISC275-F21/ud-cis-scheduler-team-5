@@ -18,8 +18,8 @@ function App(): JSX.Element {
             </header>
             <table>
                 <tr>
-                    <Course id={"CISC275"} name={"Intro to Software Engineering"} description={"deez nuts"}></Course>
-                    <Course id={"CISC106"} name={"Intro to Computer Science"} description={"ligma"}></Course>
+                    <Course id={"CISC275"} name={"Intro to Software Engineering"} description={"Course1"}></Course>
+                    <Course id={"CISC106"} name={"Intro to Computer Science"} description={"Course2"}></Course>
                 </tr>
                 <tr>
                     <Course id={"PHYS207"} name={"Fundamentals of Physics"} description={"Probably the best course at UD"}></Course>
