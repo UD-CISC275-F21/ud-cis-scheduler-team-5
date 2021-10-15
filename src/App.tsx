@@ -23,6 +23,7 @@ function App(): JSX.Element {
                 </tr>
                 <tr>
                     <Course id={"PHYS207"} name={"Fundamentals of Physics"} description={"Probably the best course at UD"}></Course>
+                    <Course id={"MATH241"} name={"Calculus 1"} description={"What's a derivative?"}></Course>                    
                 </tr>
             </table>
 
