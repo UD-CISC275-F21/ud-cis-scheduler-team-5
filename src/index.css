@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.semester-title {
+  padding-bottom: 10px; 
+  padding-top: 10px; 
+}
