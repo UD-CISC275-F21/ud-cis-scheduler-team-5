@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, Card as BootstrapCard, Col, Row } from "react-bootstrap";
+import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import Course from "./Course";
 
 export function Semester(): JSX.Element {
-    return ( <BootstrapCard className="border-dark">
+    return <BootstrapCard className="border-dark">
         <Col>
             <div className="semester-title">
                 <strong>Fall Semester</strong>
@@ -29,8 +29,7 @@ export function Semester(): JSX.Element {
             </Row>
             <p></p>
         </Col> 
-    </BootstrapCard>
-    );
+    </BootstrapCard>;
 }
 
 export default Semester;
