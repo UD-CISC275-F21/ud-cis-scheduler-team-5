@@ -69,12 +69,66 @@
         "Course ID": "MATH241",
         "Course Name": "Analytic Geometry and Calculus A",
         "Description": "Functions, limits, continuity, derivatives. Polynomial, rational, exponential, hyperbolic, logarithmic, trigonometric and inverse trigonometric functions. Definite and indefinite integrals and the Fundamental Theorem of Calculus. Simple differential equations (separable ODE, linear ODE). ODE models leading to exponential growth and decay.",
-        "Credits": 3
+        "Credits": 4
+    },
+    {
+        "Course ID": "MATH242",
+        "Course Name": "Analytic Geometry and Calculus B",
+        "Description": "Brief review of MATH 241; evaluation of limits by L’Hospital’s rule; applications of integration; integration techniques; parametric curves; polar coordinates; infinite sequences and series. Includes use of computers to perform symbolic, numerical and graphical analysis.",
+        "Credits": 4
     },
     {
         "Course ID": "MATH205",
         "Course Name": "Statistical Methods",
         "Description": "Descriptive statistics, graphical displays, sampling, variation, normal distribution, estimation, hypothesis testing, one-way analysis of variance, simple linear regression and goodness of fit. Laboratory covers use of statistical packages on mainframe and microcomputers.",
+        "Credits": 4
+    },
+    {
+        "Course ID": "MATH350",
+        "Course Name": "Probability Theory and Simulation Methods",
+        "Description": "Introduces the basic theory of discrete and continuous aspects of probability theory. Topics include bivariate distributions, sums of independent random variables, moment generating functions, laws of large numbers and central limit theorem.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC355",
+        "Course Name": "Computers, Ethics, and Society",
+        "Description": "Explains relationships among information technology, society and ethics by examining issues raised by increasingly widespread use of computers. Topics include ethics for computer professionals, computer impact on factory work, office work, personal privacy and social power distribution.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "ENGL312",
+        "Course Name": "Written Communications in Business",
+        "Description": "Examines the role of written communication in corporate decision making. Students write memos, letters, proposals and reports that simulate on-the-job communication tasks, and are encouraged to use materials from their fields of specialization.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "ENGL410",
+        "Course Name": "Technical Writing",
+        "Description": "Selected problems in technical communications, the preparation of reports and technical editing.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC304",
+        "Course Name": "Logic for Programming",
+        "Description": "Propositional and predicate logic for general reasoning and advanced applications in knowledge representation in artificial intelligence and database, program correctness and programming semantics. Models, resolution, logic programming, and natural deduction.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "MATH349",
+        "Course Name": "Elementary Linear Algebra",
+        "Description": "Systems of linear equations, linear combinations of vectors, and matrix algebra. Determinants, eigenvalues and eigenvectors, similarity and diagonalization of square matrices. Vector spaces, linear dependence and independence, basis and dimension, linear transformations. Inner product spaces, orthogonality, orthogonal projections, fundamental subspaces. A software package may be used for the analysis and solution of linear algebra problems.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC498",
+        "Course Name": "Computer Science Senior Design Project I",
+        "Description": "First semester of two-semester senior software design course.  Students work in teams to develop solutions to real-world problems for a client.  Application of a modern software engineering process; requirement solicitation, analysis, and specification; prototyping; design; incremental development; testing and verification; client interaction; and presentation. Offered in Fall only.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC499",
+        "Course Name": "Computer Science Senior Design Project II",
+        "Description": "Continuation of CISC498",
         "Credits": 3
     }
 ]
