@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
+//import { Course } from "../interfaces/Course";
 
 function Course({id, name, description, credits} : {id:string, name:string, description:string, credits:number}): JSX.Element {
 
