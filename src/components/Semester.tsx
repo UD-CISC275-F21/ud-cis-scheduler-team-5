@@ -2,11 +2,11 @@ import React from "react";
 import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import Course from "./Course";
 
-export function Semester(): JSX.Element {
+export function Semester({season, classYear}: {season: string, classYear: string}): JSX.Element {
     return <BootstrapCard className="border-dark">
         <Col>
             <div className="semester-title">
-                <strong>Fall Semester</strong>
+                <strong>{classYear} Year: {season} Semester</strong>
             </div>
             <Row>
                 <Col><strong>Course ID</strong></Col>
