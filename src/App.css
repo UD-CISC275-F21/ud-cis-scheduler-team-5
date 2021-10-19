@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.Welcome {
+  color: #0c0f16;
+  border-color: #4649d1;
+  background-color: #b1c8eb;
+  margin-top: 10px;
+}
