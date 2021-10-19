@@ -1,0 +1,80 @@
+[
+    {
+        "Course ID": "CISC108",
+        "Course Name": "Introduction to Computer Science I",
+        "Description": "Computing and principles of programming with an emphasis on systematic program design. Topics include functional programming, data abstraction, procedural abstraction, use of control and state, recursion, testing, and object-oriented programming concepts. Requires no prior programming experience, open to any major, but intended primarily for majors and minors in computer science or mathematics.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC181",
+        "Course Name":"Introduction to Computer Science II",
+        "Description": "Principles of computer science illustrated and applied through programming in an object oriented language. Programming projects illustrate computational problems, styles and issues that arise in computer systems development and in all application areas of computation.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC210",
+        "Course Name": "Introduction to Systems Programming",
+        "Description": "Principles of computer systems programming for software and hardware platforms to achieve efficient resource usage. Topics include the C programming language, memory management, and awareness of system constraints and interfacing. Projects include programming embedded systems and interactive objects.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC220",
+        "Course Name": "Data Structures",
+        "Description": "Review of data type abstraction, recursion, arrays, stacks, queues, multiple stacks and linked lists. Emphasis on dynamic storage management, garbage collection, trees, graphs, tables, sorting and searching.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC260",
+        "Course Name": "Machine Organization and Assembly Language",
+        "Description": "Introduction to the basics of machine organization. Programming tools and techniques at the machine and assembly levels. Assembly language programming and computer arithmetic techniques.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC275",
+        "Course Name": "Introduction to Software Engineering",
+        "Description": "Object oriented software design and development through use of an object oriented programming language. Topics include team programming, design patterns, graphical user interfaces, software engineering tools (e.g., integrated development environments, version control, build management, bug tracking, automated testing).",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC303",
+        "Course Name": "Automata Theory",
+        "Description": "Automata and formal language theory. Background for advanced applications in compilers, computer networks, operating systems, and natural language processing. Finite automata and regular languages. Push down automata and context free grammars. Turing machines.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC320",
+        "Course Name": "Introduction to Algorithms",
+        "Description": "Design and analysis of algorithms: worst/average case analysis, proofs for correctness and performance of algorithms. Algorithmic strategies (divide and conquer, greedy methods, dynamic programming, etc.). Algorithms for searching, forming and traversal of strings, trees and graphs. Categorization of computational problems: classes P and NP. NP completeness.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC361",
+        "Course Name": "Operating Systems",
+        "Description": "Principles and techniques employed in the development of operating systems and their control programs. Includes management of memory, processors, I/O devices.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "CISC372",
+        "Course Name": "Parallel Computing",
+        "Description": "Introduction to parallel computing concepts, methodologies, and tools. Programming and algorithmic techniques for code that will run simultaneously on parallel computing architectures. Topics include: single and multi-core parallelism, shared and distributed memory architectures, concurrency, program decomposition, data distribution, communication, load balancing, scalability, locality, granularity, debugging, performance evaluation.",
+        "Credits": 3
+    }, 
+    {
+        "Course ID": "MATH210",
+        "Course Name": "Discrete Mathematics I",
+        "Description": "Elements of sets and logic. Relations, functions. Integers. Induction and recursion. Principles and techniques of counting. Graphs. Paths and circuits",
+        "Credits": 3
+    },
+    {
+        "Course ID": "MATH241",
+        "Course Name": "Analytic Geometry and Calculus A",
+        "Description": "Functions, limits, continuity, derivatives. Polynomial, rational, exponential, hyperbolic, logarithmic, trigonometric and inverse trigonometric functions. Definite and indefinite integrals and the Fundamental Theorem of Calculus. Simple differential equations (separable ODE, linear ODE). ODE models leading to exponential growth and decay.",
+        "Credits": 3
+    },
+    {
+        "Course ID": "MATH205",
+        "Course Name": "Statistical Methods",
+        "Description": "Descriptive statistics, graphical displays, sampling, variation, normal distribution, estimation, hypothesis testing, one-way analysis of variance, simple linear regression and goodness of fit. Laboratory covers use of statistical packages on mainframe and microcomputers.",
+        "Credits": 3
+    }
+]
