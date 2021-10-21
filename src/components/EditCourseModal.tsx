@@ -28,7 +28,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
         console.log("Length of newClasses:", newClasses.length);
         for (let index = 0; index < newClasses.length; index++) {
             console.log("ID: ", newClasses[index].id);
-            console.log("Type: ", typeof(newClasses[index]));
+            console.log("Type: ", typeof newClasses[index]);
             
         }
 
