@@ -1,20 +1,27 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-//import { Course } from "../interfaces/Course";
+import { Class } from "../interfaces/course";
+import { EditCourseModal } from "./EditCourseModal";
 
-function Course({id, name, description, credits} : {id:string, name:string, description:string, credits:number}): JSX.Element {
-
+function Course({course, currCourses, setCurrCourses} : {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void}): JSX.Element {
+    const [visible, setVisible] = React.useState<boolean>(false);
+    function editCourse(){
+        console.log("set visible ", course);
+        setVisible(true);
+    }
+    console.log("in Course");
+    console.log(course.id);
     return (
-        <td>
-            <Row>
-                <Col>{id}</Col>
-                <Col>{name}</Col>
-                <Col>{description}</Col>
-                <Col>{credits}</Col>
-                <Col><button>Edit</button></Col>
-            </Row>
+        <Row>
+            <Col>{course.id}</Col>
+            <Col>{course.name}</Col>
+            <Col>{course.description}</Col>
+            <Col>{course.credits}</Col>
+            <Col><button onClick={editCourse}>Edit</button></Col>
+            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible}></EditCourseModal>
+        </Row>
+
             
-        </td>
     );
 }
 
