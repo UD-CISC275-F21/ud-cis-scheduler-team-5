@@ -36,6 +36,7 @@ export function Semester({season, classYear}: {season: string, classYear: string
                 );
             })
             }
+            
             {/*
             <Row>
                 <Course course={{id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"}}></Course>
