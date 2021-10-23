@@ -4,16 +4,13 @@ import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
+import ReactDOM from "react-dom";
 
 function App(): JSX.Element {
     const [classYear,setClassYear] = React.useState<string>("Freshman");
     const [season,setSeason] = React.useState<string>("Fall");
-    const [currSemesters,setCurrSemesters] = React.useState<sem[]>([{year: classYear,season: season}]);
-
-    //TODO onclick add semester
-
-    
-
+    const [semesterCnt,setSemesterCnt] = React.useState<number>(1);
+    const [currSemesters,setCurrSemesters] = React.useState<sem[]>([{cnt: semesterCnt,year: classYear,season: season}]);
 
     function addSemester() {
         let newSeason = season;
@@ -30,6 +27,7 @@ function App(): JSX.Element {
             case ("Freshman"):
                 setClassYear("Sophmore");  
                 newYear = "Sophmore";
+                alert(newYear);
                 break;
             case ("Sophmore"):
                 setClassYear("Junior");
@@ -43,64 +41,31 @@ function App(): JSX.Element {
                 break;
             }
         }
-
-        const newSem:sem[] = [{
-            year: newYear,
-            season: newSeason
-        }];
-
-        setCurrSemesters(currSemesters.concat(newSem));
-
-        console.log(currSemesters);
-
+        const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason}];
+        setSemesterCnt(semesterCnt+1);
+        setCurrSemesters(currSemesters.concat(newSem));   
     }
 
-
-
+    function clearSemesters() {
+        const firstSem:sem[] = [{cnt: 1,year: "Freshman",season: "Fall"}];
+        setClassYear("Freshman");
+        setCurrSemesters(firstSem);
+        setSeason("Fall");
+        setSemesterCnt(1);
+    }
 
     return (
         <div className="App">
             <WelcomeMsg></WelcomeMsg>
             <div>UD CIS Scheduler</div>
-            <Row>
-                <Col>
-                    <Semester classYear={classYear} season={season}></Semester>
-                </Col>
-                <Col>
-                    <Button onClick={addSemester}>Add Semester</Button>
-                </Col>
-            
-            
-                {/* {    <Col>
-                    <Semester classYear = {"Freshman"} season = {"Spring"}></Semester>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Semester classYear = {"Sophomore"} season = {"Fall"}></Semester>
-                </Col>
-                <Col>
-                    <Semester classYear = {"Sophomore"} season = {"Spring"}></Semester>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Semester classYear = {"Junior"} season = {"Fall"}></Semester>
-                </Col>
-                <Col>
-                    <Semester classYear = {"Junior"} season = {"Spring"}></Semester>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Semester classYear = {"Senior"} season = {"Fall"}></Semester>
-                </Col>
-                <Col>
-                    <Semester classYear = {"Senior"} season = {"Spring"}></Semester>
-                </Col>
-            </Row>
-            } */ }
-            </Row>
+            <Button onClick={addSemester}>Add Semester</Button>
+            <Button onClick={clearSemesters}>Clear Semesters</Button>
+            {currSemesters.map(s=>{
+                const cardID = "semester" + s.cnt;
+                return(
+                    <Semester key = {cardID} classYear={s.year} season={s.season}></Semester>
+                );
+            })}
         </div>
     );
 }
