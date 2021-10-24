@@ -4,7 +4,6 @@ import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
-import ReactDOM from "react-dom";
 
 function App(): JSX.Element {
     const [classYear,setClassYear] = React.useState<string>("Freshman");
@@ -27,7 +26,6 @@ function App(): JSX.Element {
             case ("Freshman"):
                 setClassYear("Sophmore");  
                 newYear = "Sophmore";
-                alert(newYear);
                 break;
             case ("Sophmore"):
                 setClassYear("Junior");
@@ -35,7 +33,7 @@ function App(): JSX.Element {
                 break;
             case ("Junior"):
                 setClassYear("Senior");
-                newYear = "senior";
+                newYear = "Senior";
                 break; 
             case ("Senior"):
                 break;
@@ -54,18 +52,46 @@ function App(): JSX.Element {
         setSemesterCnt(1);
     }
 
+    function rmSemester() {
+        const semPop:sem[] = currSemesters;
+        semPop.pop();
+        setCurrSemesters(semPop);
+        setClassYear(semPop[semPop.length-1].year);
+        setSeason(semPop[semPop.length-1].season);
+        setSemesterCnt(semPop[semPop.length-1].cnt);
+    }
+
     return (
         <div className="App">
             <WelcomeMsg></WelcomeMsg>
             <div>UD CIS Scheduler</div>
-            <Button onClick={addSemester}>Add Semester</Button>
-            <Button onClick={clearSemesters}>Clear Semesters</Button>
-            {currSemesters.map(s=>{
-                const cardID = "semester" + s.cnt;
-                return(
-                    <Semester key = {cardID} classYear={s.year} season={s.season}></Semester>
-                );
-            })}
+            <Button className="semesterControls" onClick={addSemester}>Add Semester</Button>
+            <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
+            <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>
+            <Row>
+                <Col id="FallSemesters">
+                    {currSemesters.map(s=>{
+                        console.log(s);
+                        if (s.season === "Fall") {
+                            const semID = "semester" + s.cnt;
+                            return(
+                                <Semester key = {semID} classYear={s.year} season={s.season}></Semester>
+                            );
+                        }
+                    })}
+                </Col>
+                <Col id="SpringSemesters">
+                    {currSemesters.map(s=>{
+                        console.log(s);
+                        if (s.season === "Spring") {
+                            const semID = "semester" + s.cnt;
+                            return(
+                                <Semester key = {semID} classYear={s.year} season={s.season}></Semester>
+                            );
+                        }
+                    })}
+                </Col>
+            </Row>
         </div>
     );
 }
