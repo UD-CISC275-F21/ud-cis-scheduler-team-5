@@ -53,6 +53,9 @@ function App(): JSX.Element {
     }
 
     function rmSemester() {
+        if (semesterCnt === 1) {
+            return;
+        }
         const semPop:sem[] = currSemesters;
         semPop.pop();
         setCurrSemesters(semPop);
@@ -71,7 +74,6 @@ function App(): JSX.Element {
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
-                        console.log(s);
                         if (s.season === "Fall") {
                             const semID = "semester" + s.cnt;
                             return(
@@ -82,7 +84,6 @@ function App(): JSX.Element {
                 </Col>
                 <Col id="SpringSemesters">
                     {currSemesters.map(s=>{
-                        console.log(s);
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
