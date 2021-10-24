@@ -6,7 +6,7 @@ import Course from "./Course";
 
 
 export function Semester({season, classYear}: {season: string, classYear: string}): JSX.Element {
-    console.log("in Semester");
+    //console.log("in Semester");
     const nullClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
         {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
         {id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"},
@@ -36,6 +36,7 @@ export function Semester({season, classYear}: {season: string, classYear: string
                 );
             })
             }
+            
             {/*
             <Row>
                 <Course course={{id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"}}></Course>

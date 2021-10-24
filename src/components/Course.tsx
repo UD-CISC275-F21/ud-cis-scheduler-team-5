@@ -6,11 +6,11 @@ import { EditCourseModal } from "./EditCourseModal";
 function Course({course, currCourses, setCurrCourses} : {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void}): JSX.Element {
     const [visible, setVisible] = React.useState<boolean>(false);
     function editCourse(){
-        console.log("set visible ", course);
+        //console.log("set visible ", course);
         setVisible(true);
     }
-    console.log("in Course");
-    console.log(course.id);
+    //console.log("in Course");
+    //console.log(course.id);
     return (
         <Row>
             <Col>{course.id}</Col>

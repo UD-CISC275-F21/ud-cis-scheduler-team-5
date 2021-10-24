@@ -4,8 +4,8 @@ import { Class } from "../interfaces/course";
 
 export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse} :
     {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void }) : JSX.Element {
-    console.log("in EditCourseModal with course: ", ogClass.id);
-    console.log("Curr Classes length: ", currClasses.length);
+    //console.log("in EditCourseModal with course: ", ogClass.id);
+    //console.log("Curr Classes length: ", currClasses.length);
     const [courseId, setCourseId] = React.useState<string>(ogClass.id);
     const [courseName, setCourseName] = React.useState<string>(ogClass.name);
     const [courseDesc, setCourseDesc] = React.useState<string>(ogClass.description);
@@ -18,17 +18,17 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
         let cIdx = -1;//index of edit class set to -1 for test purposes. If ogClass id is not in the currentClasses
         for (let index = 0; index < currClasses.length; index++) {
             if (currClasses[index].id === ogClass.id) {
-                console.log("Found the matching course at idx=", index);
+                //console.log("Found the matching course at idx=", index);
                 cIdx = index;
                 break;
             }
         }
         const newClasses:Class[] = [...currClasses];
         newClasses[cIdx] = editClass;
-        console.log("Length of newClasses:", newClasses.length);
+        //console.log("Length of newClasses:", newClasses.length);
         for (let index = 0; index < newClasses.length; index++) {
-            console.log("ID: ", newClasses[index].id);
-            console.log("Type: ", typeof newClasses[index]);
+            //console.log("ID: ", newClasses[index].id);
+            //console.log("Type: ", typeof newClasses[index]);
             
         }
 
