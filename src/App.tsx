@@ -15,27 +15,27 @@ function App(): JSX.Element {
         let newSeason = season;
         let newYear = classYear;
         switch (season) {
-        case ("Fall"):
+        case "Fall":
             setSeason("Spring");
             newSeason = "Spring";
             break;
-        case ("Spring"):
+        case "Spring":
             setSeason("Fall");
             newSeason = "Fall";
             switch (classYear) {
-            case ("Freshman"):
+            case "Freshman":
                 setClassYear("Sophmore");  
                 newYear = "Sophmore";
                 break;
-            case ("Sophmore"):
+            case "Sophmore":
                 setClassYear("Junior");
                 newYear = "Junior";
                 break;
-            case ("Junior"):
+            case "Junior":
                 setClassYear("Senior");
                 newYear = "Senior";
                 break; 
-            case ("Senior"):
+            case "Senior":
                 break;
             }
         }
