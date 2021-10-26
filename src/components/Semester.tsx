@@ -1,6 +1,6 @@
 import Button from "@restart/ui/esm/Button";
 import React from "react";
-import "../App.css"
+import "../App.css";
 import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
@@ -17,9 +17,9 @@ export function Semester({season, classYear}: {season: string, classYear: string
 
     const [currClasses, setCurrClasses] = React.useState<Class[]>(nullClasses);
 
-    function addCourse() : void {
-        
-    }
+    //function addCourse() : void {
+    //    
+    //}
 
     return <BootstrapCard className="border-dark">
         <Col>
@@ -57,9 +57,8 @@ export function Semester({season, classYear}: {season: string, classYear: string
                 <Course course = {{id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}}></Course>
             </Row>
             */}
-            <Button className="semesterControls" onClick={addCourse}>Add Course</Button>
             <p></p>
-        </Col> 
+        </Col>
     </BootstrapCard>;
 }
 
