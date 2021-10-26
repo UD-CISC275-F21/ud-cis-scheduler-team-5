@@ -4,6 +4,7 @@ import "../App.css";
 import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
+import { AddCourseModal } from "./AddCourseModal";
 
 
 
@@ -14,12 +15,12 @@ export function Semester({season, classYear}: {season: string, classYear: string
         {id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"},
         {id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}
     ];
-
+    const [visible, setVisible] = React.useState<boolean>(false);
     const [currClasses, setCurrClasses] = React.useState<Class[]>(nullClasses);
 
-    //function addCourse() : void {
-    //    
-    //}
+    function addCourse() : void {
+        setVisible(true);
+    }
 
     return <BootstrapCard className="border-dark">
         <Col>
@@ -58,6 +59,8 @@ export function Semester({season, classYear}: {season: string, classYear: string
             </Row>
             */}
             <p></p>
+            <Button onClick={addCourse}>Add New Course</Button>
+            <AddCourseModal currClasses={currClasses} visible={visible} setVisible={setVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
         </Col>
     </BootstrapCard>;
 }
