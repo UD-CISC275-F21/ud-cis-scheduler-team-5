@@ -2,10 +2,10 @@ import React from "react";
 import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
+import { EditSemesterModal } from "./EditSemesterModal";
 
 
-
-export function Semester({season, classYear}: {season: string, classYear: string}): JSX.Element {
+export function Semester(): JSX.Element {
     //console.log("in Semester");
     const nullClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
         {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
@@ -13,12 +13,20 @@ export function Semester({season, classYear}: {season: string, classYear: string
         {id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}
     ];
 
+    const [classYear,setClassYear] = React.useState<string>("____ Year");
+    const [season,setSeason] = React.useState<string>("____ Semester");
     const [currClasses, setCurrClasses] = React.useState<Class[]>(nullClasses);
+    const [visible, setVisible] = React.useState<boolean>(false);
+
+    function editCard() {
+        setVisible(true);
+    }
 
     return <BootstrapCard className="border-dark">
         <Col>
             <div className="semester-title">
-                <strong>{classYear} Year: {season} Semester</strong>
+                <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
+                <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
             </div>
             <Row>
                 <Col><strong>Course ID</strong></Col>
