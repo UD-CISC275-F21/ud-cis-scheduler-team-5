@@ -28,6 +28,7 @@ export function Semester({season, classYear}: {season: string, classYear: string
                 <strong>{classYear} Year: {season} Semester</strong>
             </div>
             <Row>
+                <Col><strong>Click Here to Remove Course</strong></Col>
                 <Col><strong>Course ID</strong></Col>
                 <Col><strong>Course Name</strong></Col>
                 <Col><strong>Description</strong></Col>

@@ -48,3 +48,15 @@
   margin-left: 5px;
   margin-right: 5px;
 }
+
+
+.removeCourse {
+  color: white;
+  border-color: black;
+  background-color: red;
+  margin-top:0.1em;
+  margin-bottom:0.2em;
+  text-align:center;
+  line-height:1em;
+  width:2em;
+}

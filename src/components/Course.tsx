@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { EditCourseModal } from "./EditCourseModal";
+import x from "../assets/x.svg";
 
 function Course({course, currCourses, setCurrCourses} : {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void}): JSX.Element {
     const [visible, setVisible] = React.useState<boolean>(false);
@@ -26,12 +27,16 @@ function Course({course, currCourses, setCurrCourses} : {course:Class, currCours
     //console.log(course.id);
     return (
         <Row>
+            <Col>
+                <button className="removeCourse" onClick={removeCourse} margin-top={"0.2em"} margin-bottom="0.2em">
+                    <img src={x} alt="Remove Course Button"/>
+                </button>
+            </Col>
             <Col>{course.id}</Col>
             <Col>{course.name}</Col>
             <Col>{course.description}</Col>
             <Col>{course.credits}</Col>
             <Col><button onClick={editCourse}>Edit</button></Col>
-            <Col><button onClick={removeCourse}>Remove</button></Col>
             <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible}></EditCourseModal>
         </Row>
 
