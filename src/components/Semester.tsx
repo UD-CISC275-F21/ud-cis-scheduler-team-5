@@ -44,21 +44,6 @@ export function Semester({season, classYear}: {season: string, classYear: string
                 );
             })
             }
-            
-            {/*
-            <Row>
-                <Course course={{id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"}}></Course>
-            </Row>
-            <Row>
-                <Course course = {{id:"CISC106", name:"Intro to Computer Science", description:"Course2", credits:3, prereqs:"None"}}></Course>
-            </Row>
-            <Row>
-                <Course course = {{id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"}}></Course>
-            </Row>
-            <Row>
-                <Course course = {{id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}}></Course>
-            </Row>
-            */}
             <p></p>
             <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
             <AddCourseModal currClasses={currClasses} visible={visible} setVisible={setVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
