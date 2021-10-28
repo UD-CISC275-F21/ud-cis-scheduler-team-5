@@ -7,25 +7,33 @@ import Course from "./Course";
 import { AddCourseModal } from "./AddCourseModal";
 
 
-
-export function Semester({season, classYear}: {season: string, classYear: string}): JSX.Element {
+export function Semester(): JSX.Element {
     //console.log("in Semester");
     const nullClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
         {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
         {id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"},
         {id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}
     ];
-    const [visible, setVisible] = React.useState<boolean>(false);
+  
+    const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
+    const [classYear,setClassYear] = React.useState<string>("____ Year");
+    const [season,setSeason] = React.useState<string>("____ Semester");
     const [currClasses, setCurrClasses] = React.useState<Class[]>(nullClasses);
+    const [visible, setVisible] = React.useState<boolean>(false);
+
+    function editCard() {
+        setVisible(true);
+    }
 
     function addCourse() : void {
-        setVisible(true);
+        setAddCourseVisible(true);
     }
 
     return <BootstrapCard className="border-dark">
         <Col>
             <div className="semester-title">
-                <strong>{classYear} Year: {season} Semester</strong>
+                <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
+                <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
             </div>
             <Row>
                 <Col><strong>Remove Course</strong></Col>
@@ -46,7 +54,7 @@ export function Semester({season, classYear}: {season: string, classYear: string
             }
             <p></p>
             <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={visible} setVisible={setVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
+            <AddCourseModal currClasses={currClasses} visible={addCoursevisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
         </Col>
     </BootstrapCard>;
 }
