@@ -38,7 +38,7 @@ function App(): JSX.Element {
             case "Senior":
                 break;
             }
-        }
+        } 
         const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason}];
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSem));   
@@ -77,7 +77,7 @@ function App(): JSX.Element {
                         if (s.season === "Fall") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key = {semID} classYear={s.year} season={s.season}></Semester>
+                                <Semester key = {semID}></Semester>
                             );
                         }
                     })}
@@ -87,7 +87,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key = {semID} classYear={s.year} season={s.season}></Semester>
+                                <Semester key = {semID}></Semester>
                             );
                         }
                     })}
@@ -97,4 +97,5 @@ function App(): JSX.Element {
     );
 }
 
+//classYear={s.year} season={s.season}
 export default App;
