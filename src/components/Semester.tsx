@@ -1,7 +1,6 @@
-import Button from "@restart/ui/esm/Button";
 import React from "react";
 import "../App.css";
-import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
+import { Button, Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
 import { EditSemesterModal } from "./EditSemesterModal";
