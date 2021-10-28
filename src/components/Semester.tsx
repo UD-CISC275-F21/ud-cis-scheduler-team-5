@@ -1,8 +1,10 @@
+import Button from "@restart/ui/esm/Button";
 import React from "react";
+import "../App.css";
 import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
-import { EditSemesterModal } from "./EditSemesterModal";
+import { AddCourseModal } from "./AddCourseModal";
 
 
 export function Semester(): JSX.Element {
@@ -12,7 +14,8 @@ export function Semester(): JSX.Element {
         {id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"},
         {id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}
     ];
-
+  
+    const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>("____ Year");
     const [season,setSeason] = React.useState<string>("____ Semester");
     const [currClasses, setCurrClasses] = React.useState<Class[]>(nullClasses);
@@ -22,6 +25,10 @@ export function Semester(): JSX.Element {
         setVisible(true);
     }
 
+    function addCourse() : void {
+        setAddCourseVisible(true);
+    }
+
     return <BootstrapCard className="border-dark">
         <Col>
             <div className="semester-title">
@@ -29,11 +36,12 @@ export function Semester(): JSX.Element {
                 <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
             </div>
             <Row>
+                <Col><strong>Remove Course</strong></Col>
                 <Col><strong>Course ID</strong></Col>
                 <Col><strong>Course Name</strong></Col>
                 <Col><strong>Description</strong></Col>
                 <Col><strong>Credits</strong></Col>
-                <Col><strong>Click Here to Edit Course</strong></Col>
+                <Col><strong>Edit Course</strong></Col>
             </Row>
 
             {currClasses.map(c => {
@@ -60,7 +68,9 @@ export function Semester(): JSX.Element {
             </Row>
             */}
             <p></p>
-        </Col> 
+            <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
+            <AddCourseModal currClasses={currClasses} visible={addCoursevisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
+        </Col>
     </BootstrapCard>;
 }
 
