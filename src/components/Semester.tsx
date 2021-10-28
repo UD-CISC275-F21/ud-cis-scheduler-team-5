@@ -28,12 +28,12 @@ export function Semester({season, classYear}: {season: string, classYear: string
                 <strong>{classYear} Year: {season} Semester</strong>
             </div>
             <Row>
-                <Col><strong>Click Here to Remove Course</strong></Col>
+                <Col><strong>Remove Course</strong></Col>
                 <Col><strong>Course ID</strong></Col>
                 <Col><strong>Course Name</strong></Col>
                 <Col><strong>Description</strong></Col>
                 <Col><strong>Credits</strong></Col>
-                <Col><strong>Click Here to Edit Course</strong></Col>
+                <Col><strong>Edit Course</strong></Col>
             </Row>
 
             {currClasses.map(c => {
@@ -60,7 +60,7 @@ export function Semester({season, classYear}: {season: string, classYear: string
             </Row>
             */}
             <p></p>
-            <Button onClick={addCourse}>Add New Course</Button>
+            <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
             <AddCourseModal currClasses={currClasses} visible={visible} setVisible={setVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
         </Col>
     </BootstrapCard>;
