@@ -4,8 +4,9 @@ import "../App.css";
 import { Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
-import { AddCourseModal } from "./AddCourseModal";
 import { EditSemesterModal } from "./EditSemesterModal";
+import { AddCourseModal } from "./AddCourseModal";
+
 
 
 export function Semester(): JSX.Element {
