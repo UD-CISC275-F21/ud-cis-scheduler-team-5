@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/ud-cis-scheduler-team-5/static/css/main.00e30391.chunk.css",
-    "main.js": "/ud-cis-scheduler-team-5/static/js/main.63006b37.chunk.js",
-    "main.js.map": "/ud-cis-scheduler-team-5/static/js/main.63006b37.chunk.js.map",
+    "main.css": "/ud-cis-scheduler-team-5/static/css/main.bc320414.chunk.css",
+    "main.js": "/ud-cis-scheduler-team-5/static/js/main.65d3b99c.chunk.js",
+    "main.js.map": "/ud-cis-scheduler-team-5/static/js/main.65d3b99c.chunk.js.map",
     "runtime-main.js": "/ud-cis-scheduler-team-5/static/js/runtime-main.968ab2be.js",
     "runtime-main.js.map": "/ud-cis-scheduler-team-5/static/js/runtime-main.968ab2be.js.map",
     "static/css/2.f2512455.chunk.css": "/ud-cis-scheduler-team-5/static/css/2.f2512455.chunk.css",
-    "static/js/2.6c02c940.chunk.js": "/ud-cis-scheduler-team-5/static/js/2.6c02c940.chunk.js",
-    "static/js/2.6c02c940.chunk.js.map": "/ud-cis-scheduler-team-5/static/js/2.6c02c940.chunk.js.map",
+    "static/js/2.da51347e.chunk.js": "/ud-cis-scheduler-team-5/static/js/2.da51347e.chunk.js",
+    "static/js/2.da51347e.chunk.js.map": "/ud-cis-scheduler-team-5/static/js/2.da51347e.chunk.js.map",
     "static/js/3.e5fce1c0.chunk.js": "/ud-cis-scheduler-team-5/static/js/3.e5fce1c0.chunk.js",
     "static/js/3.e5fce1c0.chunk.js.map": "/ud-cis-scheduler-team-5/static/js/3.e5fce1c0.chunk.js.map",
     "index.html": "/ud-cis-scheduler-team-5/index.html",
     "static/css/2.f2512455.chunk.css.map": "/ud-cis-scheduler-team-5/static/css/2.f2512455.chunk.css.map",
-    "static/css/main.00e30391.chunk.css.map": "/ud-cis-scheduler-team-5/static/css/main.00e30391.chunk.css.map",
-    "static/js/2.6c02c940.chunk.js.LICENSE.txt": "/ud-cis-scheduler-team-5/static/js/2.6c02c940.chunk.js.LICENSE.txt",
+    "static/css/main.bc320414.chunk.css.map": "/ud-cis-scheduler-team-5/static/css/main.bc320414.chunk.css.map",
+    "static/js/2.da51347e.chunk.js.LICENSE.txt": "/ud-cis-scheduler-team-5/static/js/2.da51347e.chunk.js.LICENSE.txt",
     "static/media/x.98fe98fc.svg": "/ud-cis-scheduler-team-5/static/media/x.98fe98fc.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.968ab2be.js",
     "static/css/2.f2512455.chunk.css",
-    "static/js/2.6c02c940.chunk.js",
-    "static/css/main.00e30391.chunk.css",
-    "static/js/main.63006b37.chunk.js"
+    "static/js/2.da51347e.chunk.js",
+    "static/css/main.bc320414.chunk.css",
+    "static/js/main.65d3b99c.chunk.js"
   ]
 }
