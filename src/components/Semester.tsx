@@ -4,7 +4,7 @@ import { Button, Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import Course from "./Course";
 import { EditSemesterModal } from "./EditSemesterModal";
-import { AddCourseModal } from "./AddCourseModal";
+import { AddCourseModalImproved } from "./AddCourseModal-improved";
 
 
 
@@ -55,7 +55,7 @@ export function Semester(): JSX.Element {
             }
             <p></p>
             <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
+            <AddCourseModalImproved currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses}></AddCourseModalImproved>
         </Col>
     </BootstrapCard>;
 }

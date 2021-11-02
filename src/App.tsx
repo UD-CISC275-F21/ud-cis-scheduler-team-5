@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import "./App.css";
 import Semester from "./components/Semester";
+import { CoursePanel } from "./components/CoursePanel";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
 
@@ -124,6 +125,7 @@ function App(): JSX.Element {
                     })}
                 </Col>
             </Row>
+            <CoursePanel></CoursePanel>
         </div>
     );
 }
