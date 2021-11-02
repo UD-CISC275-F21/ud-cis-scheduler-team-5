@@ -50,24 +50,24 @@
 }
 
 .addCourse {
-  background-color:#4649d1;
+  background-color: #4649d1;
   color: beige;
-  margin-bottom:0.5em
+  margin-bottom: 0.5em;
 }
 
 .removeCourse {
   color: white;
   border-color: red;
   background-color: white;
-  margin-top:0.1em;
-  margin-bottom:0.2em;
-  text-align:center;
-  line-height:1em;
-  width:2em;
+  margin-top: 0.1em;
+  margin-bottom: 0.2em;
+  text-align: center;
+  line-height: 1em;
+  width: 2em;
 }
 
-.semester { 
-  margin-left:1em;
-  margin-right:1em;
-  margin-bottom:1em;
+.semester {
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
 }
