@@ -47,6 +47,20 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
     }
 
     function handleIDClick(cID:string) {
+        let cIdx = -1;
+        for(let i = 0; i < visibleCourses.length; i++){
+            if(visibleCourses[i].id === cID){
+                cIdx = i;
+                break;
+            }
+        }
+        if(cIdx != -1){
+            setCourseId(cID);
+            setCourseName(visibleCourses[cIdx].name);
+            setCourseDesc(visibleCourses[cIdx].description);
+            setCourseCred(visibleCourses[cIdx].credits);
+            setCoursePreR(visibleCourses[cIdx].prereqs);
+        }
 
         setCourseID(cID);
     }
