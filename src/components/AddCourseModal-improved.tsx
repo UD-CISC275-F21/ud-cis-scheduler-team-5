@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dropdown,  Modal, Col, Row} from "react-bootstrap";
+import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import classes from "../assets/classes.json";
 
@@ -13,7 +13,6 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
     const [courseCred, setCourseCred] = React.useState<number>(0);
     const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
     const [dept, setDept] = React.useState<string>("Course Department");
-    const [courseID, setCourseID] = React.useState<string>("Course ID");
     const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
     
     function saveAdd() {
@@ -25,7 +24,7 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
     }
     const hide = () => {
         setDept("Course Department");
-        setCourseID("Course ID");
+        setCourseId("Course ID");
         setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
         setVisible(false);
 
@@ -67,8 +66,6 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
             setCourseCred(visibleCourses[cIdx].credits);
             setCoursePreR(visibleCourses[cIdx].prereqs);
         }
-
-        setCourseID(cID);
     }
 
     const getCoursesfromDept = (d:string) : Class[] => {
@@ -85,7 +82,7 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
 
 
     return (
-        <Modal show={visible} onHide={hide}>
+        <Modal size="lg" show={visible} onHide={hide}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Course</Modal.Title>
             </Modal.Header>
@@ -110,7 +107,7 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
                     <Col>
                         <Dropdown>
                             <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
-                                {courseID}
+                                {courseId}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
@@ -122,6 +119,23 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
                                 }
                             </Dropdown.Menu>
                         </Dropdown>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={6}>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label data-testid = "CourseId">Selected Course</Form.Label>
+                                <Form.Control as="textarea" rows={1} 
+                                    value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+                    <Col>
+                        <h3>Description</h3>
+                        <p>{courseDesc}</p>
+                        <h3>Prerequisites</h3>
+                        <p>{coursePreR}</p>
                     </Col>
                 </Row>
             </Modal.Body>
