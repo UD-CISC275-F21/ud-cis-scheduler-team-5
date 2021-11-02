@@ -21,9 +21,15 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         setCurrCourse(newClasses.concat(newClass));
-        setVisible(false);
+        hide();
     }
-    const hide = () => setVisible(false);
+    const hide = () => {
+        setDept("Course Department");
+        setCourseID("Course ID");
+        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+        setVisible(false);
+
+    };
 
     const deptSet:Set<string> = new Set();
     for(let i = 0; i < classes.length; i++){
