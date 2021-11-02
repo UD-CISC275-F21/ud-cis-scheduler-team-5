@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dropdown,  Modal } from "react-bootstrap";
+import { Button, Dropdown,  Modal, Col, Row} from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import classes from "../assets/classes.json";
 
@@ -12,6 +12,9 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
     const [courseCred, setCourseCred] = React.useState<number>(0);
     const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
+    const [dept, setDept] = React.useState<string>("Course Department");
+    const [courseID, setCourseID] = React.useState<string>("Course ID");
+    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
     
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
@@ -35,6 +38,32 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
     console.log(deptList);
 
 
+    function handleDeptClick(selectedDept:string) {
+        const deptCourses:Class[] = getCoursesfromDept(selectedDept);
+        console.log(deptCourses.length);
+        setVisibleCourses(deptCourses);
+        
+        setDept(selectedDept);
+    }
+
+    function handleIDClick(cID:string) {
+
+        setCourseID(cID);
+    }
+
+    const getCoursesfromDept = (d:string) : Class[] => {
+        const validCourses: Class[] = [];
+        for(let i = 0; i < classes.length; i++){
+            if(classes[i]["Course ID"].slice(0,4) === d){
+                console.log("Found a course");
+                const newClass:Class = {id:classes[i]["Course ID"], name:classes[i]["Course Name"], credits:classes[i]["Credits"], prereqs:"none", description:classes[i]["Description"]};
+                validCourses.push(newClass);
+            }
+        }
+        return validCourses;
+    };
+
+
     return (
         <Modal show={visible} onHide={hide}>
             <Modal.Header closeButton>
@@ -42,22 +71,39 @@ export function AddCourseModalImproved({currClasses, visible, setVisible, setCur
             </Modal.Header>
 
             <Modal.Body>
-                <Dropdown>
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                        Course Department
-                    </Dropdown.Toggle>
+                <Row>
+                    <Col>
+                        <Dropdown>
+                            <Dropdown.Toggle  className="DDDept" variant="secondary" id="dropdown-basic">
+                                {dept}
+                            </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
-                        {deptList.map(d =>  {
-                            return (
-                                <Dropdown.Item key = {d}>{d}</Dropdown.Item>);
-                        })
-                        }
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                            <Dropdown.Menu>
+                                {deptList.map(d =>  {
+                                    return (
+                                        <Dropdown.Item onClick={() => handleDeptClick(d)} key = {d}>{d}</Dropdown.Item>);
+                                })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col>
+                        <Dropdown>
+                            <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
+                                {courseID}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {visibleCourses.map(c =>  {
+                                    console.log(visibleCourses);
+                                    return (
+                                        <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
+                                })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                </Row>
             </Modal.Body>
 
             <Modal.Footer>
