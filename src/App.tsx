@@ -28,9 +28,10 @@ export function getLocalStoragePlan(): sem[] {
 
 function App(): JSX.Element {
     const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
-    const [classYear,setClassYear] = React.useState<string>("Freshman");
-    const [season,setSeason] = React.useState<string>("Fall");
-    const [semesterCnt,setSemesterCnt] = React.useState<number>(1);
+    const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
+    const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
+    const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
+
 
 
     function addSemester() {
@@ -68,9 +69,8 @@ function App(): JSX.Element {
     }
 
     function clearSemesters() {
-        const firstSem:sem[] = [{cnt: 1,year: "Freshman",season: "Fall"}];
         setClassYear("Freshman");
-        setCurrSemesters(firstSem);
+        setCurrSemesters(INITIAL_PLAN);
         setSeason("Fall");
         setSemesterCnt(1);
     }
@@ -81,6 +81,7 @@ function App(): JSX.Element {
         }
         const semPop:sem[] = currSemesters;
         semPop.pop();
+        console.log(semPop);
         setCurrSemesters(semPop);
         setClassYear(semPop[semPop.length-1].year);
         setSeason(semPop[semPop.length-1].season);
@@ -93,6 +94,7 @@ function App(): JSX.Element {
     }
 
     console.log(currSemesters);
+
 
     return (
         <div className="App">
