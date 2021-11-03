@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
+import { DegreeRequirements } from "./components/DegreeRequirements";
+import CLASSES from "./assets/classes.json";
+import { Class } from "./interfaces/course";
+import { idText } from "typescript";
 
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
@@ -27,11 +31,13 @@ export function getLocalStoragePlan(): sem[] {
 }
 
 function App(): JSX.Element {
-    const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
+
     const [classYear,setClassYear] = React.useState<string>("Freshman");
     const [season,setSeason] = React.useState<string>("Fall");
     const [semesterCnt,setSemesterCnt] = React.useState<number>(1);
-
+    const [currSemesters,setCurrSemesters] = React.useState<sem[]>([{cnt: semesterCnt,year: classYear,season: season}]);
+    //const [courseID, setCourseID] = useState<string>("");
+    const [courseList, setCourseList] = useState<string[]>(defaultClasses.id);
 
     function addSemester() {
         let newSeason = season;
@@ -93,11 +99,32 @@ function App(): JSX.Element {
     }
 
     console.log(currSemesters);
+    /*function addCourse(){
+        setCourseList([...courseList, course.id]);
+        console.log(courseList);
+    }*/
+
+    function checkDegreeReq(aClass: Class) {
+        let i = 0;
+        for(i = 0; i < courseList.length; i++){
+            console.log(courseList[i]);
+            if(courseList[i] === aClass.id){
+                return true;
+            }
+        }
+        return false;
+    }
 
     return (
         <div className="App">
             <WelcomeMsg></WelcomeMsg>
             <div>UD CIS Scheduler</div>
+            <strong>Degree Requirements</strong>
+            { 
+                CLASSES.map(
+                    (aClass: Class) => <DegreeRequirements key={aClass.id} requirement={aClass.id} fulfilled={checkDegreeReq(aClass)}></DegreeRequirements> 
+                )
+            }
             <Button className="semesterControls" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>
@@ -105,10 +132,10 @@ function App(): JSX.Element {
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
-                        if (s.season === "Fall") {
+                        if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key = {semID}></Semester>
+                                <Semester key = {semID} courseList = {courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
@@ -118,7 +145,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key = {semID}></Semester>
+                                <Semester key = {semID} courseList = {courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
