@@ -5,7 +5,7 @@ import Course from "./Course";
 import { EditSemesterModal } from "./EditSemesterModal";
 
 
-export function Semester(): JSX.Element {
+export function Semester({courseList, setCourseList}: {courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
     //console.log("in Semester");
     const nullClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
         {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
@@ -20,6 +20,19 @@ export function Semester(): JSX.Element {
 
     function editCard() {
         setVisible(true);
+    }
+
+    function displayCurrClasses(currClass: Class[]){
+        let i = 0;
+        for(i = 0; i < currClass.length; i++){
+            console.log(currClass[i].id);
+            addCourse(currClass[i].id);
+            console.log(courseList);
+        }
+    }
+
+    function addCourse(c: string){
+        setCourseList([...courseList, c]);
     }
 
     return <BootstrapCard className="border-dark">
@@ -39,12 +52,14 @@ export function Semester(): JSX.Element {
             {currClasses.map(c => {
                 return (
                     <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses}></Course>
+                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} courseList = {courseList} setCourseList={setCourseList}></Course>
                     </Row>
                 );
             })
             }
             
+            {displayCurrClasses(currClasses)}
+
             {/*
             <Row>
                 <Course course={{id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"}}></Course>

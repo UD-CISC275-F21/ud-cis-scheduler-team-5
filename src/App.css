@@ -48,3 +48,9 @@
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.degree {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
