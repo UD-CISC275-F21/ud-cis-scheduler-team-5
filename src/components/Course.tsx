@@ -4,7 +4,8 @@ import { Class } from "../interfaces/course";
 import { EditCourseModal } from "./EditCourseModal";
 import x from "../assets/x.svg";
 
-function Course({course, currCourses, setCurrCourses} : {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void}): JSX.Element {
+function Course({course, currCourses, setCurrCourses,} : 
+    {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void}): JSX.Element {
     const [visible, setVisible] = React.useState<boolean>(false);
     function editCourse():void{
         //console.log("set visible ", course);

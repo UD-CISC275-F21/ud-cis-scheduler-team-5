@@ -71,3 +71,9 @@
   margin-right: 1em;
   margin-bottom: 1em;
 }
+
+.degree {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
