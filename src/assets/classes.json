@@ -7,10 +7,11 @@
         "prereqs": ""
     },
     {
-        "Course ID": "CISC181",
-        "Course Name": "Introduction to Computer Science II",
-        "Description": "Principles of computer science illustrated and applied through programming in an object oriented language. Programming projects illustrate computational problems, styles and issues that arise in computer systems development and in all application areas of computation.",
-        "Credits": 3
+        "id": "CISC181",
+        "name": "Introduction to Computer Science II",
+        "description": "Principles of computer science illustrated and applied through programming in an object oriented language. Programming projects illustrate computational problems, styles and issues that arise in computer systems development and in all application areas of computation.",
+        "credits": 3,
+        "prereqs": ""
     },
     {
         "id": "CISC210",
@@ -62,10 +63,11 @@
         "prereqs": ""
     },
     {
-        "Course ID": "CISC372",
-        "Course Name": "Parallel Computing",
-        "Description": "Introduction to parallel computing concepts, methodologies, and tools. Programming and algorithmic techniques for code that will run simultaneously on parallel computing architectures. Topics include: single and multi-core parallelism, shared and distributed memory architectures, concurrency, program decomposition, data distribution, communication, load balancing, scalability, locality, granularity, debugging, performance evaluation.",
-        "Credits": 3
+        "id": "CISC372",
+        "name": "Parallel Computing",
+        "description": "Introduction to parallel computing concepts, methodologies, and tools. Programming and algorithmic techniques for code that will run simultaneously on parallel computing architectures. Topics include: single and multi-core parallelism, shared and distributed memory architectures, concurrency, program decomposition, data distribution, communication, load balancing, scalability, locality, granularity, debugging, performance evaluation.",
+        "credits": 3,
+        "prereqs": ""
     },
     {
         "id": "MATH210",

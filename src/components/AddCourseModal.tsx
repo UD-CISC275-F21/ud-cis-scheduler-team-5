@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse} :
-    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void }) : JSX.Element {
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
+    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
@@ -16,11 +16,25 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse}
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         setCurrCourse(newClasses.concat(newClass));
+        addCourseList(newClass.id);
+        console.log(courseList);
         setVisible(false);
     }
     //console.log("Modal Course: ", ogClass.id);
 
     const hide = () => setVisible(false);
+
+    /*function displayCurrClasses(currClass: Class[]){
+        let i = 0;
+        for(i = 0; i < currClass.length; i++){
+            addCourseList(currClass[i].id);
+        }
+    } */
+
+    function addCourseList(c: string){
+        console.log(c);
+        setCourseList([...courseList, c]);
+    }
 
     return (
         <Modal show={visible} onHide={hide}>
@@ -60,7 +74,9 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse}
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={hide}>Close</Button>
-                <Button variant="primary" onClick={saveAdd}>Add Course</Button>
+                <Button variant="primary" onClick={()=>{
+                    saveAdd(); //displayCurrClasses(currClasses);
+                }}>Add Course</Button>
             </Modal.Footer>
         </Modal>
     );

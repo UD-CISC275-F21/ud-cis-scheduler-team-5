@@ -28,18 +28,7 @@ export function Semester({courseList, setCourseList}: {courseList: string[], set
 
     function addCourse() : void {
         setAddCourseVisible(true);
-    function displayCurrClasses(currClass: Class[]){
-        let i = 0;
-        for(i = 0; i < currClass.length; i++){
-            console.log(currClass[i].id);
-            //addCourse(currClass[i].id);
-            console.log(courseList);
-        }
     }
-
-    //function addCourse(c: string){
-       // setCourseList([...courseList, c]);
-    //}
 
     return <BootstrapCard className="border-dark">
         <Col>
@@ -59,14 +48,14 @@ export function Semester({courseList, setCourseList}: {courseList: string[], set
             {currClasses.map(c => {
                 return (
                     <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} courseList = {courseList} setCourseList={setCourseList}></Course>
+                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses}></Course>
                     </Row>
                 );
             })
             }
             <p></p>
             <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
+            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></AddCourseModal>
         </Col>
     </BootstrapCard>;
 }
