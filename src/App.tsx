@@ -10,36 +10,52 @@ import { Class } from "./interfaces/course";
 
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
-
-export const INITIAL_PLAN: sem[] =  [
+export const LOCAL_STORAGE_COURSELIST = "cisc-degree-courseList"; 
+const defaultClasses:Class[] =[];
+export const INITIAL_COURSELIST: string[] = [];
+export const INITIAL_SEMESTER: sem[] =  [
     {
         cnt: 1,        
         year: "Freshman",
-        season: "Fall"
+        season: "Fall",
+        courses: defaultClasses
     }
 ];
 
+export function getLocalStorageList(): string[] {
+    const rawList: string | null = localStorage.getItem(LOCAL_STORAGE_COURSELIST);
+    if (rawList === null) {
+        return [...INITIAL_COURSELIST];
+    } else {
+        return JSON.parse(rawList);
+    }
+}
+
 export function getLocalStoragePlan(): sem[] {
     const rawSchedule: string | null = localStorage.getItem(LOCAL_STORAGE_SCHEDULE);
-    console.log(LOCAL_STORAGE_SCHEDULE);
     if (rawSchedule === null) {
-        return [...INITIAL_PLAN];
+        return [...INITIAL_SEMESTER];
     } else {
         return JSON.parse(rawSchedule);
     }
 }
 
 function App(): JSX.Element {
-    const [classYear,setClassYear] = React.useState<string>("Freshman");
-    const [season,setSeason] = React.useState<string>("Fall");
-    const [semesterCnt,setSemesterCnt] = React.useState<number>(1);
-    const [currSemesters,setCurrSemesters] = React.useState<sem[]>([{cnt: semesterCnt,year: classYear,season: season}]);
-    const [courseList, setCourseList] = useState<string[]>(["CISC275", "CISC106", "PHYS207", "MATH241"]);
+    const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
+    const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
+    const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
+    const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
+    const [semesterClasses, setSemesterClasses] = React.useState<Class[]>([]);
+    const [courseList, setCourseList] = useState<string[]>(getLocalStorageList());
     const [degreeReqVisible, setDegreeReqVisible] = useState<boolean>(false);
 
     useEffect(() => {
         console.log(`courseList is : ${courseList}`);
     },[courseList]);
+
+    useEffect(() => {
+        console.log(`courseList is : ${semesterClasses}`);
+    },[semesterClasses]);
 
     function addSemester() {
         let newSeason = season;
@@ -69,16 +85,16 @@ function App(): JSX.Element {
                 break;
             }
         } 
-        const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason}];
-        console.log(newSem);
+        const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSem));   
     }
 
+
     function clearSemesters() {
-        const firstSem:sem[] = [{cnt: 1,year: "Freshman",season: "Fall"}];
+        setCurrSemesters(INITIAL_SEMESTER);
+        setCourseList(INITIAL_COURSELIST);
         setClassYear("Freshman");
-        setCurrSemesters(firstSem);
         setSeason("Fall");
         setSemesterCnt(1);
     }
@@ -96,8 +112,9 @@ function App(): JSX.Element {
     }
 
     function saveData() {
+        console.log(currSemesters);
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(currSemesters));
-        console.log(localStorage);
+        localStorage.setItem(LOCAL_STORAGE_COURSELIST, JSON.stringify(courseList));
     }
 
     function checkDegreeReq(aClass: Class) {
@@ -113,6 +130,9 @@ function App(): JSX.Element {
     function showDegreeReq(){
         setDegreeReqVisible(!degreeReqVisible);
     }
+
+
+    console.log(semesterClasses);
 
     return (
         <div className="App">
@@ -136,7 +156,7 @@ function App(): JSX.Element {
                         if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key = {semID} courseList = {courseList} setCourseList={setCourseList}></Semester>
+                                <Semester key={semID} semesterCourses={s.courses} setSemesterCourses={setSemesterClasses} courseList={courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
@@ -146,7 +166,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key = {semID} courseList = {courseList} setCourseList={setCourseList}></Semester>
+                                <Semester key={semID} semesterCourses={s.courses} setSemesterCourses={setSemesterClasses} courseList={courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
