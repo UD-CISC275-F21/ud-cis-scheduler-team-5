@@ -20,7 +20,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         //console.log("Length of newClasses:", newClasses.length);
         setCurrCourse(newClasses.concat(newClass));
         addCourseList(newClass.id);
-        console.log(courseList);
+        //console.log(courseList);
         hide();
     }
     const hide = () => {
@@ -41,12 +41,12 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         deptList.push(dept);
     });
 
-    console.log(deptList);
+    //console.log(deptList);
 
 
     function handleDeptClick(selectedDept:string) {
         const deptCourses:Class[] = getCoursesfromDept(selectedDept);
-        console.log(deptCourses.length);
+        //console.log(deptCourses.length);
         setVisibleCourses(deptCourses);
         
         setDept(selectedDept);
@@ -73,7 +73,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const validCourses: Class[] = [];
         for(let i = 0; i < classes.length; i++){
             if(classes[i]["id"].slice(0,4) === d){
-                console.log("Found a course");
+                //console.log("Found a course");
                 const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits:classes[i]["credits"], prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
                 validCourses.push(newClass);
             }
@@ -117,7 +117,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
                             <Dropdown.Menu>
                                 {visibleCourses.map(c =>  {
-                                    console.log(visibleCourses);
+                                    //console.log(visibleCourses);
                                     return (
                                         <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
                                 })

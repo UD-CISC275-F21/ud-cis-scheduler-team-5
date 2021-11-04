@@ -2,21 +2,25 @@ import React from "react";
 import "../App.css";
 import { Button, Card as BootstrapCard, Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
+import { sem } from "../interfaces/sem";
 import Course from "./Course";
 import { EditSemesterModal } from "./EditSemesterModal";
 import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester({semesterCourses, setSemesterCourses, courseList, setCourseList}: {semesterCourses: Class[], setSemesterCourses: (c: Class[])=>void, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
+export function Semester({semester, courseList, setCourseList}: {semester: sem, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
     //console.log("in Semester");
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>("____ Year");
     const [season,setSeason] = React.useState<string>("____ Semester");
-    const [currClasses, setCurrClasses] = React.useState<Class[]>(semesterCourses);
+    const [currClasses, setCurrClasses] = React.useState<Class[]>(semester.courses);
     const [visible, setVisible] = React.useState<boolean>(false);
 
+
+    semester.courses = currClasses;
+    console.log(semester.courses);
 
     function editCard() {
         setVisible(true);
@@ -24,7 +28,6 @@ export function Semester({semesterCourses, setSemesterCourses, courseList, setCo
 
     function addCourse() : void {
         setAddCourseVisible(true);
-        setSemesterCourses(currClasses);
     }
 
     return <BootstrapCard className="border-dark">
