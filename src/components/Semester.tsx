@@ -8,7 +8,7 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester(): JSX.Element {
+export function Semester({courseList, setCourseList}: {courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
     //console.log("in Semester");
     const nullClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
         {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
@@ -48,14 +48,14 @@ export function Semester(): JSX.Element {
             {currClasses.map(c => {
                 return (
                     <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses}></Course>
+                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></Course>
                     </Row>
                 );
             })
             }
             <p></p>
             <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses}></AddCourseModal>
+            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></AddCourseModal>
         </Col>
     </BootstrapCard>;
 }

@@ -4,9 +4,9 @@ import { Class } from "../interfaces/course";
 import classes from "../assets/classes.json";
 
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse} :
-    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void }) : JSX.Element {
 
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
+    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
@@ -26,6 +26,9 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse}
         setDept("Course Department");
         setCourseId("Course ID");
         setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+
+        addCourseList(newClass.id);
+        console.log(courseList);
         setVisible(false);
 
     };
@@ -80,6 +83,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse}
         return validCourses;
     };
 
+
+    function addCourseList(c: string){
+        setCourseList([...courseList, c]);
+    }
 
     return (
         <Modal size="lg" show={visible} onHide={hide}>
@@ -142,7 +149,9 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse}
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={hide}>Close</Button>
-                <Button variant="primary" onClick={saveAdd}>Add Course</Button>
+                <Button variant="primary" onClick={()=>{
+                    saveAdd(); //displayCurrClasses(currClasses);
+                }}>Add Course</Button>
             </Modal.Footer>
         </Modal>
     );
