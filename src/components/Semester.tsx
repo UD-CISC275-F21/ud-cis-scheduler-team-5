@@ -8,19 +8,15 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester({courseList, setCourseList}: {courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
+export function Semester({semesterCourses, setSemesterCourses, courseList, setCourseList}: {semesterCourses: Class[], setSemesterCourses: (c: Class[])=>void, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
     //console.log("in Semester");
-    const nullClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
-        {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
-        {id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"},
-        {id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}
-    ];
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>("____ Year");
     const [season,setSeason] = React.useState<string>("____ Semester");
-    const [currClasses, setCurrClasses] = React.useState<Class[]>(nullClasses);
+    const [currClasses, setCurrClasses] = React.useState<Class[]>(semesterCourses);
     const [visible, setVisible] = React.useState<boolean>(false);
+
 
     function editCard() {
         setVisible(true);
@@ -28,6 +24,7 @@ export function Semester({courseList, setCourseList}: {courseList: string[], set
 
     function addCourse() : void {
         setAddCourseVisible(true);
+        setSemesterCourses(currClasses);
     }
 
     return <BootstrapCard className="border-dark">
