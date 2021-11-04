@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 
-export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse} :
-    {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void }) : JSX.Element {
+export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
+    {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
     //console.log("in EditCourseModal with course: ", ogClass.id);
     //console.log("Curr Classes length: ", currClasses.length);
     const [courseId, setCourseId] = React.useState<string>(ogClass.id);
@@ -16,6 +16,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     function saveEdit() {
         const editClass:Class = {name: courseName, id:courseId, description: courseDesc, credits: courseCred, prereqs: coursePreR};
         let cIdx = -1;//index of edit class set to -1 for test purposes. If ogClass id is not in the currentClasses
+        addCourseList(editClass.id);
         for (let index = 0; index < currClasses.length; index++) {
             if (currClasses[index].id === ogClass.id) {
                 //console.log("Found the matching course at idx=", index);
@@ -38,6 +39,10 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     //console.log("Modal Course: ", ogClass.id);
 
     const hide = () => setVisible(false);
+
+    function addCourseList(c: string){
+        setCourseList([...courseList, c]);
+    }
 
     return (
         <Modal show={visible} onHide={hide}>
@@ -76,7 +81,9 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={hide}>Close</Button>
+                <Button variant="secondary" onClick={()=>{
+                    hide(); addCourseList(ogClass.id);
+                }}>Close</Button>
                 <Button variant="primary" onClick={saveEdit}>Edit Course</Button>
             </Modal.Footer>
         </Modal>

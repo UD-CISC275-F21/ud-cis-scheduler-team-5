@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import "./App.css";
 import Semester from "./components/Semester";
@@ -7,7 +7,6 @@ import WelcomeMsg from "./components/WelcomeMsg";
 import { DegreeRequirements } from "./components/DegreeRequirements";
 import CLASSES from "./assets/classes.json";
 import { Class } from "./interfaces/course";
-import { idText } from "typescript";
 
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
@@ -31,18 +30,16 @@ export function getLocalStoragePlan(): sem[] {
 }
 
 function App(): JSX.Element {
-    const initialClasses:Class[] =[ {id:"CISC275", name:"Intro to Software Engineering", description:"Course1", credits:3, prereqs:"None"},
-        {id:"CISC106", name:"Intro to Computer Engineering", description:"Course2", credits:3, prereqs:"None"},
-        {id:"PHYS207", name:"Fundamentals of Physics 1", description:"Probably the best course at UD", credits:4, prereqs:"None"},
-        {id:"MATH241", name:"Calculus 1", description:"What's a derivative?", credits:4, prereqs:"None"}
-    ];
-
     const [classYear,setClassYear] = React.useState<string>("Freshman");
     const [season,setSeason] = React.useState<string>("Fall");
     const [semesterCnt,setSemesterCnt] = React.useState<number>(1);
     const [currSemesters,setCurrSemesters] = React.useState<sem[]>([{cnt: semesterCnt,year: classYear,season: season}]);
     const [courseList, setCourseList] = useState<string[]>(["CISC275", "CISC106", "PHYS207", "MATH241"]);
     const [degreeReqVisible, setDegreeReqVisible] = useState<boolean>(false);
+
+    useEffect(() => {
+        console.log(`courseList is : ${courseList}`);
+    },[courseList]);
 
     function addSemester() {
         let newSeason = season;
@@ -101,20 +98,6 @@ function App(): JSX.Element {
     function saveData() {
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(currSemesters));
         console.log(localStorage);
-    }
-
-    function displayCurrClasses(currClass: Class[]){
-        let i = 0;
-        for(i = 0; i < currClass.length; i++){
-            console.log(currClass[i].id);
-            addCourseList(currClass[i].id);
-        }
-    }
-
-    function addCourseList(c: string){
-        console.log(c);
-        setCourseList([...courseList, c]);
-        console.log(courseList);
     }
 
     function checkDegreeReq(aClass: Class) {

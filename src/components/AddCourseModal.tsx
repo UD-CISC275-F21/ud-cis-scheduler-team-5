@@ -24,15 +24,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     const hide = () => setVisible(false);
 
-    /*function displayCurrClasses(currClass: Class[]){
-        let i = 0;
-        for(i = 0; i < currClass.length; i++){
-            addCourseList(currClass[i].id);
-        }
-    } */
-
     function addCourseList(c: string){
-        console.log(c);
         setCourseList([...courseList, c]);
     }
 
