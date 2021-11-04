@@ -1,5 +1,4 @@
 import React from "react";
-import classes from "../assets/classes.json";
 
 
 export function CoursePanel() : JSX.Element {
