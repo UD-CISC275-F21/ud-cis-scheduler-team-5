@@ -11,14 +11,13 @@ import { Class } from "./interfaces/course";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_COURSELIST = "cisc-degree-courseList"; 
-const defaultClasses:Class[] =[];
 export const INITIAL_COURSELIST: string[] = [];
 export const INITIAL_SEMESTER: sem[] =  [
     {
         cnt: 1,        
         year: "Freshman",
         season: "Fall",
-        courses: defaultClasses
+        courses: []
     }
 ];
 
@@ -45,17 +44,12 @@ function App(): JSX.Element {
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
     const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
-    const [semesterClasses, setSemesterClasses] = React.useState<Class[]>([]);
     const [courseList, setCourseList] = useState<string[]>(getLocalStorageList());
     const [degreeReqVisible, setDegreeReqVisible] = useState<boolean>(false);
 
     useEffect(() => {
         console.log(`courseList is : ${courseList}`);
     },[courseList]);
-
-    useEffect(() => {
-        console.log(`courseList is : ${semesterClasses}`);
-    },[semesterClasses]);
 
     function addSemester() {
         let newSeason = season;
@@ -89,7 +83,6 @@ function App(): JSX.Element {
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSem));   
     }
-
 
     function clearSemesters() {
         setCurrSemesters(INITIAL_SEMESTER);
@@ -131,15 +124,12 @@ function App(): JSX.Element {
         setDegreeReqVisible(!degreeReqVisible);
     }
 
-
-    console.log(semesterClasses);
-
     return (
         <div className="App">
             <WelcomeMsg></WelcomeMsg>
             <div>UD CIS Scheduler</div>
             <Button onClick={()=>{
-                showDegreeReq(); console.log(courseList);
+                showDegreeReq(); //console.log(courseList);
             }}>Show Degree Requirements</Button>
             { 
                 CLASSES.map(
@@ -156,7 +146,7 @@ function App(): JSX.Element {
                         if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semesterCourses={s.courses} setSemesterCourses={setSemesterClasses} courseList={courseList} setCourseList={setCourseList}></Semester>
+                                <Semester key={semID} semester={s} courseList={courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
@@ -166,7 +156,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semesterCourses={s.courses} setSemesterCourses={setSemesterClasses} courseList={courseList} setCourseList={setCourseList}></Semester>
+                                <Semester key={semID} semester={s} courseList={courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
