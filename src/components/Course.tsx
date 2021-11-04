@@ -4,10 +4,12 @@ import { Class } from "../interfaces/course";
 import { EditCourseModal } from "./EditCourseModal";
 import x from "../assets/x.svg";
 
-function Course({course, currCourses, setCurrCourses} : {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void}): JSX.Element {
+function Course({course, currCourses, setCurrCourses, courseList, setCourseList} : 
+    {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
     const [visible, setVisible] = React.useState<boolean>(false);
     function editCourse():void{
         //console.log("set visible ", course);
+        removeCourseList(course.id);
         setVisible(true);
     }
 
@@ -16,6 +18,7 @@ function Course({course, currCourses, setCurrCourses} : {course:Class, currCours
         let newCourses:Class[] = [];
         for (let index = 0; index < currCourses.length; index++) {
             if(currCourses[index].id == course.id){
+                removeCourseList(currCourses[index].id);
                 continue;
             }else{
                 newCourses = newCourses.concat(currCourses[index]);
@@ -23,8 +26,11 @@ function Course({course, currCourses, setCurrCourses} : {course:Class, currCours
         }
         setCurrCourses(newCourses);
     }
-    //console.log("in Course");
-    //console.log(course.id);
+
+    function removeCourseList(c: string) { 
+        setCourseList(courseList.filter(courses => courses != c));
+    }
+
     return (
         <Row>
             <Col>
@@ -37,7 +43,7 @@ function Course({course, currCourses, setCurrCourses} : {course:Class, currCours
             <Col>{course.description}</Col>
             <Col>{course.credits}</Col>
             <Col><button onClick={editCourse}>Edit</button></Col>
-            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible}></EditCourseModal>
+            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} courseList={courseList} setCourseList={setCourseList}></EditCourseModal>
         </Row>
 
             

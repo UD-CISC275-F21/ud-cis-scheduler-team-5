@@ -87,3 +87,8 @@
   width:10.5em;
   margin-bottom:2em;
 }
+.degree {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
