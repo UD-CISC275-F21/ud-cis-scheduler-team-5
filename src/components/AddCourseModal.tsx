@@ -1,61 +1,143 @@
 import React from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
+import classes from "../assets/classes.json";
+
 
 export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse} :
     {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void }) : JSX.Element {
+
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
     const [courseCred, setCourseCred] = React.useState<number>(0);
     const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
-
-
+    const [dept, setDept] = React.useState<string>("Course Department");
+    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+    
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         setCurrCourse(newClasses.concat(newClass));
-        setVisible(false);
+        hide();
     }
-    //console.log("Modal Course: ", ogClass.id);
+    const hide = () => {
+        setDept("Course Department");
+        setCourseId("Course ID");
+        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+        setVisible(false);
 
-    const hide = () => setVisible(false);
+    };
+
+    const deptSet:Set<string> = new Set();
+    for(let i = 0; i < classes.length; i++){
+        const classDept = classes[i]["id"].slice(0, 4);
+        deptSet.add(classDept);
+    }
+    const deptList:string[] = [];
+    deptSet.forEach(function(dept){
+        deptList.push(dept);
+    });
+
+    console.log(deptList);
+
+
+    function handleDeptClick(selectedDept:string) {
+        const deptCourses:Class[] = getCoursesfromDept(selectedDept);
+        console.log(deptCourses.length);
+        setVisibleCourses(deptCourses);
+        
+        setDept(selectedDept);
+    }
+
+    function handleIDClick(cID:string) {
+        let cIdx = -1;
+        for(let i = 0; i < visibleCourses.length; i++){
+            if(visibleCourses[i].id === cID){
+                cIdx = i;
+                break;
+            }
+        }
+        if(cIdx != -1){
+            setCourseId(cID);
+            setCourseName(visibleCourses[cIdx].name);
+            setCourseDesc(visibleCourses[cIdx].description);
+            setCourseCred(visibleCourses[cIdx].credits);
+            setCoursePreR(visibleCourses[cIdx].prereqs);
+        }
+    }
+
+    const getCoursesfromDept = (d:string) : Class[] => {
+        const validCourses: Class[] = [];
+        for(let i = 0; i < classes.length; i++){
+            if(classes[i]["id"].slice(0,4) === d){
+                console.log("Found a course");
+                const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits:classes[i]["credits"], prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
+                validCourses.push(newClass);
+            }
+        }
+        return validCourses;
+    };
+
 
     return (
-        <Modal show={visible} onHide={hide}>
+        <Modal size="lg" show={visible} onHide={hide}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Course</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                <Form>
-                    <Form.Group>
-                        <Form.Label data-testid = "CourseId">Course ID</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
-                            value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label data-testid = "CourseName">Course Name</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
-                            value={courseName} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseName(ev.target.value)}> </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label data-testid = "CourseDesc">Course Description</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
-                            value={courseDesc} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseDesc(ev.target.value)}> </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label data-testid = "CourseCred">Course Credits</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
-                            value={courseCred} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseCred(Number(ev.target.value))}> </Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label data-testid = "CoursePreR">Course Pre Requisits</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
-                            value={coursePreR} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCoursePreR(ev.target.value)}> </Form.Control>
-                    </Form.Group>
-                </Form>
+                <Row>
+                    <Col>
+                        <Dropdown>
+                            <Dropdown.Toggle  className="DDDept" variant="secondary" id="dropdown-basic">
+                                {dept}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {deptList.map(d =>  {
+                                    return (
+                                        <Dropdown.Item onClick={() => handleDeptClick(d)} key = {d}>{d}</Dropdown.Item>);
+                                })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col>
+                        <Dropdown>
+                            <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
+                                {courseId}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {visibleCourses.map(c =>  {
+                                    console.log(visibleCourses);
+                                    return (
+                                        <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
+                                })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={6}>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label data-testid = "CourseId">Selected Course</Form.Label>
+                                <Form.Control as="textarea" rows={1} 
+                                    value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
+                            </Form.Group>
+                        </Form>
+                    </Col>
+                    <Col>
+                        <h3>Description</h3>
+                        <p>{courseDesc}</p>
+                        <h3>Prerequisites</h3>
+                        <p>{coursePreR}</p>
+                    </Col>
+                </Row>
             </Modal.Body>
 
             <Modal.Footer>
