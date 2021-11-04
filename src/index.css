@@ -16,3 +16,11 @@ code {
   padding-bottom: 10px; 
   padding-top: 10px; 
 }
+
+.reqfilled {
+  background-color: lightgreen !important;
+}
+
+.requnfilled {
+  background-color: white !important;
+}

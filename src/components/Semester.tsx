@@ -48,7 +48,7 @@ export function Semester({courseList, setCourseList}: {courseList: string[], set
             {currClasses.map(c => {
                 return (
                     <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses}></Course>
+                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></Course>
                     </Row>
                 );
             })
