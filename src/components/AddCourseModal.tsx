@@ -68,8 +68,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     //console.log(deptList);
 
 
-
-
     function handleDeptClick(selectedDept:string) {
         const deptCourses:Class[] = getCoursesfromDept(selectedDept);
         //console.log(deptCourses.length);
