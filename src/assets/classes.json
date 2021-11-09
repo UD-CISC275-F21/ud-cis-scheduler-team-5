@@ -11,21 +11,21 @@
         "name": "Introduction to Computer Science II",
         "description": "Principles of computer science illustrated and applied through programming in an object oriented language. Programming projects illustrate computational problems, styles and issues that arise in computer systems development and in all application areas of computation.",
         "credits": 3,
-        "prereqs": "CISC108"
+        "prereqs": ""
     },
     {
         "id": "CISC210",
         "name": "Introduction to Systems Programming",
         "description": "Principles of computer systems programming for software and hardware platforms to achieve efficient resource usage. Topics include the C programming language, memory management, and awareness of system constraints and interfacing. Projects include programming embedded systems and interactive objects.",
         "credits": 3,
-        "prereqs": "CISC108"
+        "prereqs": ""
     },
     {
         "id": "CISC220",
         "name": "Data Structures",
         "description": "Review of data type abstraction, recursion, arrays, stacks, queues, multiple stacks and linked lists. Emphasis on dynamic storage management, garbage collection, trees, graphs, tables, sorting and searching.",
         "credits": 3,
-        "prereqs": "CISC210"
+        "prereqs": ""
     },
     {
         "id": "CISC260",
