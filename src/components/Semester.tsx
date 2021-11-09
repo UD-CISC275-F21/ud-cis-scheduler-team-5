@@ -40,6 +40,9 @@ export function Semester({currSemesters, semester, courseList, setCourseList}: {
                 <Col><strong>Remove Course</strong></Col>
                 <Col><strong>Course ID</strong></Col>
                 <Col><strong>Course Name</strong></Col>
+                {/*
+                <Col><strong>Description</strong></Col>
+                */}
                 <Col><strong>Credits</strong></Col>
                 <Col><strong>Edit Course</strong></Col>
             </Row>
