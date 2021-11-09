@@ -12,7 +12,22 @@ import { Class } from "./interfaces/course";
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_COURSELIST = "cisc-degree-courseList"; 
 export const INITIAL_COURSELIST: string[] = [];
-export const INITIAL_SEMESTER: sem[] =  [
+
+/*
+export const USER_DATA: string[] = [
+    courses: INITIAL_COURSELIST,
+    science: [],
+    core: [],
+    concentration: [],
+    communicaiton: [],
+    engineeringBreadth: [],
+    universityBreadth: [],
+    dle: [],
+
+]
+*/
+
+export const INITIAL_SEMESTER: sem[] =  [   
     {
         cnt: 1,        
         year: "Freshman",
@@ -38,6 +53,8 @@ export function getLocalStoragePlan(): sem[] {
         return JSON.parse(rawSchedule);
     }
 }
+
+
 
 function App(): JSX.Element {
     const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
@@ -120,9 +137,43 @@ function App(): JSX.Element {
         return false;
     }
 
+
     function showDegreeReq(){
         setDegreeReqVisible(!degreeReqVisible);
     }
+
+    function exportDataToCSV() {
+        const content = currSemesters.map(s => [
+            [s.cnt, s.season, s.year], 
+            [s.courses.map(c=>
+                [c.id,c.credits,c.name,c.description,c.prereqs]
+            )]
+        
+        ]);
+          
+        console.log(content);
+
+        //s.cnt + "," + s.season + "," + s.year + "," + s.courses.map(c => c.description + "," + c.credits + "," + c.id + "," + c.name).join(",")
+            
+        //}).join(",");
+        
+        
+        //let i = 0;
+        //for (i;i<content.length;i++) {
+        //content = content.replace(" ","_");
+        //console.log(content[i]);
+        //}
+        //const csvFile = new Blob([content], {type: "text/csv"});
+        //console.log(csvFile);
+        //console.log(content);
+        //const csvContent = "data:text/csv;charset=utf-8," + content;
+        //console.log(csvContent);
+    }
+
+    function importDataFromCSV() {
+        return 0;
+    }
+
 
     return (
         <div className="App">
@@ -139,14 +190,17 @@ function App(): JSX.Element {
             <Button className="semesterControls" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>
-            <Button className="downloadData" onClick={saveData}>Save Schedule</Button>
+            <Button className="saveData" onClick={saveData}>Save Schedule</Button>
+            <Button className="saveData" onClick={exportDataToCSV}>Download Schedule</Button>
+            <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
+
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
                         if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} courseList={courseList} setCourseList={setCourseList}></Semester>
+                                <Semester key={semID} currSemesters={currSemesters} semester={s} courseList={courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
@@ -156,7 +210,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} courseList={courseList} setCourseList={setCourseList}></Semester>
+                                <Semester key={semID} currSemesters={currSemesters} semester={s} courseList={courseList} setCourseList={setCourseList}></Semester>
                             );
                         }
                     })}
