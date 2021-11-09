@@ -13,19 +13,43 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
     const [dept, setDept] = React.useState<string>("Course Department");
     const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
-    
+    const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
+
+
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
-        setCurrCourse(newClasses.concat(newClass));
-        addCourseList(newClass.id);
+        const prereqs = getPrereqs(courseId);
+
+        if(prereqs === "N/A" || prereqs === ""){
+            setCurrCourse(newClasses.concat(newClass));
+            addCourseList(newClass.id);
+            hide();
+        }else{
+            let loc = -1;
+            for(let i = 0; i < courseList.length; i++){
+                if(courseList[i] === prereqs){
+                    loc = i;
+                }
+            }
+            if(loc != -1){
+                setCurrCourse(newClasses.concat(newClass));
+                addCourseList(newClass.id);
+                hide();
+            }else{
+                setErrorAddCourse(true);
+                console.log("Can't add that course yet!");
+            }  
+        }
         //console.log(courseList);
-        hide();
     }
     const hide = () => {
+        setErrorAddCourse(false);
         setDept("Course Department");
         setCourseId("Course ID");
+        setCourseDesc("Course Description");
+        setCoursePreR("");
         setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
         setVisible(false);
 
@@ -42,6 +66,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     });
 
     //console.log(deptList);
+
+
 
 
     function handleDeptClick(selectedDept:string) {
@@ -80,6 +106,28 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
         return validCourses;
     };
+
+    function getPrereqs(selectedCourse:string) : string{
+        console.log("Looking for ", selectedCourse);
+        const deptCourses = getCoursesfromDept(selectedCourse.slice(0,4));
+        let loc = -1;
+        for(let i = 0; i < deptCourses.length; i++){
+            console.log(deptCourses[i].id);
+            if(deptCourses[i].id === selectedCourse){
+                console.log("Course is in the list");
+                loc = i;
+                break;
+            }
+        }
+        let prereqs:string;
+        if(loc !== -1){
+            prereqs = deptCourses[loc].prereqs;
+        }else{
+            prereqs = "N/A";
+        }
+        console.log("Prereqs: ", prereqs);
+        return prereqs;
+    }
 
 
     function addCourseList(c: string){
@@ -134,6 +182,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                 <Form.Control as="textarea" rows={1} 
                                     value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
                             </Form.Group>
+                            {errorAddCourse && <p>Cannot add this course!</p>}
                         </Form>
                     </Col>
                     <Col>

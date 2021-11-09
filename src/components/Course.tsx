@@ -40,7 +40,9 @@ function Course({course, currCourses, setCurrCourses, courseList, setCourseList}
             </Col>
             <Col>{course.id}</Col>
             <Col>{course.name}</Col>
+            {/*
             <Col>{course.description}</Col>
+            */}
             <Col>{course.credits}</Col>
             <Col><button onClick={editCourse}>Edit</button></Col>
             <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} courseList={courseList} setCourseList={setCourseList}></EditCourseModal>
