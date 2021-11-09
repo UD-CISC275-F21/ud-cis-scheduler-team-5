@@ -18,8 +18,25 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
-        setCurrCourse(newClasses.concat(newClass));
-        addCourseList(newClass.id);
+        const prereqs = getPrereqs(courseId);
+
+        if(prereqs === "N/A" || prereqs === ""){
+            setCurrCourse(newClasses.concat(newClass));
+            addCourseList(newClass.id);
+        }else{
+            let loc = -1;
+            for(let i = 0; i < courseList.length; i++){
+                if(courseList[i] === prereqs){
+                    loc = i;
+                }
+            }
+            if(loc != -1){
+                setCurrCourse(newClasses.concat(newClass));
+                addCourseList(newClass.id);
+            }else{
+                console.log("Can't add that course yet!");
+            }  
+        }
         //console.log(courseList);
         hide();
     }
@@ -44,6 +61,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     });
 
     //console.log(deptList);
+
+
 
 
     function handleDeptClick(selectedDept:string) {
@@ -82,6 +101,28 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
         return validCourses;
     };
+
+    function getPrereqs(selectedCourse:string) : string{
+        console.log("Looking for ", selectedCourse);
+        const deptCourses = getCoursesfromDept(selectedCourse.slice(0,4));
+        let loc = -1;
+        for(let i = 0; i < deptCourses.length; i++){
+            console.log(deptCourses[i].id);
+            if(deptCourses[i].id === selectedCourse){
+                console.log("Course is in the list");
+                loc = i;
+                break;
+            }
+        }
+        let prereqs:string;
+        if(loc !== -1){
+            prereqs = deptCourses[loc].prereqs;
+        }else{
+            prereqs = "N/A";
+        }
+        console.log("Prereqs: ", prereqs);
+        return prereqs;
+    }
 
 
     function addCourseList(c: string){
