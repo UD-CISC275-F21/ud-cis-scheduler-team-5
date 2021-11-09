@@ -10,5 +10,4 @@ classes.map((course:Class) => {
     courseMap[dept].push(course.id);
 });
 
-
 export {courseMap};
