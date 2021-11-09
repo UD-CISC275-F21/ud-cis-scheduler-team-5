@@ -13,7 +13,9 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
     const [dept, setDept] = React.useState<string>("Course Department");
     const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
-    
+    const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
+
+
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
@@ -23,6 +25,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         if(prereqs === "N/A" || prereqs === ""){
             setCurrCourse(newClasses.concat(newClass));
             addCourseList(newClass.id);
+            hide();
         }else{
             let loc = -1;
             for(let i = 0; i < courseList.length; i++){
@@ -33,14 +36,16 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             if(loc != -1){
                 setCurrCourse(newClasses.concat(newClass));
                 addCourseList(newClass.id);
+                hide();
             }else{
+                setErrorAddCourse(true);
                 console.log("Can't add that course yet!");
             }  
         }
         //console.log(courseList);
-        hide();
     }
     const hide = () => {
+        setErrorAddCourse(false);
         setDept("Course Department");
         setCourseId("Course ID");
         setCourseDesc("Course Description");
@@ -177,6 +182,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                 <Form.Control as="textarea" rows={1} 
                                     value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
                             </Form.Group>
+                            {errorAddCourse && <p>Cannot add this course!</p>}
                         </Form>
                     </Col>
                     <Col>
