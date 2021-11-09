@@ -1,5 +1,5 @@
 import classes from "../assets/classes.json";
-import { Class } from "../interfaces/course"
+import { Class } from "../interfaces/course";
 
 const courseMap:Record<string, string[]> = {};
 classes.map((course:Class) => {
