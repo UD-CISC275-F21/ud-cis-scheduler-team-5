@@ -7,6 +7,7 @@ import WelcomeMsg from "./components/WelcomeMsg";
 import { DegreeRequirements } from "./components/DegreeRequirements";
 import CLASSES from "./assets/classes.json";
 import { Class } from "./interfaces/course";
+import { UploadSemesterModal } from "./components/UploadSemesterModal";
 
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
@@ -63,6 +64,7 @@ function App(): JSX.Element {
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
     const [courseList, setCourseList] = useState<string[]>(getLocalStorageList());
     const [degreeReqVisible, setDegreeReqVisible] = useState<boolean>(false);
+    const [uploadVisible, setUploadVisible] = useState<boolean>(false);
 
     useEffect(() => {
         console.log(`courseList is : ${courseList}`);
@@ -142,35 +144,39 @@ function App(): JSX.Element {
         setDegreeReqVisible(!degreeReqVisible);
     }
 
+    function prepCSV(c: Class) {
+        let i = 0;
+        const len = c.description.length;
+        let newDes = "";
+        for (i;i<len;i++){
+            newDes += c.description[i].replace(",",";"); 
+        }
+        return newDes;
+    }
+
     function exportDataToCSV() {
         const content = currSemesters.map(s => [
-            [s.cnt, s.season, s.year], 
+            ["Semster:", s.cnt, s.year, s.season], 
             [s.courses.map(c=>
-                [c.id,c.credits,c.name,c.description,c.prereqs]
+                [
+                    c.id,
+                    c.name,
+                    prepCSV(c),
+                    c.credits
+                ]
             )]
-        
         ]);
-          
-        console.log(content);
-
-        //s.cnt + "," + s.season + "," + s.year + "," + s.courses.map(c => c.description + "," + c.credits + "," + c.id + "," + c.name).join(",")
-            
-        //}).join(",");
-        
-        
-        //let i = 0;
-        //for (i;i<content.length;i++) {
-        //content = content.replace(" ","_");
-        //console.log(content[i]);
-        //}
-        //const csvFile = new Blob([content], {type: "text/csv"});
-        //console.log(csvFile);
-        //console.log(content);
-        //const csvContent = "data:text/csv;charset=utf-8," + content;
-        //console.log(csvContent);
+        const csvContent = "data:text/csv;charset=utf-8," + content.map(x=>["\n\n" + x.join("\n")]);
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "my_data.csv");
+        document.body.appendChild(link); // Required for FF
+        link.click();
     }
 
     function importDataFromCSV() {
+        setUploadVisible(true);
         return 0;
     }
 
@@ -193,7 +199,6 @@ function App(): JSX.Element {
             <Button className="saveData" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataToCSV}>Download Schedule</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
@@ -216,6 +221,7 @@ function App(): JSX.Element {
                     })}
                 </Col>
             </Row>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
         </div>
     );
 }
