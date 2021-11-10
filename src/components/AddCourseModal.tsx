@@ -3,7 +3,6 @@ import "../App.css";
 import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
 //import classes from "../assets/classes.json";
-import rawClasses from "../assets/courseData.json";
 import { courseMap } from "../utilities/extractClasses";
 
 
@@ -169,10 +168,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             </Dropdown.Menu>
                             */}
                             <Dropdown.Menu className="dropdown">
-                                {(Object.keys(courseMap)).map(dept=>{
-                                    return (
-                                        <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>
-                                    );
+                                {Object.keys(courseMap).map(dept=>{
+                                    return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
                                 })
 
                                 }
