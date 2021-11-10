@@ -1,7 +1,10 @@
 import React from "react";
+import "../App.css";
 import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
-import classes from "../assets/classes.json";
+//import classes from "../assets/classes.json";
+import rawClasses from "../assets/courseData.json";
+import { courseMap } from "../utilities/extractClasses";
 
 
 export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
@@ -10,27 +13,30 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
     const [courseCred, setCourseCred] = React.useState<number>(0);
-    const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
+    const [coursePreR, setCoursePreR] = React.useState<string[]>(["Course Prerequisite IDs"]);
     const [dept, setDept] = React.useState<string>("Course Department");
-    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
     const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
 
+    //const deptList:string[] = courseMap.e
 
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         const prereqs = getPrereqs(courseId);
-
-        if(prereqs === "N/A" || prereqs === ""){
+ 
+        if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
             setCurrCourse(newClasses.concat(newClass));
             addCourseList(newClass.id);
             hide();
         }else{
             let loc = -1;
             for(let i = 0; i < courseList.length; i++){
-                if(courseList[i] === prereqs){
-                    loc = i;
+                for(let j = 0; j < prereqs.length; j++){
+                    if(courseList[i] === prereqs[j]){
+                        loc = i;
+                    }
                 }
             }
             if(loc != -1){
@@ -49,12 +55,13 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setDept("Course Department");
         setCourseId("Course ID");
         setCourseDesc("Course Description");
-        setCoursePreR("");
-        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+        setCoursePreR([""]);
+        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
         setVisible(false);
 
     };
 
+    /*
     const deptSet:Set<string> = new Set();
     for(let i = 0; i < classes.length; i++){
         const classDept = classes[i]["id"].slice(0, 4);
@@ -64,12 +71,14 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     deptSet.forEach(function(dept){
         deptList.push(dept);
     });
+    */
 
     //console.log(deptList);
 
 
     function handleDeptClick(selectedDept:string) {
-        const deptCourses:Class[] = getCoursesfromDept(selectedDept);
+        const deptCourses:Class[] = courseMap[selectedDept];
+        //getCoursesfromDept(selectedDept);
         //console.log(deptCourses.length);
         setVisibleCourses(deptCourses);
         
@@ -93,6 +102,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
     }
 
+    /*
+
     const getCoursesfromDept = (d:string) : Class[] => {
         const validCourses: Class[] = [];
         for(let i = 0; i < classes.length; i++){
@@ -105,9 +116,12 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         return validCourses;
     };
 
-    function getPrereqs(selectedCourse:string) : string{
+    */
+
+    function getPrereqs(selectedCourse:string) : string[]{
         console.log("Looking for ", selectedCourse);
-        const deptCourses = getCoursesfromDept(selectedCourse.slice(0,4));
+        const deptCourses = courseMap[selectedCourse.slice(0,4)];
+        //getCoursesfromDept(selectedCourse.slice(0,4));
         let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
             console.log(deptCourses[i].id);
@@ -117,11 +131,11 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                 break;
             }
         }
-        let prereqs:string;
+        let prereqs:string[];
         if(loc !== -1){
             prereqs = deptCourses[loc].prereqs;
         }else{
-            prereqs = "N/A";
+            prereqs = ["N/A"];
         }
         console.log("Prereqs: ", prereqs);
         return prereqs;
@@ -139,19 +153,30 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             </Modal.Header>
 
             <Modal.Body>
-                <Row>
-                    <Col>
+                <Row className="myRow">
+                    <Col className="myCol">
                         <Dropdown>
                             <Dropdown.Toggle  className="DDDept" variant="secondary" id="dropdown-basic">
                                 {dept}
                             </Dropdown.Toggle>
-
+                            {/*
                             <Dropdown.Menu>
                                 {deptList.map(d =>  {
                                     return (
                                         <Dropdown.Item onClick={() => handleDeptClick(d)} key = {d}>{d}</Dropdown.Item>);
                                 })
                                 }
+                            </Dropdown.Menu>
+                            */}
+                            <Dropdown.Menu className="dropdown">
+                                {(Object.keys(courseMap)).map(dept=>{
+                                    return (
+                                        <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>
+                                    );
+                                })
+
+                                }
+                            
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
