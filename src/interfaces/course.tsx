@@ -3,5 +3,5 @@ export interface Class {
     name: string,
     description: string,
     credits: number,
-    prereqs: string,
+    prereqs: string[],
 }
