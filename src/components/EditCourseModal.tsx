@@ -1,6 +1,7 @@
-import React from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Class } from "../interfaces/course";
+import DEGREEREQS from "../assets/degreereqs.json";
 
 export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
     {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
@@ -11,12 +12,12 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     const [courseDesc, setCourseDesc] = React.useState<string>(ogClass.description);
     const [courseCred, setCourseCred] = React.useState<number>(ogClass.credits);
     const [coursePreR, setCoursePreR] = React.useState<string>(ogClass.prereqs);
+    const [reqId, setReqId] = useState<string>(ogClass.id);
 
 
     function saveEdit() {
         const editClass:Class = {name: courseName, id:courseId, description: courseDesc, credits: courseCred, prereqs: coursePreR};
         let cIdx = -1;//index of edit class set to -1 for test purposes. If ogClass id is not in the currentClasses
-        addCourseList(editClass.id);
         for (let index = 0; index < currClasses.length; index++) {
             if (currClasses[index].id === ogClass.id) {
                 //console.log("Found the matching course at idx=", index);
@@ -40,8 +41,9 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
 
     const hide = () => setVisible(false);
 
-    function addCourseList(c: string){
-        setCourseList([...courseList, c]);
+    function handleReqClick(req: string) {
+        setCourseList([...courseList.filter(courses => courses != reqId), req]);
+        setReqId(req);
     }
 
     return (
@@ -73,17 +75,31 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
                             value={courseCred} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseCred(Number(ev.target.value))}> </Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label data-testid = "CoursePreR">Course Pre Requisits</Form.Label>
+                        <Form.Label data-testid = "CoursePreR">Course Pre-Requisites</Form.Label>
                         <Form.Control as="textarea" rows={1} 
                             value={coursePreR} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCoursePreR(ev.target.value)}> </Form.Control>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label data-testid = "CourseDegreeR">Course Fulfills the Following Degree Requirement:</Form.Label>
+                        <Dropdown>
+                            <Dropdown.Toggle  className="DDDept" variant="primary" id="dropdown-basic">
+                                {reqId}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {DEGREEREQS.map(req =>  {
+                                    return (
+                                        <Dropdown.Item onClick={() => handleReqClick(req.id)} key = {req.id}>{req.id}</Dropdown.Item>);
+                                })
+                                }
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Form.Group>
                 </Form>
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={()=>{
-                    hide(); addCourseList(ogClass.id);
-                }}>Close</Button>
+                <Button variant="secondary" onClick={hide}>Close</Button>
                 <Button variant="primary" onClick={saveEdit}>Edit Course</Button>
             </Modal.Footer>
         </Modal>

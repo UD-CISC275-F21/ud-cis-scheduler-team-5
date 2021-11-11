@@ -4,9 +4,7 @@ import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
-import { DegreeRequirements } from "./components/DegreeRequirements";
-import CLASSES from "./assets/classes.json";
-import { Class } from "./interfaces/course";
+import { AllDegreeReqs } from "./components/AllDegreeReqs";
 
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
@@ -45,7 +43,8 @@ function App(): JSX.Element {
     const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
     const [courseList, setCourseList] = useState<string[]>(getLocalStorageList());
-    const [degreeReqVisible, setDegreeReqVisible] = useState<boolean>(false);
+    const [allDegreeReqVisible, setAllDegreeReqVisible] = useState<boolean>(false);
+    
 
     useEffect(() => {
         console.log(`courseList is : ${courseList}`);
@@ -110,18 +109,18 @@ function App(): JSX.Element {
         localStorage.setItem(LOCAL_STORAGE_COURSELIST, JSON.stringify(courseList));
     }
 
-    function checkDegreeReq(aClass: Class) {
+    /*function checkDegreeReq(aReq: DegreeReq) {
         let i = 0;
         for(i = 0; i < courseList.length; i++){
-            if(courseList[i] === aClass.id){
+            if(aReq.id.includes(courseList[i])){
                 return true;
             }
         }
         return false;
-    }
+    }*/
 
     function showDegreeReq(){
-        setDegreeReqVisible(!degreeReqVisible);
+        setAllDegreeReqVisible(!allDegreeReqVisible);
     }
 
     return (
@@ -131,11 +130,7 @@ function App(): JSX.Element {
             <Button onClick={()=>{
                 showDegreeReq(); //console.log(courseList);
             }}>Show Degree Requirements</Button>
-            { 
-                CLASSES.map(
-                    (aClass: Class) => <DegreeRequirements key={aClass.id} requirement={aClass.id} fulfilled={checkDegreeReq(aClass)} degreeReqVisible={degreeReqVisible}></DegreeRequirements> 
-                )
-            }
+            <AllDegreeReqs visible={allDegreeReqVisible} courseList={courseList}></AllDegreeReqs>
             <Button className="semesterControls" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>

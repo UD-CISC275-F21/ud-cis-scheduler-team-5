@@ -9,7 +9,7 @@ function Course({course, currCourses, setCurrCourses, courseList, setCourseList}
     const [visible, setVisible] = React.useState<boolean>(false);
     function editCourse():void{
         //console.log("set visible ", course);
-        removeCourseList(course.id);
+        //removeCourseList(course.id);
         setVisible(true);
     }
 

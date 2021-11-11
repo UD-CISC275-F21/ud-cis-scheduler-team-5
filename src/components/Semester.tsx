@@ -9,7 +9,8 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester({semester, courseList, setCourseList}: {semester: sem, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
+export function Semester({semester, courseList, setCourseList}: 
+    {semester: sem, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
     //console.log("in Semester");
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
