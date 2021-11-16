@@ -20,7 +20,7 @@ export function Semester({currSemesters, semester, courseList, setCourseList}: {
 
 
     semester.courses = currClasses;
-    console.log(semester.courses);
+    //console.log(semester.courses);
 
     function editCard() {
         setVisible(true);
