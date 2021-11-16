@@ -55,6 +55,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
     const hide = () => {
         setErrorAddCourse(false);
+        setCourseSearch("Course ID");
+        setDeptSearch("Courese Department");
         setDept("Course Department");
         setCourseId("Course ID");
         setCourseDesc("Course Description");
