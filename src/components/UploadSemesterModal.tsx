@@ -32,18 +32,33 @@ export function UploadSemesterModal({visible, setVisible, plan, setPlan}: {visib
         const headerEnd = csv.indexOf("\n");
         let newPlanRaw: string[] = [];
         let newLine: string;
-        let parser = headerEnd+1;
+        let newNode: string;
+        let planCooking: string[] = [];
+        let parser = headerEnd;
         let parserTmp = 0;
-        console.log("1");
         while (parser !== -1) {
-            console.log("loopy");
             parserTmp = csv.indexOf("\n",parser+1);
-            newLine = csv.slice(parser+3,parserTmp);
-            console.log(newLine);
+            newLine = csv.slice(parser,parserTmp);
             newPlanRaw = newPlanRaw.concat([newLine]);
             parser = parserTmp;
-            console.log(parser);
         }
+        newPlanRaw.forEach(c=>{
+            parser = 0;
+            while(parser !== -1) {
+
+                // Parse through each classes and get the data
+
+                // LOL
+
+                parserTmp = c.indexOf(",",parser+1);
+                newNode = c.slice(parser,parserTmp);
+                planCooking = planCooking.concat(...[newNode]);
+                parser = parserTmp;
+
+
+            }
+        });
+        console.log(planCooking);
         console.log(newPlanRaw);
     }
 
