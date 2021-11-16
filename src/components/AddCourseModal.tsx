@@ -25,9 +25,15 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
+        //console.log("id: ", courseId, " name: ", courseName, " description: ", courseDesc, " credits: ", courseCred, " prereqs: ", coursePreR);
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         const prereqs = getPrereqs(courseId);
+        if(prereqs[0] === "000"){
+            setErrorAddCourse(true);
+            console.log("That's an unrecognized course");
+
+        }
  
         if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
             setCurrCourse(newClasses.concat(newClass));
@@ -59,7 +65,9 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setDeptSearch("Courese Department");
         setDept("Course Department");
         setCourseId("Course ID");
+        setCourseId("Course Name");
         setCourseDesc("Course Description");
+        setCourseCred(0);
         setCoursePreR([""]);
         setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
         setVisibleDepts(Object.keys(courseMap));
@@ -96,8 +104,12 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         if(len < 4){
             return;
         }
-        const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
-        setVisibleCourses(validCourses);
+        if(courseMap[partOfID.slice(0,4)] === undefined){
+            console.log("Not a valid department");
+        }else{
+            const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
+            setVisibleCourses(validCourses);
+        }
         return;
     }
 
@@ -130,6 +142,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     function getPrereqs(selectedCourse:string) : string[]{
         console.log("Looking for ", selectedCourse);
         const deptCourses = courseMap[selectedCourse.slice(0,4)];
+        if(deptCourses === undefined){
+            console.log("Selected Course is not in a valid department");
+            return ["000"];
+        }
         //getCoursesfromDept(selectedCourse.slice(0,4));
         let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
@@ -138,6 +154,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                 console.log("Course is in the list");
                 loc = i;
                 break;
+            }else{
+                console.log("Course is not in the list");
             }
         }
         let prereqs:string[];
