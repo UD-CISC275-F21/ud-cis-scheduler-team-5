@@ -64,7 +64,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
         setVisibleDepts(Object.keys(courseMap));
         setVisible(false);
-
     };
 
     function handleDeptSearch(partOfDept:string){
@@ -127,22 +126,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setCoursePreR(visibleCourses[cIdx].prereqs);
         }
     }
-
-    /*
-
-    const getCoursesfromDept = (d:string) : Class[] => {
-        const validCourses: Class[] = [];
-        for(let i = 0; i < classes.length; i++){
-            if(classes[i]["id"].slice(0,4) === d){
-                //console.log("Found a course");
-                const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits:classes[i]["credits"], prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
-                validCourses.push(newClass);
-            }
-        }
-        return validCourses;
-    };
-
-    */
 
     function getPrereqs(selectedCourse:string) : string[]{
         console.log("Looking for ", selectedCourse);

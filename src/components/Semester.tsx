@@ -57,7 +57,7 @@ export function Semester({semester, courseList, setCourseList}:
             })
             }
             <p></p>
-            <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
+            <Button className="addCourse" data-testid="addCourse" onClick={addCourse}>Add New Course</Button>
             <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></AddCourseModal>
         </Col>
     </BootstrapCard>;
