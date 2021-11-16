@@ -2,6 +2,8 @@ import React, { ReactChild, ReactEventHandler, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import {sem} from "../interfaces/sem";
 import {Class} from "../interfaces/course";
+import { readFile } from "fs";
+//import { ReactFileReader } from "react-file-reader";
 
 export function UploadSemesterModal({visible, setVisible, plan, setPlan}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
     //const [file, setFile] = useState<File>();
@@ -13,39 +15,44 @@ export function UploadSemesterModal({visible, setVisible, plan, setPlan}: {visib
             const file = e.currentTarget.files[0];
             console.log(file);
             const readfile = new FileReader();
-            readfile.onloadstart = async(ev) => {
-                console.log("123");
-                const txt = (ev.target?.result);
-                console.log(ev.target);
-                console.log("yee");
-                console.log(txt);
-                buildPlan(txt);
+            readfile.readAsText(file);
+            readfile.onload = async(e) => {
+                console.log(e.target?.result);
+                const planCSV = e.target?.result;
+                const plsWork = String(planCSV);
+                buildPlan(plsWork);
+
             };
         } else {
             return;
         }
     }
 
-    function buildPlan(csv: string | ArrayBuffer | null | undefined) {
-        if (csv) {
-            let userPlan: sem[];
-            let userCourse: Class[];
-            const csv1 = csv?.toString;
-            console.log("build");
-            let i = 0;
-            for (i;i<csv1.length;i++) {
-                console.log(csv1);
-
-
-            }
+    function buildPlan(csv: string) {
+        const headerEnd = csv.indexOf("\n");
+        let newPlanRaw: string[] = [];
+        let newLine: string;
+        let parser = headerEnd+1;
+        let parserTmp = 0;
+        console.log("1");
+        while (parser !== -1) {
+            console.log("loopy");
+            parserTmp = csv.indexOf("\n",parser+1);
+            newLine = csv.slice(parser+3,parserTmp);
+            console.log(newLine);
+            newPlanRaw = newPlanRaw.concat([newLine]);
+            parser = parserTmp;
+            console.log(parser);
         }
-
-
+        console.log(newPlanRaw);
     }
+
+
+
 
     function saveUpload() {
         //TODO convert CSV to sem format
-        hide();
+        //hide();
         return 1;
     }
 
@@ -72,3 +79,4 @@ export function UploadSemesterModal({visible, setVisible, plan, setPlan}: {visib
     ); 
 
 }
+

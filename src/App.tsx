@@ -153,17 +153,18 @@ function App(): JSX.Element {
         const len = c.description.length;
         let newDes = "";
         for (i;i<len;i++){
-            newDes += c.description[i].replace(",","*"); 
+            newDes += c.description[i].replace(",",";"); 
         }
         return newDes;
     }
 
     function exportDataFromCSV() {
-        const csvCols = ["Semester Num", "Semester Year", "Semester Season", "CourseID", "Course Name", "Course Description", "Credits,","\n"];
+        const credits = "Credits";
+        const csvCols = ["Semester Num", "Semester Year", "Semester Season", "CourseID", "Course Name", "Course Description", "Credits"];
         const content = currSemesters.map(s => [
-            [s.courses.map(c=>[s.cnt,s.year,s.season,c.id,c.name,prepCSV(c),c.credits,]).join("\n")]
+            [s.courses.map(c=>[s.cnt,s.year,s.season,c.id,c.name,prepCSV(c),c.credits,]).join(" \n ")]
         ].join("\n")).join("\n");
-        const csvContent = "data:text/csv;charset=utf-8," + csvCols + content;
+        const csvContent = "data:text/csv;charset=utf-8," + csvCols + "\n" + content;
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
@@ -172,12 +173,10 @@ function App(): JSX.Element {
         link.click();
     }
 
-
     function importDataFromCSV() {
         setUploadVisible(true);
         return 0;
     }
-
 
     return (
         <div className="App">
