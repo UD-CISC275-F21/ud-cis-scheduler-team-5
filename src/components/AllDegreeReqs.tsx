@@ -5,14 +5,18 @@ import { DegreeReq } from "../interfaces/degreereq";
 import { Card as BootstrapCard, Col} from "react-bootstrap";
 
 
-export function AllDegreeReqs({visible, courseList}: 
-    {visible: boolean, courseList: string[]}): JSX.Element {
+export function AllDegreeReqs({visible, listOfCourseLists}: 
+    {visible: boolean, listOfCourseLists: string[][]}): JSX.Element {
 
     function checkDegreeReq(aReq: DegreeReq) {
+        console.log("hi");
         let i = 0;
-        for(i = 0; i < courseList.length; i++){
-            if(aReq.id.includes(courseList[i])){
-                return true;
+        let j = 0;
+        for(i = 0; i < listOfCourseLists.length; i++){
+            for(j = 0; j < listOfCourseLists[i].length; j++){
+                if(aReq.id.includes(listOfCourseLists[i][j])){
+                    return true;
+                }
             }
         }
         return false;

@@ -6,8 +6,8 @@ import { Class } from "../interfaces/course";
 import { courseMap } from "../utilities/extractClasses";
 
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
-    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, listOfCourseLists, setlistOfCourseLists, semesterCnt} :
+    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
@@ -31,27 +31,27 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
  
         if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
             setCurrCourse(newClasses.concat(newClass));
-            addCourseList(newClass.id);
+            addlistOfCourseLists(newClass.id);
             hide();
         }else{
             let loc = -1;
-            for(let i = 0; i < courseList.length; i++){
+            for(let i = 0; i < listOfCourseLists.length; i++){
                 for(let j = 0; j < prereqs.length; j++){
-                    if(courseList[i] === prereqs[j]){
+                    if(listOfCourseLists[semesterCnt-1][i] === prereqs[j]){
                         loc = i;
                     }
                 }
             }
             if(loc != -1){
                 setCurrCourse(newClasses.concat(newClass));
-                addCourseList(newClass.id);
+                addlistOfCourseLists(newClass.id);
                 hide();
             }else{
                 setErrorAddCourse(true);
                 console.log("Can't add that course yet!");
             }  
         }
-        //console.log(courseList);
+        //console.log(listOfCourseLists);
     }
     const hide = () => {
         setErrorAddCourse(false);
@@ -166,8 +166,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
 
-    function addCourseList(c: string){
-        setCourseList([...courseList, c]);
+    function addlistOfCourseLists(c: string){
+        const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
+        copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
+        setlistOfCourseLists(copyList);
     }
 
     return (

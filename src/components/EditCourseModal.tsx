@@ -3,8 +3,8 @@ import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import DEGREEREQS from "../assets/degreereqs.json";
 
-export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
-    {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
+export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, listOfCourseLists, setlistOfCourseLists, semesterCnt} :
+    {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}) : JSX.Element {
     //console.log("in EditCourseModal with course: ", ogClass.id);
     //console.log("Curr Classes length: ", currClasses.length);
     const [courseId, setCourseId] = React.useState<string>(ogClass.id);
@@ -42,7 +42,9 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     const hide = () => setVisible(false);
 
     function handleReqClick(req: string) {
-        setCourseList([...courseList.filter(courses => courses != reqId), req]);
+        const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
+        copyList[semesterCnt-1] = [...copyList[semesterCnt-1].filter(courses => courses != reqId), req];
+        setlistOfCourseLists(copyList);
         setReqId(req);
     }
 
