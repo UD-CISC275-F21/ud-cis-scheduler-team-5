@@ -20,12 +20,12 @@ describe("App", () => {
         expect(linkElement).toBeInTheDocument();
     });
 
-    it("has the Add New Course button on render", () => {
+    /*it("has the Add New Course button on render", () => {
         const element = screen.queryByTestId("addCourse");
         expect(element).toBeInTheDocument();
-    });
+    });*/
 
-    /*it("renders Add Course Modal on click", async () => {
+    it("renders Add Course Modal on click", async () => {
         const button = screen.queryByTestId("addCourse");
         if(button !== null){
             button.click();
@@ -33,7 +33,7 @@ describe("App", () => {
             expect(element).toBeInTheDocument();
         }
 
-    });*/
+    });
 
     it("shows degree requirements when you click the button", async () => {
         const degreeButton = screen.getByTestId("degree-button");
