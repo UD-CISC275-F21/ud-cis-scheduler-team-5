@@ -1,8 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import App, { LOCAL_STORAGE_LISTOFCOURSELISTS } from "./App";
-import { AddCourseModal } from './components/AddCourseModal';
-import { Class } from "./interfaces/course";
+import App from "./App";
 
 /*
 test("renders UD CIS Scheduler text", () => {
