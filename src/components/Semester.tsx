@@ -9,8 +9,8 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester({semester, courseList, setCourseList}: 
-    {semester: sem, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
+export function Semester({semester, listOfCourseLists, setlistOfCourseLists, semesterCnt}: 
+    {semester: sem, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}): JSX.Element {
     //console.log("in Semester");
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
@@ -51,14 +51,14 @@ export function Semester({semester, courseList, setCourseList}:
             {currClasses.map(c => {
                 return (
                     <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></Course>
+                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Course>
                     </Row>
                 );
             })
             }
             <p></p>
-            <Button className="addCourse" data-testid="addCourse" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} courseList={courseList} setCourseList={setCourseList}></AddCourseModal>
+            <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
+            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
         </Col>
     </BootstrapCard>;
 }

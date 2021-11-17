@@ -4,12 +4,12 @@ import { Class } from "../interfaces/course";
 import { EditCourseModal } from "./EditCourseModal";
 import x from "../assets/x.svg";
 
-function Course({course, currCourses, setCurrCourses, courseList, setCourseList} : 
-    {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}): JSX.Element {
+function Course({course, currCourses, setCurrCourses, listOfCourseLists, setlistOfCourseLists, semesterCnt} : 
+    {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}): JSX.Element {
     const [visible, setVisible] = React.useState<boolean>(false);
     function editCourse():void{
         //console.log("set visible ", course);
-        //removeCourseList(course.id);
+        //removelistOfCourseLists(course.id);
         setVisible(true);
     }
 
@@ -18,7 +18,7 @@ function Course({course, currCourses, setCurrCourses, courseList, setCourseList}
         let newCourses:Class[] = [];
         for (let index = 0; index < currCourses.length; index++) {
             if(currCourses[index].id == course.id){
-                removeCourseList(currCourses[index].id);
+                removelistOfCourseLists(currCourses[index].id);
                 continue;
             }else{
                 newCourses = newCourses.concat(currCourses[index]);
@@ -27,8 +27,10 @@ function Course({course, currCourses, setCurrCourses, courseList, setCourseList}
         setCurrCourses(newCourses);
     }
 
-    function removeCourseList(c: string) { 
-        setCourseList(courseList.filter(courses => courses != c));
+    function removelistOfCourseLists(c: string) { 
+        const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
+        copyList[semesterCnt-1] = copyList[semesterCnt-1].filter(courses => courses != c);
+        setlistOfCourseLists(copyList);
     }
 
     return (
@@ -45,7 +47,7 @@ function Course({course, currCourses, setCurrCourses, courseList, setCourseList}
             */}
             <Col>{course.credits}</Col>
             <Col><button onClick={editCourse}>Edit</button></Col>
-            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} courseList={courseList} setCourseList={setCourseList}></EditCourseModal>
+            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></EditCourseModal>
         </Row>
 
             
