@@ -9,7 +9,7 @@ import { AllDegreeReqs } from "./components/AllDegreeReqs";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
-export const INITIAL_LISTOFCOURSELISTS: string[][] = [["hi", "poi"],["hi","blah"]];
+export const INITIAL_LISTOFCOURSELISTS: string[][] = [[]];
 export const INITIAL_SEMESTER: sem[] =  [
     {
         cnt: 1,        
@@ -127,13 +127,13 @@ function App(): JSX.Element {
         <div className="App">
             <WelcomeMsg></WelcomeMsg>
             <div>UD CIS Scheduler</div>
-            <Button onClick={()=>{
+            <Button data-testid="degree-button" onClick={()=>{
                 showDegreeReq(); //console.log(listOfCourseLists);
             }}>Show Degree Requirements</Button>
             <AllDegreeReqs visible={allDegreeReqVisible} listOfCourseLists={listOfCourseLists}></AllDegreeReqs>
-            <Button className="semesterControls" onClick={addSemester}>Add Semester</Button>
+            <Button className="semesterControls" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
-            <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>
+            <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
             <Button className="downloadData" onClick={saveData}>Save Schedule</Button>
             <Row>
                 <Col id="FallSemesters">

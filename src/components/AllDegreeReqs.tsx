@@ -23,7 +23,7 @@ export function AllDegreeReqs({visible, listOfCourseLists}:
     }
 
     return <Col>
-        {visible && <BootstrapCard>
+        {visible && <BootstrapCard data-testid="degreeReqs">
             Core Requirements
             {DEGREEREQS.map((aReq: DegreeReq) => {
                 return (

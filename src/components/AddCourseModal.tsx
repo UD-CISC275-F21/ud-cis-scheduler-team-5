@@ -55,6 +55,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
     const hide = () => {
         setErrorAddCourse(false);
+        setCourseSearch("Course ID");
+        setDeptSearch("Courese Department");
         setDept("Course Department");
         setCourseId("Course ID");
         setCourseDesc("Course Description");
@@ -62,7 +64,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
         setVisibleDepts(Object.keys(courseMap));
         setVisible(false);
-
     };
 
     function handleDeptSearch(partOfDept:string){
@@ -125,22 +126,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setCoursePreR(visibleCourses[cIdx].prereqs);
         }
     }
-
-    /*
-
-    const getCoursesfromDept = (d:string) : Class[] => {
-        const validCourses: Class[] = [];
-        for(let i = 0; i < classes.length; i++){
-            if(classes[i]["id"].slice(0,4) === d){
-                //console.log("Found a course");
-                const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits:classes[i]["credits"], prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
-                validCourses.push(newClass);
-            }
-        }
-        return validCourses;
-    };
-
-    */
 
     function getPrereqs(selectedCourse:string) : string[]{
         console.log("Looking for ", selectedCourse);
@@ -248,7 +233,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={hide}>Close</Button>
-                <Button variant="primary" onClick={()=>{
+                <Button data-testid="add-course-button" variant="primary" onClick={()=>{
                     saveAdd(); //displayCurrClasses(currClasses);
                 }}>Add Course</Button>
             </Modal.Footer>
