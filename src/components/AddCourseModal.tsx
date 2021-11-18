@@ -20,16 +20,13 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [courseSearch, setCourseSearch] = React.useState<string>("Course ID");
     const [deptSearch, setDeptSearch] = React.useState<string>("Department");
 
-
-    //const deptList:string[] = courseMap.e
-
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
         //console.log("id: ", courseId, " name: ", courseName, " description: ", courseDesc, " credits: ", courseCred, " prereqs: ", coursePreR);
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         const prereqs = getPrereqs(courseId);
-        if(prereqs[0] === "000"){
+        if(prereqs[0] === "000"){//This is an error code if the the inputted course is not found in courseMap
             setErrorAddCourse(true);
             console.log("That's an unrecognized course");
 
