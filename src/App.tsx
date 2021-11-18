@@ -176,8 +176,7 @@ function App(): JSX.Element {
     }
 
     function importDataFromCSV() {
-        alert("Coming soon!");
-        //setUploadVisible(true);
+        setUploadVisible(true);
         return 0;
     }
 
@@ -198,7 +197,10 @@ function App(): JSX.Element {
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>
             <Button className="saveData" onClick={saveData}>Save Schedule</Button>
-            <Button className="saveData" onClick={exportDataFromCSV}>Download Schedule</Button>
+            <CSVLink id="csv" data={JSON.stringify(currSemesters,null,2).replaceAll(",","*")}>
+                <Button className="saveData">Export Data</Button>
+            </CSVLink>
+            <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
             <Row>
                 <Col id="FallSemesters">
@@ -222,9 +224,9 @@ function App(): JSX.Element {
                     })}
                 </Col>
             </Row>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
         </div>
     );
-    //<UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
 }
 
 //classYear={s.year} season={s.season}

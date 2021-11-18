@@ -1,112 +1,80 @@
 import React from "react";
-import "../App.css";
 import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
-//import classes from "../assets/classes.json";
-import { courseMap } from "../utilities/extractClasses";
+import classes from "../assets/classes.json";
 
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, listOfCourseLists, setlistOfCourseLists, semesterCnt} :
-    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}) : JSX.Element {
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, courseList, setCourseList} :
+    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, courseList: string[], setCourseList: (c: string[])=>void}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
     const [courseCred, setCourseCred] = React.useState<number>(0);
-    const [coursePreR, setCoursePreR] = React.useState<string[]>(["Course Prerequisite IDs"]);
+    const [coursePreR, setCoursePreR] = React.useState<string>("Course Prerequisite IDs");
     const [dept, setDept] = React.useState<string>("Course Department");
-    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
-    const [visibleDepts, setVisibleDepts] = React.useState<string[]>(Object.keys(courseMap));
+    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
     const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
-    const [courseSearch, setCourseSearch] = React.useState<string>("Course ID");
-    const [deptSearch, setDeptSearch] = React.useState<string>("Department");
 
-
-    //const deptList:string[] = courseMap.e
 
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
-        const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
+        const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits": courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         const prereqs = getPrereqs(courseId);
- 
-        if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
+
+        if(prereqs === "N/A" || prereqs === ""){
             setCurrCourse(newClasses.concat(newClass));
-            addlistOfCourseLists(newClass.id);
+            addCourseList(newClass.id);
             hide();
         }else{
             let loc = -1;
-            for(let i = 0; i < listOfCourseLists.length; i++){
-                for(let j = 0; j < prereqs.length; j++){
-                    if(listOfCourseLists[semesterCnt-1][i] === prereqs[j]){
-                        loc = i;
-                    }
+            for(let i = 0; i < courseList.length; i++){
+                if(courseList[i] === prereqs){
+                    loc = i;
                 }
             }
             if(loc != -1){
                 setCurrCourse(newClasses.concat(newClass));
-                addlistOfCourseLists(newClass.id);
+                addCourseList(newClass.id);
                 hide();
             }else{
                 setErrorAddCourse(true);
                 console.log("Can't add that course yet!");
             }  
         }
-        //console.log(listOfCourseLists);
+        //console.log(courseList);
     }
     const hide = () => {
         setErrorAddCourse(false);
-        setCourseSearch("Course ID");
-        setDeptSearch("Courese Department");
         setDept("Course Department");
         setCourseId("Course ID");
         setCourseDesc("Course Description");
-        setCoursePreR([""]);
-        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
-        setVisibleDepts(Object.keys(courseMap));
+        setCoursePreR("");
+        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
         setVisible(false);
+
     };
 
-    function handleDeptSearch(partOfDept:string){
-        setDeptSearch(partOfDept);
-        const len = partOfDept.length;
-        const depts:string[] = Object.keys(courseMap);
-        console.log("First attempt: ", depts[0].slice(0,len));
-        let validDepts:string[] = [];
-        //const validCourses:Class[] = [];
-        validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
-        if(validDepts.length===0){
-            return;
-        }else if(validDepts.length === 1){
-            handleDeptClick(validDepts[0]);
-            setVisibleDepts(validDepts);
-        }else{
-            setCourseSearch("Course ID");
-            setDept("Course Department");
-            setCourseId("Course ID");
-            setVisibleDepts(validDepts);
-            setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
-        //setVisibleCourses(validCourses);
-        }
-        
+    const deptSet:Set<string> = new Set();
+    for(let i = 0; i < classes.length; i++){
+        const classDept = classes[i]["id"].slice(0, 4);
+        deptSet.add(classDept);
     }
+    const deptList:string[] = [];
+    deptSet.forEach(function(dept){
+        deptList.push(dept);
+    });
 
-    function handleCourseSearch(partOfID:string){
-        setCourseSearch(partOfID);
-        const len = partOfID.length;
-        if(len < 4){
-            return;
-        }
-        const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
-        setVisibleCourses(validCourses);
-        return;
-    }
+    //console.log(deptList);
+
+
+
 
     function handleDeptClick(selectedDept:string) {
-        const deptCourses:Class[] = courseMap[selectedDept];
-        //getCoursesfromDept(selectedDept);
+        const deptCourses:Class[] = getCoursesfromDept(selectedDept);
         //console.log(deptCourses.length);
         setVisibleCourses(deptCourses);
-        setCourseSearch(selectedDept);
+        
         setDept(selectedDept);
     }
 
@@ -127,10 +95,22 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
     }
 
-    function getPrereqs(selectedCourse:string) : string[]{
+    const getCoursesfromDept = (d:string) : Class[] => {
+        const validCourses: Class[] = [];
+        for(let i = 0; i < classes.length; i++){
+            if(classes[i]["id"].slice(0,4) === d){
+                //console.log("Found a course");
+                const credits = parseInt(classes[i]["credits"]);
+                const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits, prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
+                validCourses.push(newClass);
+            }
+        }
+        return validCourses;
+    };
+
+    function getPrereqs(selectedCourse:string) : string{
         console.log("Looking for ", selectedCourse);
-        const deptCourses = courseMap[selectedCourse.slice(0,4)];
-        //getCoursesfromDept(selectedCourse.slice(0,4));
+        const deptCourses = getCoursesfromDept(selectedCourse.slice(0,4));
         let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
             console.log(deptCourses[i].id);
@@ -140,21 +120,19 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                 break;
             }
         }
-        let prereqs:string[];
+        let prereqs:string;
         if(loc !== -1){
             prereqs = deptCourses[loc].prereqs;
         }else{
-            prereqs = ["N/A"];
+            prereqs = "N/A";
         }
         console.log("Prereqs: ", prereqs);
         return prereqs;
     }
 
 
-    function addlistOfCourseLists(c: string){
-        const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
-        copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
-        setlistOfCourseLists(copyList);
+    function addCourseList(c: string){
+        setCourseList([...courseList, c]);
     }
 
     return (
@@ -164,37 +142,23 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             </Modal.Header>
 
             <Modal.Body>
-                <Row className="myRow">
-                    <Col className="myCol">
-                        <Form>
-                            <Form.Group>
-                                <Form.Label data-testid = "DeptSearch">Department Search</Form.Label>
-                                <Form.Control as="textarea" rows={1} 
-                                    value={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
-                            </Form.Group>
-                        </Form>
+                <Row>
+                    <Col>
                         <Dropdown>
                             <Dropdown.Toggle  className="DDDept" variant="secondary" id="dropdown-basic">
                                 {dept}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown">
-                                {visibleDepts.map(dept=>{
-                                    return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
-                                })
 
+                            <Dropdown.Menu>
+                                {deptList.map(d =>  {
+                                    return (
+                                        <Dropdown.Item onClick={() => handleDeptClick(d)} key = {d}>{d}</Dropdown.Item>);
+                                })
                                 }
-                            
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
                     <Col>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label data-testid = "CourseSearch">Course Search</Form.Label>
-                                <Form.Control as="textarea" rows={1} 
-                                    value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
-                            </Form.Group>
-                        </Form>
                         <Dropdown>
                             <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
                                 {courseId}
@@ -233,7 +197,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={hide}>Close</Button>
-                <Button data-testid="add-course-button" variant="primary" onClick={()=>{
+                <Button variant="primary" onClick={()=>{
                     saveAdd(); //displayCurrClasses(currClasses);
                 }}>Add Course</Button>
             </Modal.Footer>
