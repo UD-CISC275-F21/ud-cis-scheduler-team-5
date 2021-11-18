@@ -4,11 +4,7 @@ import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
-import { DegreeRequirements } from "./components/DegreeRequirements";
-import CLASSES from "./assets/classes.json";
 import { Class } from "./interfaces/course";
-import { CSVLink } from "react-csv";
-import { UploadSemesterModal } from "./components/UploadSemesterModal";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
@@ -124,17 +120,6 @@ function App(): JSX.Element {
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(listOfCourseLists));
     }
 
-    /*function checkDegreeReq(aReq: DegreeReq) {
-        let i = 0;
-        for(i = 0; i < listOfCourseLists.length; i++){
-            if(aReq.id.includes(listOfCourseLists[i])){
-                return true;
-            }
-        }
-        return false;
-    }*/
-
-
     function showDegreeReq(){
         setAllDegreeReqVisible(!allDegreeReqVisible);
     }
@@ -150,7 +135,6 @@ function App(): JSX.Element {
     }
 
     function exportDataFromCSV() {
-        const credits = "Credits";
         const csvCols = ["Semester Num", "Semester Year", "Semester Season", "CourseID", "Course Name", "Course Description", "Credits"];
         const content = currSemesters.map(s => [
             [s.courses.map(c=>[s.cnt,s.year,s.season,c.id,c.name,prepCSV(c),c.credits,]).join(" \n ")]
@@ -168,11 +152,6 @@ function App(): JSX.Element {
         alert("Coming soon!");
         //setUploadVisible(true);
         return 0;
-    }
-
-    function newPlanCSV(newPlan:sem[]){
-        setCurrSemesters(newPlan);
-        return newPlan;
     }
 
     return (
