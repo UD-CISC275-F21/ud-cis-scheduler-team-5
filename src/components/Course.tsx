@@ -36,15 +36,12 @@ function Course({course, currCourses, setCurrCourses, listOfCourseLists, setlist
     return (
         <Row>
             <Col>
-                <button className="removeCourse" onClick={removeCourse} margin-top={"0.2em"} margin-bottom="0.2em">
+                <button className="removeCourse" aria-label="remove-course" onClick={removeCourse} margin-top={"0.2em"} margin-bottom="0.2em">
                     <img src={x} alt="Remove Course Button"/>
                 </button>
             </Col>
-            <Col>{course.id}</Col>
+            <Col data-testid="course-id">{course.id}</Col>
             <Col>{course.name}</Col>
-            {/*
-            <Col>{course.description}</Col>
-            */}
             <Col>{course.credits}</Col>
             <Col><button onClick={editCourse}>Edit</button></Col>
             <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></EditCourseModal>

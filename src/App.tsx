@@ -9,7 +9,7 @@ import { AllDegreeReqs } from "./components/AllDegreeReqs";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
-export const INITIAL_LISTOFCOURSELISTS: string[][] = [[]];
+export const INITIAL_LISTOFCOURSELISTS: string[][] = [[], [], [], [], [], [], [], []];
 export const INITIAL_SEMESTER: sem[] =  [
     {
         cnt: 1,        
