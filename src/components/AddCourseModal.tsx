@@ -18,7 +18,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
-        const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
+        const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits": courseCred, "prereqs":coursePreR};
         //console.log("Length of newClasses:", newClasses.length);
         const prereqs = getPrereqs(courseId);
 
@@ -100,7 +100,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         for(let i = 0; i < classes.length; i++){
             if(classes[i]["id"].slice(0,4) === d){
                 //console.log("Found a course");
-                const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits:classes[i]["credits"], prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
+                const credits = parseInt(classes[i]["credits"]);
+                const newClass:Class = {id:classes[i]["id"], name:classes[i]["name"], credits, prereqs:classes[i]["prereqs"], description:classes[i]["description"]};
                 validCourses.push(newClass);
             }
         }

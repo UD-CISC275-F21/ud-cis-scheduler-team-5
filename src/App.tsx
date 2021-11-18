@@ -114,6 +114,8 @@ function App(): JSX.Element {
         setSemesterCnt(1);
     }
 
+    console.log(currSemesters);
+
     function rmSemester() {
         //Removes the last semester from the list.
         if (semesterCnt === 1) {
@@ -178,6 +180,11 @@ function App(): JSX.Element {
         return 0;
     }
 
+    function newPlanCSV(newPlan:sem[]){
+        setCurrSemesters(newPlan);
+        return newPlan;
+    }
+
     return (
         <div className="App">
             <WelcomeMsg></WelcomeMsg>
@@ -185,11 +192,7 @@ function App(): JSX.Element {
             <Button onClick={()=>{
                 showDegreeReq(); //console.log(courseList);
             }}>Show Degree Requirements</Button>
-            { 
-                CLASSES.map(
-                    (aClass: Class) => <DegreeRequirements key={aClass.id} requirement={aClass.id} fulfilled={checkDegreeReq(aClass)} degreeReqVisible={degreeReqVisible}></DegreeRequirements> 
-                )
-            }
+
             <Button className="semesterControls" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" onClick={rmSemester}>Remove Semester</Button>
