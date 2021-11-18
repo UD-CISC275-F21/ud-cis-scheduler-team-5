@@ -25,21 +25,28 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         const prereqs = getPrereqs(courseId);
- 
-        if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
+
+        if(prereqs[0] === "000"){//This is an error code if the the inputted course is not found in courseMap
+            setErrorAddCourse(true);
+            console.log("That's an unrecognized course");
+        }else if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
             setCurrCourse(newClasses.concat(newClass));
             addlistOfCourseLists(newClass.id);
             hide();
         }else{
             let loc = -1;
-            for(let i = 0; i < listOfCourseLists.length; i++){
-                for(let j = 0; j < prereqs.length; j++){
-                    if(listOfCourseLists[semesterCnt-1][i] === prereqs[j]){
-                        loc = i;
+            for(let i = 0; i < listOfCourseLists.length-1; i++){
+                for(let j = 0; j < listOfCourseLists[i].length; j++){
+                    for(let k = 0; k < prereqs.length; k++){
+                        console.log("Checking course: ", listOfCourseLists[i][j]);
+                        if(listOfCourseLists[i][j] === prereqs[k]){
+                            loc = i;
+                        }
                     }
                 }
             }
             if(loc != -1){
+                setCoursePreR(prereqs);
                 setCurrCourse(newClasses.concat(newClass));
                 addlistOfCourseLists(newClass.id);
                 hide();
@@ -52,12 +59,14 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const hide = () => {
         setErrorAddCourse(false);
         setCourseSearch("Course ID");
-        setDeptSearch("Courese Department");
+        setDeptSearch("Course Department");
         setDept("Course Department");
         setCourseId("Course ID");
+        setCourseName("Course Name");
         setCourseDesc("Course Description");
+        setCourseCred(0);
         setCoursePreR([""]);
-        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
+        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, "prereqs":["None"]}]);
         setVisibleDepts(Object.keys(courseMap));
         setVisible(false);
     };
@@ -90,19 +99,29 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         if(len < 4){
             return;
         }
-        const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
-        setVisibleCourses(validCourses);
+        if(courseMap[partOfID.slice(0,4)] === undefined){
+            console.log("Not a valid department");
+        }else{
+            const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
+            if(validCourses.length === 1 && len === 7){
+                handleIDClick(validCourses[0].id);
+            }
+            setVisibleCourses(validCourses);
+        }
         return;
     }
 
     function handleDeptClick(selectedDept:string) {
         const deptCourses:Class[] = courseMap[selectedDept];
+        setCourseId("Course ID");
+        setDeptSearch(selectedDept);
         setVisibleCourses(deptCourses);
         setCourseSearch(selectedDept);
         setDept(selectedDept);
     }
 
     function handleIDClick(cID:string) {
+        setErrorAddCourse(false);
         let cIdx = -1;
         for(let i = 0; i < visibleCourses.length; i++){
             if(visibleCourses[i].id === cID){
@@ -115,7 +134,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setCourseName(visibleCourses[cIdx].name);
             setCourseDesc(visibleCourses[cIdx].description);
             setCourseCred(visibleCourses[cIdx].credits);
-            setCoursePreR(visibleCourses[cIdx].prereqs);
+            setCoursePreR(getPrereqs(visibleCourses[cIdx].id));
         }
     }
 
@@ -134,20 +153,26 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         let prereqs:string[];
         if(loc !== -1){
             prereqs = deptCourses[loc].prereqs;
+            for(let i = 0; i < prereqs.length; i++){
+                const tmp = prereqs[i].split(" ");
+                if(tmp[1] === undefined){
+                    prereqs[i] = tmp[0];
+                }else{
+                    console.log("idx 0: ", tmp[0], "\tidx1: ", tmp[1]);
+                    prereqs[i] = tmp[0] + tmp[1];
+                }
+            }
         }else{
             prereqs = ["N/A"];
         }
-        console.log("Prereqs: ", prereqs);
+        console.log("Prereqs: ", prereqs, "\tLength: ", prereqs.length);
         return prereqs;
     }
 
 
     function addlistOfCourseLists(c: string){
         const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
-        console.log(copyList);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
-        console.log(copyList[semesterCnt-1]);
-        console.log(copyList[1]);
         setlistOfCourseLists(copyList);
     }
 

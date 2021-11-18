@@ -4,12 +4,13 @@ import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
+import { Class } from "./interfaces/course";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
-
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
-export const INITIAL_LISTOFCOURSELISTS: string[][] = [[], [], [], [], [], [], [], []];
+export const INITIAL_LISTOFCOURSELISTS: string[][] = [[]];
+
 export const INITIAL_SEMESTER: sem[] =  [
     {
         cnt: 1,        
@@ -37,6 +38,8 @@ export function getLocalStoragePlan(): sem[] {
     }
 }
 
+
+
 function App(): JSX.Element {
     const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
@@ -51,6 +54,7 @@ function App(): JSX.Element {
     },[listOfCourseLists]);
 
     function addSemester() {
+        //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
         let newSeason = season;
         let newYear = classYear;
         switch (season) {
@@ -80,10 +84,14 @@ function App(): JSX.Element {
         } 
         const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
-        setCurrSemesters(currSemesters.concat(newSem));   
+        setCurrSemesters(currSemesters.concat(newSem));
+        const newList = [...listOfCourseLists];
+        newList.push([]);
+        setlistOfCourseLists(newList);
     }
 
     function clearSemesters() {
+        //Clears all semesters except for the first. Resets plan to initial state. 
         setCurrSemesters(INITIAL_SEMESTER);
         setlistOfCourseLists(INITIAL_LISTOFCOURSELISTS);
         setClassYear("Freshman");
@@ -91,7 +99,10 @@ function App(): JSX.Element {
         setSemesterCnt(1);
     }
 
+    console.log(currSemesters);
+
     function rmSemester() {
+        //Removes the last semester from the list.
         if (semesterCnt === 1) {
             return;
         }
@@ -104,23 +115,43 @@ function App(): JSX.Element {
     }
 
     function saveData() {
-        console.log(currSemesters);
+        //Saves list of semesters and courselist to local storage.
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(currSemesters));
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(listOfCourseLists));
     }
 
-    /*function checkDegreeReq(aReq: DegreeReq) {
-        let i = 0;
-        for(i = 0; i < listOfCourseLists.length; i++){
-            if(aReq.id.includes(listOfCourseLists[i])){
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     function showDegreeReq(){
         setAllDegreeReqVisible(!allDegreeReqVisible);
+    }
+
+    function prepCSV(c: Class): string {
+        let i = 0;
+        const len = c.description.length;
+        let newDes = "";
+        for (i;i<len;i++){
+            newDes += c.description[i].replace(",",";"); 
+        }
+        return newDes;
+    }
+
+    function exportDataFromCSV() {
+        const csvCols = ["Semester Num", "Semester Year", "Semester Season", "CourseID", "Course Name", "Course Description", "Credits"];
+        const content = currSemesters.map(s => [
+            [s.courses.map(c=>[s.cnt,s.year,s.season,c.id,c.name,prepCSV(c),c.credits,]).join(" \n ")]
+        ].join("\n")).join("\n");
+        const csvContent = "data:text/csv;charset=utf-8," + csvCols + "\n" + content;
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "my_data.csv");
+        document.body.appendChild(link); 
+        link.click();
+    }
+
+    function importDataFromCSV() {
+        alert("Coming soon!");
+        //setUploadVisible(true);
+        return 0;
     }
 
     return (
@@ -135,13 +166,15 @@ function App(): JSX.Element {
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
             <Button className="downloadData" onClick={saveData}>Save Schedule</Button>
+            <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
+            <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
                         if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Semester>
+                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={s.cnt}></Semester>
                             );
                         }
                     })}
@@ -151,15 +184,16 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Semester>
+                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={s.cnt}></Semester>
                             );
                         }
                     })}
                 </Col>
             </Row>
+
         </div>
     );
 }
-
+//<UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
 //classYear={s.year} season={s.season}
 export default App;
