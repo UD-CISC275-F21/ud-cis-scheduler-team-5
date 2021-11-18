@@ -21,8 +21,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [deptSearch, setDeptSearch] = React.useState<string>("Department");
 
 
-    //const deptList:string[] = courseMap.e
-
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
@@ -57,7 +55,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                 console.log("Can't add that course yet!");
             }  
         }
-        //console.log(listOfCourseLists);
     }
     const hide = () => {
         setErrorAddCourse(false);
@@ -80,7 +77,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const depts:string[] = Object.keys(courseMap);
         console.log("First attempt: ", depts[0].slice(0,len));
         let validDepts:string[] = [];
-        //const validCourses:Class[] = [];
         validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
         if(validDepts.length===0){
             return;
@@ -93,7 +89,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setCourseId("Course ID");
             setVisibleDepts(validDepts);
             setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
-        //setVisibleCourses(validCourses);
         }
         
     }
@@ -118,8 +113,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function handleDeptClick(selectedDept:string) {
         const deptCourses:Class[] = courseMap[selectedDept];
-        //getCoursesfromDept(selectedDept);
-        //console.log(deptCourses.length);
         setCourseId("Course ID");
         setDeptSearch(selectedDept);
         setVisibleCourses(deptCourses);
@@ -148,7 +141,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     function getPrereqs(selectedCourse:string) : string[]{
         console.log("Looking for ", selectedCourse);
         const deptCourses = courseMap[selectedCourse.slice(0,4)];
-        //getCoursesfromDept(selectedCourse.slice(0,4));
         let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
             console.log(deptCourses[i].id);
@@ -180,8 +172,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function addlistOfCourseLists(c: string){
         const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
-        console.log(semesterCnt);
-        console.log("list: ", copyList);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
         setlistOfCourseLists(copyList);
     }
@@ -203,10 +193,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             </Form.Group>
                         </Form>
                         <Dropdown>
-                            <Dropdown.Toggle  className="DDDept" variant="secondary" id="dropdown-basic">
+                            <Dropdown.Toggle className="DDDept" variant="secondary" id="dropdown-basic" data-testid="dept-dropdown">
                                 {dept}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown">
+                            <Dropdown.Menu className="dropdown" data-testid="dept-drop-menu">
                                 {visibleDepts.map(dept=>{
                                     return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
                                 })
@@ -229,9 +219,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                 {courseId}
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu>
+                            <Dropdown.Menu data-testid="course-drop-menu">
                                 {visibleCourses.map(c =>  {
-                                    //console.log(visibleCourses);
                                     return (
                                         <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
                                 })
@@ -263,7 +252,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             <Modal.Footer>
                 <Button variant="secondary" onClick={hide}>Close</Button>
                 <Button data-testid="add-course-button" variant="primary" onClick={()=>{
-                    saveAdd(); //displayCurrClasses(currClasses);
+                    saveAdd(); 
                 }}>Add Course</Button>
             </Modal.Footer>
         </Modal>

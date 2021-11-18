@@ -9,7 +9,6 @@ export function AllDegreeReqs({visible, listOfCourseLists}:
     {visible: boolean, listOfCourseLists: string[][]}): JSX.Element {
 
     function checkDegreeReq(aReq: DegreeReq) {
-        console.log("hi");
         let i = 0;
         let j = 0;
         for(i = 0; i < listOfCourseLists.length; i++){

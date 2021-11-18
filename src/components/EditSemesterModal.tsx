@@ -19,20 +19,20 @@ export function EditSemesterModal({classYear, season, visible, setClassYear, set
             <Modal.Body>
                 <Form>
                     <Form.Group>
-                        <Form.Label data-testid = "ClassYear">Course ID</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
+                        <Form.Label data-testid = "ClassYear">Class Year</Form.Label>
+                        <Form.Control as="textarea" rows={1} aria-label="sem-class-year"
                             value={classYear} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setClassYear(ev.target.value)}></Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label data-testid = "Season">Course Name</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
+                        <Form.Label data-testid = "Season">Season Semester</Form.Label>
+                        <Form.Control as="textarea" rows={1} aria-label="sem-season"
                             value={season} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setSeason(ev.target.value)}> </Form.Control>
                     </Form.Group>
                 </Form>
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="primary" onClick={hide}>Edit Course</Button>
+                <Button variant="primary" onClick={hide}>Edit</Button>
                 <Button variant="secondary" onClick={hide}>Close</Button>
             </Modal.Footer>
         </Modal>

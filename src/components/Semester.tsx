@@ -11,7 +11,6 @@ import { AddCourseModal } from "./AddCourseModal";
 
 export function Semester({semester, listOfCourseLists, setlistOfCourseLists, semesterCnt}: 
     {semester: sem, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}): JSX.Element {
-    //console.log("in Semester");
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>("____ Year");
@@ -33,7 +32,7 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
 
     return <BootstrapCard className="border-dark">
         <Col>
-            <div className="semester-title">
+            <div className="semester-title" data-testid="sem-title">
                 <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
                 <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
             </div>
@@ -41,9 +40,6 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
                 <Col><strong>Remove Course</strong></Col>
                 <Col><strong>Course ID</strong></Col>
                 <Col><strong>Course Name</strong></Col>
-                {/*
-                <Col><strong>Description</strong></Col>
-                */}
                 <Col><strong>Credits</strong></Col>
                 <Col><strong>Edit Course</strong></Col>
             </Row>
@@ -57,7 +53,7 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
             })
             }
             <p></p>
-            <Button className="addCourse" onClick={addCourse}>Add New Course</Button>
+            <Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button>
             <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
         </Col>
     </BootstrapCard>;

@@ -58,7 +58,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
                 <Form>
                     <Form.Group>
                         <Form.Label data-testid = "CourseId">Course ID</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
+                        <Form.Control as="textarea" aria-label="course-id-input" rows={1}
                             value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
                     </Form.Group>
                     <Form.Group>
