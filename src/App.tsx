@@ -80,7 +80,10 @@ function App(): JSX.Element {
         } 
         const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
-        setCurrSemesters(currSemesters.concat(newSem));   
+        setCurrSemesters(currSemesters.concat(newSem));
+        const newList = [...listOfCourseLists];
+        newList.push([]);
+        setlistOfCourseLists(newList);
     }
 
     function clearSemesters() {
@@ -141,7 +144,7 @@ function App(): JSX.Element {
                         if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Semester>
+                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={s.cnt}></Semester>
                             );
                         }
                     })}
@@ -151,7 +154,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Semester>
+                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={s.cnt}></Semester>
                             );
                         }
                     })}
