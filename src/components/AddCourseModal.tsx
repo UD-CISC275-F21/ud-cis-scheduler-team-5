@@ -22,9 +22,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
-        //console.log("id: ", courseId, " name: ", courseName, " description: ", courseDesc, " credits: ", courseCred, " prereqs: ", coursePreR);
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
-        //console.log("Length of newClasses:", newClasses.length);
         const prereqs = getPrereqs(courseId);
         if(prereqs[0] === "000"){//This is an error code if the the inputted course is not found in courseMap
             setErrorAddCourse(true);
@@ -32,7 +30,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
         }
  
-        if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
+        else if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
             setCurrCourse(newClasses.concat(newClass));
             addCourseList(newClass.id);
             hide();
@@ -54,7 +52,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                 console.log("Can't add that course yet!");
             }  
         }
-        //console.log(courseList);
     }
     const hide = () => {
         setErrorAddCourse(false);
@@ -77,7 +74,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const depts:string[] = Object.keys(courseMap);
         console.log("First attempt: ", depts[0].slice(0,len));
         let validDepts:string[] = [];
-        //const validCourses:Class[] = [];
         validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
         if(validDepts.length===0){
             return;
@@ -90,7 +86,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setCourseId("Course ID");
             setVisibleDepts(validDepts);
             setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:["None"]}]);
-        //setVisibleCourses(validCourses);
         }
         
     }
@@ -112,8 +107,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function handleDeptClick(selectedDept:string) {
         const deptCourses:Class[] = courseMap[selectedDept];
-        //getCoursesfromDept(selectedDept);
-        //console.log(deptCourses.length);
         setVisibleCourses(deptCourses);
         setCourseSearch(selectedDept);
         setDept(selectedDept);
@@ -143,7 +136,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             console.log("Selected Course is not in a valid department");
             return ["000"];
         }
-        //getCoursesfromDept(selectedCourse.slice(0,4));
         let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
             console.log(deptCourses[i].id);
@@ -215,7 +207,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
                             <Dropdown.Menu>
                                 {visibleCourses.map(c =>  {
-                                    //console.log(visibleCourses);
                                     return (
                                         <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
                                 })
@@ -247,7 +238,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             <Modal.Footer>
                 <Button variant="secondary" onClick={hide}>Close</Button>
                 <Button variant="primary" onClick={()=>{
-                    saveAdd(); //displayCurrClasses(currClasses);
+                    saveAdd();
                 }}>Add Course</Button>
             </Modal.Footer>
         </Modal>
