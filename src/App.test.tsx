@@ -37,9 +37,9 @@ describe("App", () => {
         const editSemButton = screen.getByRole("button", {name: "Edit Semester"});
         editSemButton.click();
         const semYearInput = await screen.getByRole("textbox", {name: /sem-class-year/i});
-        fireEvent.change(semYearInput, {target: {value: 'Freshman Year'}});
+        fireEvent.change(semYearInput, {target: {value: "Freshman Year"}});
         const semSeasonInput = await screen.getByRole("textbox", {name: /sem-season/i});
-        fireEvent.change(semSeasonInput, {target: {value: 'Fall Semester'}});
+        fireEvent.change(semSeasonInput, {target: {value: "Fall Semester"}});
         
         const editButton = screen.getByRole("button", {name: "Edit"});
         editButton.click();
@@ -99,7 +99,7 @@ describe("App", () => {
         const editButton = screen.getByRole("button", {name: "Edit"});
         editButton.click();
         const courseIdInput = await screen.getByRole("textbox", {name: /course-id-input/i});
-        fireEvent.change(courseIdInput, {target: {value: 'CISC181'}});
+        fireEvent.change(courseIdInput, {target: {value: "CISC181"}});
 
         const editCourseButton = screen.getByRole("button", {name: "Edit Course"});
         editCourseButton.click();
