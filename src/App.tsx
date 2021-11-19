@@ -142,8 +142,9 @@ function App(): JSX.Element {
         const csvContent = "data:text/csv;charset=utf-8," + csvCols + "\n" + content;
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
+        
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "my_data.csv");
+        link.setAttribute("download", "my_plan.csv");
         document.body.appendChild(link); 
         link.click();
     }
@@ -165,7 +166,7 @@ function App(): JSX.Element {
             <Button className="semesterControls" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
-            <Button className="downloadData" onClick={saveData}>Save Schedule</Button>
+            <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
             <Row>
