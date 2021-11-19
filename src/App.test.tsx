@@ -114,6 +114,17 @@ describe("App", () => {
         expect(course).not.toBeInTheDocument;
     });
 
+    it("saves schedule to browser local storage", async () => {
+        const saveButton = screen.queryByTestId("save-local-storage");
+        if (saveButton === null) {
+            await saveButton;
+        }
+        saveButton.click();
+        expect(JSON.stringify(window.localStorage)).toEqual("{\"cisc-degree-schedule\":\"[{\\\"cnt\\\":1,\\\"year\\\":\\\"Freshman\\\",\\\"season\\\":\\\"Fall\\\",\\\"courses\\\":[]}]\",\"cisc-degree-listofcourseLists\":\"[[]]\"}");
+    });
+
+    
+
 });
 
 
