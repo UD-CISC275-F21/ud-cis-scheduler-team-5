@@ -118,9 +118,10 @@ describe("App", () => {
         const saveButton = screen.queryByTestId("save-local-storage");
         if (saveButton === null) {
             await saveButton;
+        }else{
+            saveButton.click();
+            expect(JSON.stringify(window.localStorage)).toEqual("{\"cisc-degree-schedule\":\"[{\\\"cnt\\\":1,\\\"year\\\":\\\"Freshman\\\",\\\"season\\\":\\\"Fall\\\",\\\"courses\\\":[]}]\",\"cisc-degree-listofcourseLists\":\"[[]]\"}");
         }
-        saveButton.click();
-        expect(JSON.stringify(window.localStorage)).toEqual("{\"cisc-degree-schedule\":\"[{\\\"cnt\\\":1,\\\"year\\\":\\\"Freshman\\\",\\\"season\\\":\\\"Fall\\\",\\\"courses\\\":[]}]\",\"cisc-degree-listofcourseLists\":\"[[]]\"}");
     });
 
     
