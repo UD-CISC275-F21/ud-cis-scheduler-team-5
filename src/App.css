@@ -50,8 +50,9 @@
 }
 
 .addCourse {
-  background-color: #4649d1;
-  color: beige;
+  background-color: white;
+  color: black;
+  visibility:visible;
   margin-bottom: 0.5em;
 }
 
