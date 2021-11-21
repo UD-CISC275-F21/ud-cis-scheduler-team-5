@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+//import { Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { EditCourseModal } from "./EditCourseModal";
 import x from "../assets/x.svg";
@@ -32,7 +32,22 @@ function Course({course, currCourses, setCurrCourses, listOfCourseLists, setlist
         copyList[semesterCnt-1] = copyList[semesterCnt-1].filter(courses => courses != c);
         setlistOfCourseLists(copyList);
     }
+    return (
+        <tr>
+            <td>
+                <button className="removeCourse" aria-label="remove-course" onClick={removeCourse} margin-top={"0.2em"} margin-bottom="0.2em">
+                    <img src={x} alt="Remove Course Button"/>
+                </button>
+            </td>
+            <td data-testid="course-id">{course.id}</td>
+            <td>{course.name}</td>
+            <td>{course.credits}</td>
+            <td><button onClick={editCourse}>Edit</button></td>
+            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></EditCourseModal>
+        </tr>
+    );
 
+    /*
     return (
         <Row>
             <Col>
@@ -49,6 +64,7 @@ function Course({course, currCourses, setCurrCourses, listOfCourseLists, setlist
 
             
     );
+    */
 }
 
 export default Course;

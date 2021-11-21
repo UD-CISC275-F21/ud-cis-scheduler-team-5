@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import { Button, Card as BootstrapCard, Col, Row } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { sem } from "../interfaces/sem";
 import Course from "./Course";
@@ -30,6 +30,37 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
         setAddCourseVisible(true);
     }
 
+    return (
+        <div>
+            <div className="semester-title" data-testid="sem-title">
+                <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
+                <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
+            </div>
+            <Table striped bordered size="sm">
+                <thead>
+                    <th>Remove Course</th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Edit Course</th>
+                </thead>
+                <tbody>
+                    {currClasses.map(c=> {
+                        return (
+                            <Course key = {c.id} course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Course>
+                        );
+                    })
+                    }
+                </tbody>
+                <p></p>
+                <Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button>
+                <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
+            </Table>
+        </div>
+    );
+        
+    /*
+
     return <BootstrapCard className="border-dark">
         <Col>
             <div className="semester-title" data-testid="sem-title">
@@ -57,6 +88,7 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
             <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
         </Col>
     </BootstrapCard>;
+    */
 }
 
 export default Semester;
