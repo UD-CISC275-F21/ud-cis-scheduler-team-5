@@ -80,7 +80,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
         if(validDepts.length===0){
             return;
-        }else if(validDepts.length === 1){
+        }else if(validDepts.length === 1 && len === 4){
             handleDeptClick(validDepts[0]);
             setVisibleDepts(validDepts);
         }else{
