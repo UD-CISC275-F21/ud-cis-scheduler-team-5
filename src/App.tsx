@@ -6,6 +6,7 @@ import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
 import { Class } from "./interfaces/course";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
+import { UploadSemesterModal } from "./components/UploadSemesterModal";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
@@ -38,8 +39,6 @@ export function getLocalStoragePlan(): sem[] {
     }
 }
 
-
-
 function App(): JSX.Element {
     const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
@@ -47,6 +46,7 @@ function App(): JSX.Element {
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
     const [listOfCourseLists, setlistOfCourseLists] = useState<string[][]>(getLocalStorageList());    
     const [allDegreeReqVisible, setAllDegreeReqVisible] = useState<boolean>(false);
+    const [uploadVisible, setUploadVisible] = useState<boolean>(false);
     
 
     useEffect(() => {
@@ -151,7 +151,7 @@ function App(): JSX.Element {
 
     function importDataFromCSV() {
         alert("Coming soon!");
-        //setUploadVisible(true);
+        setUploadVisible(true);
         return 0;
     }
 
@@ -169,6 +169,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
@@ -195,6 +196,6 @@ function App(): JSX.Element {
         </div>
     );
 }
-//<UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
+//
 //classYear={s.year} season={s.season}
 export default App;
