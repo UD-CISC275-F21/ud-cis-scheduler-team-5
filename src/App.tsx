@@ -150,10 +150,11 @@ function App(): JSX.Element {
     }
 
     function importDataFromCSV() {
-        alert("Coming soon!");
         setUploadVisible(true);
         return 0;
     }
+
+    console.log(semesterCnt);
 
     return (
         <div className="App">
@@ -169,7 +170,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
             <Row>
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
