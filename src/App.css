@@ -72,6 +72,11 @@
   margin-bottom: 1em;
 }
 
+.Col {
+  height: 150px;
+
+}
+
 .DDDept {
   margin-left: 1em;
   margin-right: 1em;

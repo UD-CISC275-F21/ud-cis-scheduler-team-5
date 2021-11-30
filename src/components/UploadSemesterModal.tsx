@@ -4,10 +4,11 @@ import {sem} from "../interfaces/sem";
 import { importClass } from "../interfaces/importPlan";
 import classes from "../assets/classes.json";
 import { Class } from "../interfaces/course";
+import { forEachChild } from "typescript";
 
 
 //export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
-export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
+export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseLists, setlistOfCourseLists, setSemesterCnt, setSeason, setClassYear}: {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
 
     const hide = () => setVisible(false);
@@ -65,18 +66,16 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
             planCooking = planCooking.concat(newNode);
             
         });    
-        console.log(planCooking);
+        //console.log(planCooking);
         saveUpload(planCooking);
     }
 
-
     function saveUpload(data: importClass[]) {
         let semesterList: sem[] = [];
-        let courseList: Class[] = [];
-        console.log(data[data.length-1].cnt);
+        //console.log(data[data.length-1].cnt);
         let i = 0;
         console.log(data);
-        console.log(data[data.length-1].cnt+1);
+        //console.log(data[data.length-1].cnt+1);
         for (i;i<data[data.length-1].cnt;i++) {
             console.log(i+1);
             const year = buildYear(i);
@@ -90,35 +89,62 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
             console.log(semesterTemplate);
             semesterList = semesterList.concat(semesterTemplate);
         }
-        console.log(semesterList);
+
         data.forEach(d=>{
-            console.log(d);
-            console.log(d.cnt);
+            console.log(semesterList);
+
             semesterList[d.cnt-1].season = d.season;
             semesterList[d.cnt-1].year = d.year;
 
             // Look up course 
+
             classes.filter(c=>c.id.indexOf(d.id));
             const x = classes.filter(c=>
                 c.id.indexOf(d.id)!==-1);
-            console.log(x);
             const creditNumber = x[0].credits;
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs}];
-                
-            courseList = courseList.concat(classFound);
-            semesterList[d.cnt-1].courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list   
+            
+            //successfully concatenates class from catalog to courseList
 
+            console.log(listOfCourseLists);
+            console.log(listOfCourseLists[0][0]);
+            console.log(d.cnt);
+
+            console.log(semesterList[d.cnt-1]);
+
+            const courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list
+            
+            semesterList[d.cnt-1].courses = courses;
+
+            console.log(semesterList[d.cnt-1].courses);
+
+            console.log(semesterList);
+            
+            console.log("-----------------------------");
         });
-        
+
+        setlistOfCourseLists(buildCourseList(semesterList));
+
         console.log(semesterList);
         setPlan(semesterList);
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);
         setClassYear(semesterList[semesterList.length-1].year);
-        const x = semesterList[semesterList.length-1].cnt%2;
-
         return 1;
     }
+
+    function buildCourseList(semesterList: sem[]): string[][] {
+        let i = 0;
+        let newList: string[][] = [[]];
+        for (i=0;i<semesterList.length-1;i++) {
+            newList = newList.concat([[]]);
+        }
+        for (i=0;i<semesterList.length;i++){
+            console.log(semesterList[i].cnt);
+            newList[i] = semesterList[i].courses.map(c=>c.id);
+        }
+        return newList;
+    } 
 
     function buildSeason(cnt: number):string {
         if (cnt%2 !== 0) {
@@ -129,11 +155,11 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
     }
 
     function buildYear(cnt: number):string {
-        if (cnt === 1 || cnt === 2) {
+        if (cnt === 0 || cnt === 1) {
             return "Freshman";
-        } else if (cnt === 3 || cnt === 4) {
+        } else if (cnt === 2 || cnt === 3) {
             return "Sohpmore";
-        } else if (cnt === 5 || cnt === 6) {
+        } else if (cnt === 4 || cnt === 5) {
             return "Junior";
         } else {
             return "Senior";

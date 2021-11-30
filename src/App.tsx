@@ -170,8 +170,8 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
-            <Row>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
+            <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
                         if (s.season === "Fall"){
