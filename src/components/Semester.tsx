@@ -38,11 +38,12 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
             </div>
             <Table striped bordered size="sm">
                 <thead>
-                    <th>Remove Course</th>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
+                    <th>Remove</th>
+                    <th>Course</th>
+                    {//<th>Course Name</th>
+                    }
                     <th>Credits</th>
-                    <th>Edit Course</th>
+                    <th>Edit</th>
                 </thead>
                 <tbody>
                     {currClasses.map(c=> {

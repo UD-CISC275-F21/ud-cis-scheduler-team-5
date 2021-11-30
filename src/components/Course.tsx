@@ -39,8 +39,9 @@ function Course({course, currCourses, setCurrCourses, listOfCourseLists, setlist
                     <img src={x} alt="Remove Course Button"/>
                 </button>
             </td>
-            <td data-testid="course-id">{course.id}</td>
-            <td>{course.name}</td>
+            <td data-testid="course-id">{course.id} {course.name}</td>
+            {//<td>{course.name}</td>
+            }
             <td>{course.credits}</td>
             <td><button onClick={editCourse}>Edit</button></td>
             <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></EditCourseModal>
