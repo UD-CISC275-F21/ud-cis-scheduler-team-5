@@ -4,7 +4,6 @@ import {sem} from "../interfaces/sem";
 import { importClass } from "../interfaces/importPlan";
 import classes from "../assets/classes.json";
 import { Class } from "../interfaces/course";
-import { forEachChild } from "typescript";
 
 
 //export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
@@ -14,6 +13,7 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
     const hide = () => setVisible(false);
 
     function upload(e: React.ChangeEvent<HTMLInputElement>) {
+        //resetPlan();
         if (e.currentTarget.files !== null){
             const file = e.currentTarget.files[0];
             //console.log(file);
@@ -37,12 +37,14 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
         let planCooking: importClass[] = [];
         let parser = headerEnd;
         let parserTmp = 0;
+
         while (parser !== -1) {
             parserTmp = csv.indexOf("\n",parser+1);
             newLine = csv.slice(parser,parserTmp);
             newPlanRaw = newPlanRaw.concat([newLine]);
             parser = parserTmp;
         }
+
         newPlanRaw.forEach(c=>{
             let parserStart = 1;
             let parserEnd = c.indexOf(",",parserStart+1);
@@ -60,13 +62,14 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
             parserStart = parserEnd;
             parserEnd = c.indexOf(",",parserStart+1);
             const newClassID = c.slice(parserStart+1,parserEnd);
-            //const newClassID1 = newClassID.replaceAll(" ","");
 
-            const newNode:importClass[] = [{cnt:newSemCnt1,year:newSemYear,season:newSemSeason,id:newClassID}];
-            planCooking = planCooking.concat(newNode);
+            if(!isNaN(newSemCnt1)) {
+                const newNode:importClass[] = [{cnt:newSemCnt1,year:newSemYear,season:newSemSeason,id:newClassID}];
+                planCooking = planCooking.concat(newNode);
+            }
             
         });    
-        //console.log(planCooking);
+        
         saveUpload(planCooking);
     }
 
@@ -92,7 +95,7 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
 
         data.forEach(d=>{
             console.log(semesterList);
-
+            console.log(data);
             semesterList[d.cnt-1].season = d.season;
             semesterList[d.cnt-1].year = d.year;
 
@@ -101,6 +104,7 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
             classes.filter(c=>c.id.indexOf(d.id));
             const x = classes.filter(c=>
                 c.id.indexOf(d.id)!==-1);
+            console.log(x);
             const creditNumber = x[0].credits;
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs}];
             
@@ -123,28 +127,13 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
             console.log("-----------------------------");
         });
 
-        setlistOfCourseLists(buildCourseList(semesterList));
-
-        console.log(semesterList);
-        setPlan(semesterList);
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);
         setClassYear(semesterList[semesterList.length-1].year);
+        setPlan(semesterList);
+        hide();
         return 1;
     }
-
-    function buildCourseList(semesterList: sem[]): string[][] {
-        let i = 0;
-        let newList: string[][] = [[]];
-        for (i=0;i<semesterList.length-1;i++) {
-            newList = newList.concat([[]]);
-        }
-        for (i=0;i<semesterList.length;i++){
-            console.log(semesterList[i].cnt);
-            newList[i] = semesterList[i].courses.map(c=>c.id);
-        }
-        return newList;
-    } 
 
     function buildSeason(cnt: number):string {
         if (cnt%2 !== 0) {
@@ -170,13 +159,12 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
         <div>
             <Modal show={visible} onHide={hide}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Course</Modal.Title>
+                    <Modal.Title>Upload Plan</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     <Form>
                         <input className="csvUpload" type="file" onChange={upload}/>
-                        <Button variant="primary" >Upload Plan</Button>
                     </Form>
                 </Modal.Body>
 
