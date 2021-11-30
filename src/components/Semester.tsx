@@ -58,7 +58,6 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
                         <td colSpan={5}><Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button></td>
                     </tr>
                 </tbody>
-                <p></p>
                 <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
             </Table>
         </div>
