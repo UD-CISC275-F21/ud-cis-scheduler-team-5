@@ -7,7 +7,6 @@ import WelcomeMsg from "./components/WelcomeMsg";
 import { Class } from "./interfaces/course";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
 import { UploadSemesterModal } from "./components/UploadSemesterModal";
-import { createTypeReferenceDirectiveResolutionCache } from "typescript";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
@@ -104,7 +103,6 @@ function App(): JSX.Element {
             }
         ];
 
-        const semesterResetCopy = semesterReset.map(x=>x);
 
         console.log(semesterReset);
 
@@ -207,7 +205,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data)=>buildCurrSemesters(data)} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data)=>buildCurrSemesters(data)} listOfCourseLists={listOfCourseLists} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
