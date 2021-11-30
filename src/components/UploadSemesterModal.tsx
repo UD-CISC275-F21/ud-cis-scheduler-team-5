@@ -77,7 +77,7 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
         let i = 0;
         console.log(data);
         console.log(data[data.length-1].cnt+1);
-        for (i;i<data[data.length-1].cnt+1;i++) {
+        for (i;i<data[data.length-1].cnt;i++) {
             console.log(i+1);
             const year = buildYear(i);
             const season = buildSeason(i);
@@ -106,7 +106,7 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs}];
                 
             courseList = courseList.concat(classFound);
-            semesterList[d.cnt].courses = semesterList[d.cnt].courses.concat(classFound); // Concat found course to semester course list   
+            semesterList[d.cnt-1].courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list   
 
         });
         
