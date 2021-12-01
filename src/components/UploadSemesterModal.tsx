@@ -7,7 +7,8 @@ import { Class } from "../interfaces/course";
 
 
 //export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
-export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseLists, setSemesterCnt, setSeason, setClassYear}: {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, listOfCourseLists: string[][], setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
+export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseLists, setSemesterCnt, setSeason, setClassYear}: 
+    {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, listOfCourseLists: Class[][], setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
 
     const hide = () => setVisible(false);

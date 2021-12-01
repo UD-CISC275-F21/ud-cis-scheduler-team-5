@@ -78,7 +78,7 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
             }
             <td>{course.credits}</td>
             <td><button onClick={editCourse}>Edit</button></td>
-            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></EditCourseModal>
+            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} lists={lists} semesterCnt={semesterCnt} credits={credits}></EditCourseModal>
         </tr>
     );
 

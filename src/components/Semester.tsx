@@ -52,7 +52,7 @@ export function Semester({semester, lists, semesterCnt, credits}:
                 <tbody>
                     {currClasses.map(c=> {
                         return (
-                            <Course key = {c.id} course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Course>
+                            <Course key = {c.id} course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></Course>
                         );
                     })
                     }
@@ -60,7 +60,7 @@ export function Semester({semester, lists, semesterCnt, credits}:
                         <td colSpan={5}><Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button></td>
                     </tr>
                 </tbody>
-                <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
+                <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></AddCourseModal>
             </Table>
         </div>
     );
