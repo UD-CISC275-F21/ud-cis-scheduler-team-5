@@ -2,12 +2,14 @@ import React from "react";
 import "../App.css";
 import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
+import { creditsHandlers } from "../interfaces/creditsHandlers";
+import { listHandlers } from "../interfaces/listHandlers";
 //import classes from "../assets/classes.json";
 import { courseMap } from "../utilities/extractClasses";
 
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, listOfCourseLists, setlistOfCourseLists, semesterCnt} :
-    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}) : JSX.Element {
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt, credits} :
+    {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
     const [courseDesc, setCourseDesc] = React.useState<string>("Course Description");
@@ -31,15 +33,16 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             console.log("That's an unrecognized course");
         }else if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
             setCurrCourse(newClasses.concat(newClass));
-            addlistOfCourseLists(newClass.id);
+            credits.setGlobalCredits(credits.globalCredits+courseCred);
+            addlistOfCourseLists(newClass);
             hide();
         }else{
             let loc = -1;
-            for(let i = 0; i < listOfCourseLists.length-1; i++){
-                for(let j = 0; j < listOfCourseLists[i].length; j++){
+            for(let i = 0; i < lists.listOfCourseLists.length-1; i++){
+                for(let j = 0; j < lists.listOfCourseLists[i].length; j++){
                     for(let k = 0; k < prereqs.length; k++){
-                        console.log("Checking course: ", listOfCourseLists[i][j]);
-                        if(listOfCourseLists[i][j] === prereqs[k]){
+                        console.log("Checking course: ", lists.listOfCourseLists[i][j]);
+                        if(lists.listOfCourseLists[i][j].id === prereqs[k]){
                             loc = i;
                         }
                     }
@@ -48,7 +51,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             if(loc != -1){
                 setCoursePreR(prereqs);
                 setCurrCourse(newClasses.concat(newClass));
-                addlistOfCourseLists(newClass.id);
+                credits.setGlobalCredits(credits.globalCredits+courseCred);
+                addlistOfCourseLists(newClass);
                 hide();
             }else{
                 setErrorAddCourse(true);
@@ -170,10 +174,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
 
-    function addlistOfCourseLists(c: string){
-        const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
+    function addlistOfCourseLists(c: Class){
+        const copyList: Class[][] = lists.listOfCourseLists.map(courseList=> [...courseList]);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
-        setlistOfCourseLists(copyList);
+        lists.setlistOfCourseLists(copyList);
     }
 
     return (

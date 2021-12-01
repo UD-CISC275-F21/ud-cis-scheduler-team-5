@@ -3,14 +3,16 @@ import "../App.css";
 import { Button, Table } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { sem } from "../interfaces/sem";
+import { creditsHandlers } from "../interfaces/creditsHandlers";
+import { listHandlers } from "../interfaces/listHandlers";
 import Course from "./Course";
 import { EditSemesterModal } from "./EditSemesterModal";
 import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester({semester, listOfCourseLists, setlistOfCourseLists, semesterCnt}: 
-    {semester: sem, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}): JSX.Element {
+export function Semester({semester, lists, semesterCnt, credits}: 
+    {semester: sem, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>("____ Year");
@@ -50,7 +52,7 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
                 <tbody>
                     {currClasses.map(c=> {
                         return (
-                            <Course key = {c.id} course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Course>
+                            <Course key = {c.id} course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></Course>
                         );
                     })
                     }
@@ -58,7 +60,7 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
                         <td colSpan={5}><Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button></td>
                     </tr>
                 </tbody>
-                <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
+                <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></AddCourseModal>
             </Table>
         </div>
     );
@@ -82,14 +84,14 @@ export function Semester({semester, listOfCourseLists, setlistOfCourseLists, sem
             {currClasses.map(c => {
                 return (
                     <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></Course>
+                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></Course>
                     </Row>
                 );
             })
             }
             <p></p>
             <Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></AddCourseModal>
+            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></AddCourseModal>
         </Col>
     </BootstrapCard>;
     */

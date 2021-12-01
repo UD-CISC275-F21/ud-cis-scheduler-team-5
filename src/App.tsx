@@ -10,7 +10,7 @@ import { UploadSemesterModal } from "./components/UploadSemesterModal";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
-export const INITIAL_LISTOFCOURSELISTS: string[][] = [[]];
+export const INITIAL_LISTOFCOURSELISTS: Class[][] = [[]];
 
 export const INITIAL_SEMESTER: sem[] =  [
     {
@@ -21,7 +21,7 @@ export const INITIAL_SEMESTER: sem[] =  [
     }
 ];
 
-export function getLocalStorageList(): string[][] {
+export function getLocalStorageList(): Class[][] {
     const rawList: string | null = localStorage.getItem(LOCAL_STORAGE_LISTOFCOURSELISTS);
     if (rawList === null) {
         return [...INITIAL_LISTOFCOURSELISTS];
@@ -45,14 +45,31 @@ function App(): JSX.Element {
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
     const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
-    const [listOfCourseLists, setlistOfCourseLists] = useState<string[][]>(getLocalStorageList());    
     const [allDegreeReqVisible, setAllDegreeReqVisible] = useState<boolean>(false);
     const [uploadVisible, setUploadVisible] = useState<boolean>(false);
     
+    const [listOfCourseLists, setlistOfCourseLists] = useState<Class[][]>(getLocalStorageList());  
+    const [listOfTechElectives, setListOfTechElectives] = useState<Class[][]>([[]]);
+    const [listOfFocusClasses, setListOfFocusClasses] = useState<Class[][]>([[]]);
+   
+    const [globalCredits, setGlobalCredits] = useState<number>(0);
+    const [techElectiveCredits, setTechElectiveCredits] = useState<number>(0);
+    const [focusAreaCredits, setFocusAreaCredits] = useState<number>(0);
+
+    const credits = {globalCredits, setGlobalCredits, techElectiveCredits, setTechElectiveCredits, focusAreaCredits, setFocusAreaCredits};
+    const lists = {listOfCourseLists, setlistOfCourseLists, listOfTechElectives, setListOfTechElectives, listOfFocusClasses, setListOfFocusClasses};
 
     useEffect(() => {
-        console.log(`listOfCourseLists is : ${listOfCourseLists}`);
+        console.log(`listOfCourseLists is : ${JSON.stringify(listOfCourseLists)}`);
     },[listOfCourseLists]);
+
+    useEffect(() => {
+        console.log(`listOfTechElectives is : ${JSON.stringify(listOfTechElectives)}`);
+    },[listOfTechElectives]);
+
+    useEffect(() => {
+        console.log(`listOfFocusClasses is : ${JSON.stringify(listOfFocusClasses)}`);
+    },[listOfFocusClasses]);
 
     function addSemester() {
         //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
@@ -87,8 +104,14 @@ function App(): JSX.Element {
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSem));
         const newList = [...listOfCourseLists];
+        const newTechList = [...listOfTechElectives];
+        const newFocusList = [...listOfFocusClasses];
         newList.push([]);
+        newTechList.push([]);
+        newFocusList.push([]);
         setlistOfCourseLists(newList);
+        setListOfTechElectives(newTechList);
+        setListOfFocusClasses(newFocusList);
     }
 
     function clearSemesters() {
@@ -118,6 +141,34 @@ function App(): JSX.Element {
 
     console.log(currSemesters);
 
+    function popLists() {
+        const poppedList = [...listOfCourseLists];
+        const poppedTechList = [...listOfTechElectives];
+        const poppedFocusList = [...listOfFocusClasses];
+        poppedList.pop();
+        poppedTechList.pop();
+        poppedFocusList.pop();
+        setlistOfCourseLists(poppedList);
+        setListOfTechElectives(poppedTechList);
+        setListOfFocusClasses(poppedFocusList);
+    }
+
+    function subtractCredits() {
+        for(let i = 0; i < listOfCourseLists[semesterCnt-1].length; i++){
+            setGlobalCredits(globalCredits-listOfCourseLists[semesterCnt-1][i].credits);
+            for(let j = 0; j < listOfTechElectives[semesterCnt-1].length; j++){
+                if(listOfTechElectives[semesterCnt-1][j].id === listOfCourseLists[semesterCnt-1][i].id){
+                    setTechElectiveCredits(techElectiveCredits-listOfTechElectives[semesterCnt-1][j].credits);
+                }
+            }
+            for(let k = 0; k < listOfFocusClasses[semesterCnt-1].length; k++){
+                if(listOfFocusClasses[semesterCnt-1][k].id === listOfCourseLists[semesterCnt-1][i].id){
+                    setFocusAreaCredits(focusAreaCredits-listOfFocusClasses[semesterCnt-1][k].credits);
+                }
+            }
+        }
+    }
+
     function rmSemester() {
         //Removes the last semester from the list.
         if (semesterCnt === 1) {
@@ -129,6 +180,8 @@ function App(): JSX.Element {
         setClassYear(semPop[semPop.length-1].year);
         setSeason(semPop[semPop.length-1].season);
         setSemesterCnt(semPop[semPop.length-1].cnt);
+        subtractCredits();
+        popLists();
     }
 
     function saveData() {
@@ -198,7 +251,7 @@ function App(): JSX.Element {
             <Button data-testid="degree-button" onClick={()=>{
                 showDegreeReq(); //console.log(listOfCourseLists);
             }}>Show Degree Requirements</Button>
-            <AllDegreeReqs visible={allDegreeReqVisible} listOfCourseLists={listOfCourseLists}></AllDegreeReqs>
+            <AllDegreeReqs visible={allDegreeReqVisible} setVisible={setAllDegreeReqVisible} listOfCourseLists={listOfCourseLists} credits={credits}></AllDegreeReqs>
             <Button className="semesterControls" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
@@ -212,7 +265,7 @@ function App(): JSX.Element {
                         if (s.season === "Fall"){
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={s.cnt}></Semester>
+                                <Semester key={semID} semester={s} lists={lists} semesterCnt={s.cnt} credits={credits}></Semester>
                             );
                         }
                     })}
@@ -222,7 +275,7 @@ function App(): JSX.Element {
                         if (s.season === "Spring") {
                             const semID = "semester" + s.cnt;
                             return(
-                                <Semester key={semID} semester={s} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={s.cnt}></Semester>
+                                <Semester key={semID} semester={s} lists={lists} semesterCnt={s.cnt} credits={credits}></Semester>
                             );
                         }
                     })}
