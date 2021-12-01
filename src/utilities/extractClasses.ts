@@ -3,6 +3,7 @@ import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
 import {rawClass} from "../interfaces/rawcourse";
 
+
 let courseMap:Record<string, Class[]> = {};
 courseData.map((course:rawClass) => {
     const dept = course.courseID.slice(0,4);

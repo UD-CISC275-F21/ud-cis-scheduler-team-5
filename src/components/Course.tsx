@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+//import { Col, Row } from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
 import { listHandlers } from "../interfaces/listHandlers";
@@ -66,7 +66,23 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
             }
         }
     }
+    return (
+        <tr>
+            <td>
+                <button className="removeCourse" aria-label="remove-course" onClick={removeCourse} margin-top={"0.2em"} margin-bottom="0.2em">
+                    <img src={x} alt="Remove Course Button"/>
+                </button>
+            </td>
+            <td data-testid="course-id">{course.id} {course.name}</td>
+            {//<td>{course.name}</td>
+            }
+            <td>{course.credits}</td>
+            <td><button onClick={editCourse}>Edit</button></td>
+            <EditCourseModal ogClass={course} currClasses={currCourses} setCurrCourse={setCurrCourses} visible={visible} setVisible={setVisible} listOfCourseLists={listOfCourseLists} setlistOfCourseLists={setlistOfCourseLists} semesterCnt={semesterCnt}></EditCourseModal>
+        </tr>
+    );
 
+    /*
     return (
         <Row>
             <Col>
@@ -83,6 +99,7 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
 
             
     );
+    */
 }
 
 export default Course;

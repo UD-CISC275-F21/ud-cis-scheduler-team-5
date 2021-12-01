@@ -51,9 +51,9 @@ describe("App", () => {
 
     it("adds new semester when you click the button", async () => {
         const addSemButton = screen.getByTestId("add-sem-button");
-        const semesters = screen.getAllByText("Remove Course");  //All semesters have "Remove Course" text in them
+        const semesters = screen.getAllByText("Remove");  //All semesters have "Remove Course" text in them
         addSemButton.click();
-        const semcopy =  await screen.queryAllByText("Remove Course");
+        const semcopy =  await screen.queryAllByText("Remove");
         expect(semesters.length+1).toEqual(semcopy.length);
     });
 
@@ -61,9 +61,9 @@ describe("App", () => {
         const addSemButton = screen.getByTestId("add-sem-button");
         const removeSemButton = screen.getByTestId("remove-sem-button");
         addSemButton.click();
-        const semesters = screen.getAllByText("Remove Course");
+        const semesters = screen.getAllByText("Remove");
         removeSemButton.click();
-        const semcopy =  await screen.queryAllByText("Remove Course");
+        const semcopy =  await screen.queryAllByText("Remove");
         expect(semesters.length-1).toEqual(semcopy.length);
     });
 
@@ -92,7 +92,7 @@ describe("App", () => {
         const addCourseButton = screen.getByRole("button", {name: "Add Course"}); //Add Class
         addCourseButton.click();
         const course = screen.getByTestId("course-id");
-        expect(course.innerHTML).toBe("CISC108");
+        expect(course.innerHTML).toBe("CISC108 Introduction to Computer Science I ");
     });
 
     it("lets you edit the course id if you click the edit button", async () => {
@@ -104,7 +104,7 @@ describe("App", () => {
         const editCourseButton = screen.getByRole("button", {name: "Edit Course"});
         editCourseButton.click();
         const course = screen.getByTestId("course-id");
-        expect(course.innerHTML).toBe("CISC181");
+        expect(course.innerHTML).toBe("CISC181 Introduction to Computer Science I ");
     });
 
     it("removes a course to the semester if I click the x", async () => {

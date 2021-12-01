@@ -6,6 +6,7 @@ import { sem } from "./interfaces/sem";
 import WelcomeMsg from "./components/WelcomeMsg";
 import { Class } from "./interfaces/course";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
+import { UploadSemesterModal } from "./components/UploadSemesterModal";
 
 export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
@@ -29,7 +30,8 @@ export function getLocalStorageList(): Class[][] {
     }
 }
 
-export function getLocalStoragePlan(): sem[] {
+export function getLocalStoragePlan(clear: boolean): sem[] {
+    if (clear === true) return [...INITIAL_SEMESTER];
     const rawSchedule: string | null = localStorage.getItem(LOCAL_STORAGE_SCHEDULE);
     if (rawSchedule === null) {
         return [...INITIAL_SEMESTER];
@@ -38,14 +40,13 @@ export function getLocalStoragePlan(): sem[] {
     }
 }
 
-
-
 function App(): JSX.Element {
-    const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan());
+    const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan(false));
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
     const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
     const [allDegreeReqVisible, setAllDegreeReqVisible] = useState<boolean>(false);
+    const [uploadVisible, setUploadVisible] = useState<boolean>(false);
     
     const [listOfCourseLists, setlistOfCourseLists] = useState<Class[][]>(getLocalStorageList());  
     const [listOfTechElectives, setListOfTechElectives] = useState<Class[][]>([[]]);
@@ -115,7 +116,23 @@ function App(): JSX.Element {
 
     function clearSemesters() {
         //Clears all semesters except for the first. Resets plan to initial state. 
-        setCurrSemesters(INITIAL_SEMESTER);
+
+        const semesterReset: sem[] =  [
+            {
+                cnt: 1,        
+                year: "Freshman",
+                season: "Fall",
+                courses: []
+            }
+        ];
+
+
+        console.log(semesterReset);
+
+        setCurrSemesters(semesterReset);
+
+        console.log(getLocalStoragePlan(true));
+
         setlistOfCourseLists(INITIAL_LISTOFCOURSELISTS);
         setClassYear("Freshman");
         setSeason("Fall");
@@ -203,9 +220,28 @@ function App(): JSX.Element {
     }
 
     function importDataFromCSV() {
-        alert("Coming soon!");
-        //setUploadVisible(true);
+        setUploadVisible(true);
         return 0;
+    }
+
+    function buildCurrSemesters(data: sem[]) {
+        console.log(data);
+        let i = 0;
+        let newList: string[][] = [[]];
+
+
+
+        for (i=0;i<data.length-1;i++) {
+            newList = newList.concat([[]]);
+        }
+        for (i=0;i<data.length;i++){
+            console.log(data[i].cnt);
+            newList[i] = data[i].courses.map(c=>c.id);
+        }
+        
+        localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
+        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newList));
+        window.location.reload();
     }
 
     return (
@@ -220,9 +256,10 @@ function App(): JSX.Element {
             <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
             <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
-            <Button className="saveData" onClick={exportDataFromCSV}>download</Button>
+            <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <Row>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data)=>buildCurrSemesters(data)} listOfCourseLists={listOfCourseLists} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
+            <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
                         if (s.season === "Fall"){
@@ -248,6 +285,6 @@ function App(): JSX.Element {
         </div>
     );
 }
-//<UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={setCurrSemesters} plan={currSemesters}></UploadSemesterModal>
+//
 //classYear={s.year} season={s.season}
 export default App;

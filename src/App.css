@@ -50,8 +50,9 @@
 }
 
 .addCourse {
-  background-color: #4649d1;
-  color: beige;
+  background-color: white;
+  color: black;
+  visibility:visible;
   margin-bottom: 0.5em;
 }
 
@@ -70,6 +71,11 @@
   margin-left: 1em;
   margin-right: 1em;
   margin-bottom: 1em;
+}
+
+.Col {
+  height: 150px;
+
 }
 
 .DDDept {
@@ -95,3 +101,13 @@
   overflow-y:auto;
 }
 
+
+#FallSemesters{
+  max-width:35%;
+  margin-left:1em;
+}
+
+#SpringSemesters{
+  max-width: 35%;
+  margin-right:1em;
+}
