@@ -19,8 +19,14 @@ code {
 
 .reqfilled {
   background-color: lightgreen !important;
+  text-align: center;
 }
 
 .requnfilled {
   background-color: white !important;
+  text-align: center;
+}
+
+.degree-subtitle {
+  text-align: center;
 }

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Class } from "../interfaces/course";
+import { creditsHandlers } from "../interfaces/creditsHandlers";
+import { listHandlers } from "../interfaces/listHandlers";
 import DEGREEREQS from "../assets/degreereqs.json";
 
-export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, listOfCourseLists, setlistOfCourseLists, semesterCnt} :
-    {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, listOfCourseLists: string[][], setlistOfCourseLists: (c: string[][])=>void, semesterCnt: number}) : JSX.Element {
+export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt, credits} :
+    {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}) : JSX.Element {
     //console.log("in EditCourseModal with course: ", ogClass.id);
     //console.log("Curr Classes length: ", currClasses.length);
     const [courseId, setCourseId] = React.useState<string>(ogClass.id);
@@ -13,6 +15,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     const [courseCred, setCourseCred] = React.useState<number>(ogClass.credits);
     const [coursePreR, setCoursePreR] = React.useState<string[]>(ogClass.prereqs);
     const [reqId, setReqId] = useState<string>(ogClass.id);
+    const [prevReq, setPrevReq] = useState<string>("");
 
 
     function saveEdit() {
@@ -27,25 +30,43 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
         }
         const newClasses:Class[] = [...currClasses];
         newClasses[cIdx] = editClass;
-        //console.log("Length of newClasses:", newClasses.length);
-        for (let index = 0; index < newClasses.length; index++) {
-            //console.log("ID: ", newClasses[index].id);
-            //console.log("Type: ", typeof newClasses[index]);
-            
+
+        if(reqId === "Six additional credits of technical electives"){    //Yeah if I was a TA I would not want to read any of this
+            credits.setTechElectiveCredits(credits.techElectiveCredits+editClass.credits);
+            const copyTechList: Class[][] = lists.listOfTechElectives.map(techList => [...techList]);
+            copyTechList[semesterCnt-1] = [...copyTechList[semesterCnt-1].filter(techcourses => techcourses.id != ogClass.id), editClass];
+            lists.setListOfTechElectives(copyTechList);
+            if(prevReq === "12 credits for an approved focus area") {  
+                credits.setFocusAreaCredits(credits.focusAreaCredits-editClass.credits);   //remove credits from focus area if you switched from focus area to tech electives
+                const copyFocusList: Class[][] = lists.listOfFocusClasses.map(focusList=> [...focusList]);
+                copyFocusList[semesterCnt-1] = copyFocusList[semesterCnt-1].filter(focuscourses => focuscourses.id != ogClass.id);
+                lists.setlistOfCourseLists(copyFocusList);
+            }
+        } else if (reqId === "12 credits for an approved focus area"){
+            credits.setFocusAreaCredits(credits.focusAreaCredits+editClass.credits);
+            const copyFocusList: Class[][] = lists.listOfFocusClasses.map(focusList => [...focusList]);
+            copyFocusList[semesterCnt-1] = [...copyFocusList[semesterCnt-1].filter(focuscourses => focuscourses.id != ogClass.id), editClass];
+            lists.setListOfFocusClasses(copyFocusList);
+            if(prevReq === "Six additional credits of technical electives"){
+                credits.setTechElectiveCredits(credits.techElectiveCredits-editClass.credits); //vice versa of above case
+                const copyTechList: Class[][] = lists.listOfTechElectives.map(techList=> [...techList]);
+                copyTechList[semesterCnt-1] = copyTechList[semesterCnt-1].filter(techcourses => techcourses.id != ogClass.id);
+                lists.setlistOfCourseLists(copyTechList);
+            }
         }
 
+        const copyList: Class[][] = lists.listOfCourseLists.map(courseList => [...courseList]); //Something about this is broken
+        copyList[semesterCnt-1] = [...copyList[semesterCnt-1].filter(courses => courses.id != ogClass.id), editClass];
+        lists.setlistOfCourseLists(copyList);
         setCurrCourse(newClasses);
         setVisible(false);
     }
-    //console.log("Modal Course: ", ogClass.id);
 
     const hide = () => setVisible(false);
 
-    function handleReqClick(req: string) {
-        const copyList: string[][] = listOfCourseLists.map(courseList=> [...courseList]);
-        copyList[semesterCnt-1] = [...copyList[semesterCnt-1].filter(courses => courses != reqId), req];
-        setlistOfCourseLists(copyList);
-        setReqId(req);
+    function handleReqClick(req: string) { 
+        setPrevReq(reqId);
+        setReqId(req); 
     }
 
     return (
@@ -84,14 +105,14 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
                     <Form.Group>
                         <Form.Label data-testid = "CourseDegreeR">Course Fulfills the Following Degree Requirement:</Form.Label>
                         <Dropdown>
-                            <Dropdown.Toggle  className="DDDept" variant="primary" id="dropdown-basic">
+                            <Dropdown.Toggle className="DDDept" variant="primary" id="dropdown-basic">
                                 {reqId}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                {DEGREEREQS.map(req =>  {
+                                {DEGREEREQS.filter(reqs => reqs.id.includes("credits")).map(req =>  {
                                     return (
-                                        <Dropdown.Item onClick={() => handleReqClick(req.id)} key = {req.id}>{req.id}</Dropdown.Item>);
+                                        <Dropdown.Item onClick={() => handleReqClick(req.id)} key={req.id}>{req.id}</Dropdown.Item>);
                                 })
                                 }
                             </Dropdown.Menu>
