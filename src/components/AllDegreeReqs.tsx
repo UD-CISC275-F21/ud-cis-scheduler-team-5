@@ -2,7 +2,7 @@ import React from "react";
 import { DegreeRequirements } from "../components/DegreeRequirements";
 import { SpecialDegreeReqs } from "../components/SpecialDegreeReqs";
 import DEGREEREQS from "../assets/degreereqs.json";
-import { DegreeReq } from "../interfaces/degreeReq";
+import { DegreeReq } from "../interfaces/degreereq";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
 import { Button, Modal, Table} from "react-bootstrap";
 import { Class } from "../interfaces/course";
