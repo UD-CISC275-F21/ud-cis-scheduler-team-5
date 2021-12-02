@@ -6,13 +6,12 @@ import {rawClass} from "../interfaces/rawcourse";
 
 let courseMap:Record<string, Class[]> = {};
 courseData.map((course:rawClass) => {
-    const dept = course.courseID.slice(0,4);
+    const dept = course.id.slice(0,4);
     if(!(dept in courseMap)){
         courseMap[dept] = [];
     }
-    const rawCourseId = course.courseID.split(" ");
-    const courseId = rawCourseId[0] + rawCourseId[1];
-    const newCourse:Class = { id:courseId, name:course.title.substr(11), credits:parseInt(course.credits), 
+    const courseId = course.id;
+    const newCourse:Class = { id:courseId, name:course.name.substr(11), credits:course.credits, 
         description:course.description, prereqs:course.prereqs };
     courseMap[dept].push(newCourse);
 });

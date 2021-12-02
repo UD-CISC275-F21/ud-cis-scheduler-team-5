@@ -1,4 +1,18 @@
 export interface rawClass {
+    "id": string,
+    "name": string,
+    "description":string,
+    "credits": number,
+    "restrictions": string,
+    "repeatable": string,
+    "crosslisted": string,
+    "prereqs": string,
+    "breadth": string,
+    "egineeringBreadth": string,
+    "URL": string,
+}
+
+/*
     courseID: string,
     title: string,
     credits:string,
@@ -12,4 +26,4 @@ export interface rawClass {
     "University Breadth": string,
     "Engineering Breadth": string,
     URL: string
-}
+*/
