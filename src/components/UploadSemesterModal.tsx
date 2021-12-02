@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import {sem} from "../interfaces/sem";
 import { importClass } from "../interfaces/importPlan";
-import classes from "../assets/classes.json";
+import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
 
 
@@ -101,8 +101,8 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
 
             // Look up course 
 
-            classes.filter(c=>c.id.indexOf(d.id));
-            const x = classes.filter(c=>
+            courseData.filter(c=>c.id.indexOf(d.id));
+            const x = courseData.filter(c=>
                 c.id.indexOf(d.id)!==-1);
             console.log(x);
             const creditNumber = x[0].credits;

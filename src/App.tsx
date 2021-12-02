@@ -159,7 +159,6 @@ function App(): JSX.Element {
         const csvContent = "data:text/csv;charset=utf-8," + csvCols + "\n" + content;
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
-        
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", "my_plan.csv");
         document.body.appendChild(link); 
@@ -175,9 +174,6 @@ function App(): JSX.Element {
         console.log(data);
         let i = 0;
         let newList: string[][] = [[]];
-
-
-
         for (i=0;i<data.length-1;i++) {
             newList = newList.concat([[]]);
         }
@@ -185,7 +181,6 @@ function App(): JSX.Element {
             console.log(data[i].cnt);
             newList[i] = data[i].courses.map(c=>c.id);
         }
-        
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newList));
         window.location.reload();
