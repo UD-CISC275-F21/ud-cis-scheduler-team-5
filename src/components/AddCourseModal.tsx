@@ -8,7 +8,7 @@ import { listHandlers } from "../interfaces/listHandlers";
 import { courseMap } from "../utilities/extractClasses";
 
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt, credits} :
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt} :
     {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
@@ -51,7 +51,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             if(loc != -1){*/
         setCoursePreR(prereqs);
         setCurrCourse(newClasses.concat(newClass));
-        addlistOfCourseLists(newClass.id);
+        addlistOfCourseLists(newClass);
         hide();
         /*}else{
                 setErrorAddCourse(true);
