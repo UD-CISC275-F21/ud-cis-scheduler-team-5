@@ -237,6 +237,7 @@ function App(): JSX.Element {
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newList));
         window.location.reload();
+        
     }
 
     return (
@@ -253,7 +254,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data)=>buildCurrSemesters(data)} listOfCourseLists={listOfCourseLists} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setlistOfCourseLists={setlistOfCourseLists} lists={lists} semesterCnt={semesterCnt} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} credits={credits}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
