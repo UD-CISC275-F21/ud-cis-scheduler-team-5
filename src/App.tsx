@@ -225,7 +225,9 @@ function App(): JSX.Element {
 
     function buildCurrSemesters(data: sem[]) {
         console.log(data);
+        /*
         let i = 0;
+        
         let newList: string[][] = [[]];
         for (i=0;i<data.length-1;i++) {
             newList = newList.concat([[]]);
@@ -234,8 +236,16 @@ function App(): JSX.Element {
             console.log(data[i].cnt);
             newList[i] = data[i].courses.map(c=>c.id);
         }
+        */
+        let newSemesterList: Class [][] = [];
+        data.map((semesters)=>{
+            newSemesterList = newSemesterList.concat([semesters.courses]);
+        });
+        
+        setlistOfCourseLists(newSemesterList);
+
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
-        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newList));
+        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newSemesterList));
         window.location.reload();
         
     }
@@ -254,7 +264,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setlistOfCourseLists={setlistOfCourseLists} lists={lists} semesterCnt={semesterCnt} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} credits={credits}></UploadSemesterModal>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{

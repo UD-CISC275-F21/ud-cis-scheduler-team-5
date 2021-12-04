@@ -2,15 +2,13 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import {sem} from "../interfaces/sem";
 import { importClass } from "../interfaces/importPlan";
-import { creditsHandlers } from "../interfaces/creditsHandlers";
-import { listHandlers } from "../interfaces/listHandlers";
 import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
 
 
 //export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
-export function UploadSemesterModal({visible, setVisible, setPlan, setlistOfCourseLists, lists, semesterCnt, setSemesterCnt, setSeason, setClassYear}: 
-    {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, setlistOfCourseLists: (c: Class[][])=>void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
+export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: 
+    {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
 
     const hide = () => setVisible(false);
@@ -109,12 +107,7 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setlistOfCour
             semesterList[d.cnt-1].courses = courses;
         });
 
-        let newSemesterList: Class [][] = [];
-        semesterList.map((semesters)=>{
-            newSemesterList = newSemesterList.concat([semesters.courses]);
-        });
-        
-        setlistOfCourseLists(newSemesterList);
+
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);
         setClassYear(semesterList[semesterList.length-1].year);
