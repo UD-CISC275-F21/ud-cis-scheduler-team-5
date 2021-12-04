@@ -143,12 +143,6 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setlistOfCour
         }
     }
 
-    function addlistOfCourseLists(c: Class){
-        const copyList: Class[][] = lists.listOfCourseLists.map(courseList=> [...courseList]);
-        copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
-        lists.setlistOfCourseLists(copyList);
-    }
-
     return (
         <div>
             <Modal show={visible} onHide={hide}>
