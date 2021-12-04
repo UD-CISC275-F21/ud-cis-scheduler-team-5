@@ -11,7 +11,7 @@ courseData.map((course:rawClass) => {
         courseMap[dept] = [];
     }
     const courseId = course.id;
-    const newCourse:Class = { id:courseId, name:course.name.substr(11), credits:course.credits, 
+    const newCourse:Class = { id:courseId, name:course.name, credits:course.credits, 
         description:course.description, prereqs:course.prereqs };
     courseMap[dept].push(newCourse);
 });

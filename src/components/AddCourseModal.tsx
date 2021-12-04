@@ -27,7 +27,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
         const prereqs = newClass.prereqs;  //changing app to make it complatibale with new courseData.josn
-
+        console.log(newClass);
         /*if(prereqs[0] === "000"){//This is an error code if the the inputted course is not found in courseMap
             setErrorAddCourse(true);
             console.log("That's an unrecognized course");
@@ -109,7 +109,8 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             if(validCourses.length === 1 && len === 7){
                 handleIDClick(validCourses[0].id);
             }
-            setVisibleCourses(validCourses);
+            
+           
         }
         return;
     }
@@ -135,6 +136,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         if(cIdx != -1){
             setCourseId(cID);
             setCourseName(visibleCourses[cIdx].name);
+            console.log(visibleCourses[cIdx].name);
             setCourseDesc(visibleCourses[cIdx].description);
             setCourseCred(visibleCourses[cIdx].credits);
             setCoursePreR(getPrereqs(visibleCourses[cIdx].id));
