@@ -2,26 +2,23 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import {sem} from "../interfaces/sem";
 import { importClass } from "../interfaces/importPlan";
-import classes from "../assets/classes.json";
+import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
 
 
 //export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
-export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseLists, setSemesterCnt, setSeason, setClassYear}: 
-    {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, listOfCourseLists: Class[][], setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
+export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: 
+    {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
 
     const hide = () => setVisible(false);
 
     function upload(e: React.ChangeEvent<HTMLInputElement>) {
-        //resetPlan();
         if (e.currentTarget.files !== null){
             const file = e.currentTarget.files[0];
-            //console.log(file);
             const readfile = new FileReader();
             readfile.readAsText(file);
             readfile.onload = async(e) => {
-                //console.log(e.target?.result);
                 const planCSV = e.target?.result;
                 const plsWork = String(planCSV);
                 parseData(plsWork);
@@ -76,12 +73,8 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
 
     function saveUpload(data: importClass[]) {
         let semesterList: sem[] = [];
-        //console.log(data[data.length-1].cnt);
         let i = 0;
-        console.log(data);
-        //console.log(data[data.length-1].cnt+1);
         for (i;i<data[data.length-1].cnt;i++) {
-            console.log(i+1);
             const year = buildYear(i);
             const season = buildSeason(i);
             const semesterTemplate: sem = {
@@ -90,7 +83,6 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
                 season: season,
                 courses: []
             }; // create a template to build a semester
-            console.log(semesterTemplate);
             semesterList = semesterList.concat(semesterTemplate);
         }
 
@@ -102,31 +94,19 @@ export function UploadSemesterModal({visible, setVisible, setPlan, listOfCourseL
 
             // Look up course 
 
-            classes.filter(c=>c.id.indexOf(d.id));
-            const x = classes.filter(c=>
-                c.id.indexOf(d.id)!==-1);
-            console.log(x);
+            courseData.filter(c=>c.id.indexOf(d.id));
+
+            const x: Class[] = courseData.filter(c=>c.id.indexOf(d.id)!==-1);
             const creditNumber = x[0].credits;
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs}];
             
             //successfully concatenates class from catalog to courseList
 
-            console.log(listOfCourseLists);
-            console.log(listOfCourseLists[0][0]);
-            console.log(d.cnt);
-
-            console.log(semesterList[d.cnt-1]);
-
             const courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list
             
             semesterList[d.cnt-1].courses = courses;
-
-            console.log(semesterList[d.cnt-1].courses);
-
-            console.log(semesterList);
-            
-            console.log("-----------------------------");
         });
+
 
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);

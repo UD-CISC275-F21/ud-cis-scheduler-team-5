@@ -13,7 +13,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     const [courseName, setCourseName] = React.useState<string>(ogClass.name);
     const [courseDesc, setCourseDesc] = React.useState<string>(ogClass.description);
     const [courseCred, setCourseCred] = React.useState<number>(ogClass.credits);
-    const [coursePreR, setCoursePreR] = React.useState<string[]>(ogClass.prereqs);
+    const [coursePreR, setCoursePreR] = React.useState<string>(ogClass.prereqs);
     const [reqId, setReqId] = useState<string>(ogClass.id);
     const [prevReq, setPrevReq] = useState<string>("");
 
@@ -100,7 +100,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
                     <Form.Group>
                         <Form.Label data-testid = "CoursePreR">Course Pre-Requisites</Form.Label>
                         <Form.Control as="textarea" rows={1} 
-                            value={coursePreR} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCoursePreR([ev.target.value])}> </Form.Control>
+                            value={coursePreR} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCoursePreR(ev.target.value)}> </Form.Control>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label data-testid = "CourseDegreeR">Course Fulfills the Following Degree Requirement:</Form.Label>

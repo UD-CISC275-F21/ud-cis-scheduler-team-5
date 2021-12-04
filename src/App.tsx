@@ -212,7 +212,6 @@ function App(): JSX.Element {
         const csvContent = "data:text/csv;charset=utf-8," + csvCols + "\n" + content;
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
-        
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", "my_plan.csv");
         document.body.appendChild(link); 
@@ -226,11 +225,10 @@ function App(): JSX.Element {
 
     function buildCurrSemesters(data: sem[]) {
         console.log(data);
+        /*
         let i = 0;
+        
         let newList: string[][] = [[]];
-
-
-
         for (i=0;i<data.length-1;i++) {
             newList = newList.concat([[]]);
         }
@@ -238,10 +236,18 @@ function App(): JSX.Element {
             console.log(data[i].cnt);
             newList[i] = data[i].courses.map(c=>c.id);
         }
+        */
+        let newSemesterList: Class [][] = [];
+        data.map((semesters)=>{
+            newSemesterList = newSemesterList.concat([semesters.courses]);
+        });
         
+        setlistOfCourseLists(newSemesterList);
+
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
-        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newList));
+        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newSemesterList));
         window.location.reload();
+        
     }
 
     return (
@@ -258,7 +264,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data)=>buildCurrSemesters(data)} listOfCourseLists={listOfCourseLists} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason} ></UploadSemesterModal>
+            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
