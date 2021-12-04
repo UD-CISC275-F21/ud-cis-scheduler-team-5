@@ -92,7 +92,7 @@ describe("App", () => {
         const addCourseButton = screen.getByRole("button", {name: "Add Course"}); //Add Class
         addCourseButton.click();
         const course = screen.getByTestId("course-id");
-        expect(course.innerHTML).toBe("CISC108 Introduction to Computer Science I ");
+        expect(course.innerHTML).toBe("CISC108 Introduction to Computer Science I");
     });
 
     it("lets you edit the course id if you click the edit button", async () => {
@@ -104,7 +104,7 @@ describe("App", () => {
         const editCourseButton = screen.getByRole("button", {name: "Edit Course"});
         editCourseButton.click();
         const course = screen.getByTestId("course-id");
-        expect(course.innerHTML).toBe("CISC181 Introduction to Computer Science I ");
+        expect(course.innerHTML).toBe("CISC181 Introduction to Computer Science I");
     });
 
     it("removes a course to the semester if I click the x", async () => {
