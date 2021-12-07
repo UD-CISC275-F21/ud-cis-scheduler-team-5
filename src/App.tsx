@@ -100,9 +100,9 @@ function App(): JSX.Element {
                 break;
             }
         } 
-        const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
+        const newSememester:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
-        setCurrSemesters(currSemesters.concat(newSem));
+        setCurrSemesters(currSemesters.concat(newSememester));
         const newList = [...listOfCourseLists];
         const newTechList = [...listOfTechElectives];
         const newFocusList = [...listOfFocusClasses];
@@ -114,7 +114,7 @@ function App(): JSX.Element {
         setListOfFocusClasses(newFocusList);
     }
 
-    function clearSemesters() {
+    function clearSemesters() { 
         //Clears all semesters except for the first. Resets plan to initial state. 
 
         const semesterReset: sem[] =  [
@@ -125,21 +125,14 @@ function App(): JSX.Element {
                 courses: []
             }
         ];
-
-
-        console.log(semesterReset);
-
         setCurrSemesters(semesterReset);
-
-        console.log(getLocalStoragePlan(true));
-
+        setCurrSemesters(getLocalStoragePlan(true));
         setlistOfCourseLists(INITIAL_LISTOFCOURSELISTS);
         setClassYear("Freshman");
         setSeason("Fall");
         setSemesterCnt(1);
+        setlistOfCourseLists([currSemesters[0].courses]);
     }
-
-    console.log(currSemesters);
 
     function popLists() {
         const poppedList = [...listOfCourseLists];
@@ -154,16 +147,21 @@ function App(): JSX.Element {
     }
 
     function subtractCredits() {
+        console.log(listOfCourseLists);
         for(let i = 0; i < listOfCourseLists[semesterCnt-1].length; i++){
             setGlobalCredits(globalCredits-listOfCourseLists[semesterCnt-1][i].credits);
-            for(let j = 0; j < listOfTechElectives[semesterCnt-1].length; j++){
-                if(listOfTechElectives[semesterCnt-1][j].id === listOfCourseLists[semesterCnt-1][i].id){
-                    setTechElectiveCredits(techElectiveCredits-listOfTechElectives[semesterCnt-1][j].credits);
+            if (listOfTechElectives[semesterCnt-1]) {
+                for(let j = 0; j < listOfTechElectives[semesterCnt-1].length; j++){
+                    if(listOfTechElectives[semesterCnt-1][j].id === listOfCourseLists[semesterCnt-1][i].id){
+                        setTechElectiveCredits(techElectiveCredits-listOfTechElectives[semesterCnt-1][j].credits);
+                    }
                 }
             }
-            for(let k = 0; k < listOfFocusClasses[semesterCnt-1].length; k++){
-                if(listOfFocusClasses[semesterCnt-1][k].id === listOfCourseLists[semesterCnt-1][i].id){
-                    setFocusAreaCredits(focusAreaCredits-listOfFocusClasses[semesterCnt-1][k].credits);
+            if (listOfFocusClasses[semesterCnt-1]) {
+                for(let k = 0; k < listOfFocusClasses[semesterCnt-1].length; k++){
+                    if(listOfFocusClasses[semesterCnt-1][k].id === listOfCourseLists[semesterCnt-1][i].id){
+                        setFocusAreaCredits(focusAreaCredits-listOfFocusClasses[semesterCnt-1][k].credits);
+                    }
                 }
             }
         }
