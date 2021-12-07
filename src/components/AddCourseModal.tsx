@@ -80,7 +80,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const depts:string[] = Object.keys(courseMap);
         console.log("First attempt: ", depts[0].slice(0,len));
         let validDepts:string[] = [];
-        validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
+        validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept.toUpperCase());
         if(validDepts.length===0){
             return;
         }else if(validDepts.length === 1 && len === 4){
