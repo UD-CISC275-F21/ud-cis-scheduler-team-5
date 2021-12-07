@@ -4,6 +4,7 @@ import {sem} from "../interfaces/sem";
 import { importClass } from "../interfaces/importPlan";
 import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
+import { courseMap } from "../utilities/extractClasses";
 
 
 //export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
@@ -96,9 +97,9 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
 
             courseData.filter(c=>c.id.indexOf(d.id));
 
-            const x: Class[] = courseData.filter(c=>c.id.indexOf(d.id)!==-1);
+            const x: Class[] = courseMap[d.id.slice(0,4)].filter(c=>c.id.indexOf(d.id)!==-1);
             const creditNumber = x[0].credits;
-            const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs}];
+            const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs, specreq:""}];
             
             //successfully concatenates class from catalog to courseList
 

@@ -47,29 +47,17 @@ function App(): JSX.Element {
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
     const [allDegreeReqVisible, setAllDegreeReqVisible] = useState<boolean>(false);
     const [uploadVisible, setUploadVisible] = useState<boolean>(false);
-    
     const [listOfCourseLists, setlistOfCourseLists] = useState<Class[][]>(getLocalStorageList());  
-    const [listOfTechElectives, setListOfTechElectives] = useState<Class[][]>([[]]);
-    const [listOfFocusClasses, setListOfFocusClasses] = useState<Class[][]>([[]]);
-   
     const [globalCredits, setGlobalCredits] = useState<number>(0);
     const [techElectiveCredits, setTechElectiveCredits] = useState<number>(0);
     const [focusAreaCredits, setFocusAreaCredits] = useState<number>(0);
 
     const credits = {globalCredits, setGlobalCredits, techElectiveCredits, setTechElectiveCredits, focusAreaCredits, setFocusAreaCredits};
-    const lists = {listOfCourseLists, setlistOfCourseLists, listOfTechElectives, setListOfTechElectives, listOfFocusClasses, setListOfFocusClasses};
+    const lists = {listOfCourseLists, setlistOfCourseLists};
 
     useEffect(() => {
         console.log(`listOfCourseLists is : ${JSON.stringify(listOfCourseLists)}`);
     },[listOfCourseLists]);
-
-    useEffect(() => {
-        console.log(`listOfTechElectives is : ${JSON.stringify(listOfTechElectives)}`);
-    },[listOfTechElectives]);
-
-    useEffect(() => {
-        console.log(`listOfFocusClasses is : ${JSON.stringify(listOfFocusClasses)}`);
-    },[listOfFocusClasses]);
 
     function addSemester() {
         //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
@@ -104,14 +92,19 @@ function App(): JSX.Element {
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSem));
         const newList = [...listOfCourseLists];
-        const newTechList = [...listOfTechElectives];
-        const newFocusList = [...listOfFocusClasses];
         newList.push([]);
-        newTechList.push([]);
-        newFocusList.push([]);
         setlistOfCourseLists(newList);
-        setListOfTechElectives(newTechList);
-        setListOfFocusClasses(newFocusList);
+    }
+
+    function resetCredits() {
+        setGlobalCredits(0);
+        setTechElectiveCredits(0);
+        setFocusAreaCredits(0);
+        if(currSemesters[0].courses.length > 0){
+            for(let i = 0; i < currSemesters[0].courses.length; i++){
+                setGlobalCredits(0+currSemesters[0].courses[i].credits);
+            }
+        }
     }
 
     function clearSemesters() {
@@ -132,8 +125,8 @@ function App(): JSX.Element {
         setCurrSemesters(semesterReset);
 
         console.log(getLocalStoragePlan(true));
-
-        setlistOfCourseLists(INITIAL_LISTOFCOURSELISTS);
+        setlistOfCourseLists([currSemesters[0].courses]);
+        resetCredits();
         setClassYear("Freshman");
         setSeason("Fall");
         setSemesterCnt(1);
@@ -143,28 +136,17 @@ function App(): JSX.Element {
 
     function popLists() {
         const poppedList = [...listOfCourseLists];
-        const poppedTechList = [...listOfTechElectives];
-        const poppedFocusList = [...listOfFocusClasses];
         poppedList.pop();
-        poppedTechList.pop();
-        poppedFocusList.pop();
         setlistOfCourseLists(poppedList);
-        setListOfTechElectives(poppedTechList);
-        setListOfFocusClasses(poppedFocusList);
     }
 
     function subtractCredits() {
         for(let i = 0; i < listOfCourseLists[semesterCnt-1].length; i++){
             setGlobalCredits(globalCredits-listOfCourseLists[semesterCnt-1][i].credits);
-            for(let j = 0; j < listOfTechElectives[semesterCnt-1].length; j++){
-                if(listOfTechElectives[semesterCnt-1][j].id === listOfCourseLists[semesterCnt-1][i].id){
-                    setTechElectiveCredits(techElectiveCredits-listOfTechElectives[semesterCnt-1][j].credits);
-                }
-            }
-            for(let k = 0; k < listOfFocusClasses[semesterCnt-1].length; k++){
-                if(listOfFocusClasses[semesterCnt-1][k].id === listOfCourseLists[semesterCnt-1][i].id){
-                    setFocusAreaCredits(focusAreaCredits-listOfFocusClasses[semesterCnt-1][k].credits);
-                }
+            if(listOfCourseLists[semesterCnt-1][i].specreq === "Six additional credits of technical electives"){
+                setTechElectiveCredits(techElectiveCredits-listOfCourseLists[semesterCnt-1][i].credits);
+            } else if(listOfCourseLists[semesterCnt-1][i].specreq === "12 credits for an approved focus area") {
+                setFocusAreaCredits(focusAreaCredits-listOfCourseLists[semesterCnt-1][i].credits);
             }
         }
     }
