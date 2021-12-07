@@ -88,9 +88,9 @@ function App(): JSX.Element {
                 break;
             }
         } 
-        const newSem:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
+        const newSememester:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
-        setCurrSemesters(currSemesters.concat(newSem));
+        setCurrSemesters(currSemesters.concat(newSememester));
         const newList = [...listOfCourseLists];
         newList.push([]);
         setlistOfCourseLists(newList);
@@ -107,7 +107,7 @@ function App(): JSX.Element {
         }
     }
 
-    function clearSemesters() {
+    function clearSemesters() { 
         //Clears all semesters except for the first. Resets plan to initial state. 
 
         const semesterReset: sem[] =  [
@@ -118,21 +118,15 @@ function App(): JSX.Element {
                 courses: []
             }
         ];
-
-
-        console.log(semesterReset);
-
         setCurrSemesters(semesterReset);
-
-        console.log(getLocalStoragePlan(true));
+        setCurrSemesters(getLocalStoragePlan(true));
         setlistOfCourseLists([currSemesters[0].courses]);
         resetCredits();
         setClassYear("Freshman");
         setSeason("Fall");
         setSemesterCnt(1);
+       
     }
-
-    console.log(currSemesters);
 
     function popLists() {
         const poppedList = [...listOfCourseLists];
@@ -141,6 +135,7 @@ function App(): JSX.Element {
     }
 
     function subtractCredits() {
+        console.log(listOfCourseLists);
         for(let i = 0; i < listOfCourseLists[semesterCnt-1].length; i++){
             setGlobalCredits(globalCredits-listOfCourseLists[semesterCnt-1][i].credits);
             if(listOfCourseLists[semesterCnt-1][i].specreq === "Six additional credits of technical electives"){
