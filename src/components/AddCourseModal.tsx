@@ -106,6 +106,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             console.log("Not a valid department");
         }else{
             const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
+            setVisibleCourses(validCourses);
             if(validCourses.length === 1 && len === 7){
                 handleIDClick(validCourses[0].id);
             }
@@ -196,7 +197,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "DeptSearch">Department Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
+                                    placeholder={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
                         <Dropdown>
