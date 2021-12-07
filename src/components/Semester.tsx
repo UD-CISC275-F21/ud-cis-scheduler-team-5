@@ -15,8 +15,8 @@ export function Semester({semester, lists, semesterCnt, credits}:
     {semester: sem, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
-    const [classYear,setClassYear] = React.useState<string>("____ Year");
-    const [season,setSeason] = React.useState<string>("____ Semester");
+    const [classYear,setClassYear] = React.useState<string>(semester.year);
+    const [season,setSeason] = React.useState<string>(semester.season);
     const [currClasses, setCurrClasses] = React.useState<Class[]>(semester.courses);
     const [visible, setVisible] = React.useState<boolean>(false);
 
