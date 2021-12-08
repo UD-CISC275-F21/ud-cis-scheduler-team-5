@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import "./App.css";
 import Semester from "./components/Semester";
-import { sem } from "./interfaces/sem";
+import { semester } from "./interfaces/semester";
 import WelcomeMsg from "./components/WelcomeMsg";
 import { Class } from "./interfaces/course";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
@@ -12,7 +12,7 @@ export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
 export const INITIAL_LISTOFCOURSELISTS: Class[][] = [[]];
 
-export const INITIAL_SEMESTER: sem[] =  [
+export const INITIAL_SEMESTER: semester[] =  [
     {
         cnt: 1,        
         year: "Freshman",
@@ -30,7 +30,7 @@ export function getLocalStorageList(): Class[][] {
     }
 }
 
-export function getLocalStoragePlan(clear: boolean): sem[] {
+export function getLocalStoragePlan(clear: boolean): semester[] {
     if (clear === true) return [...INITIAL_SEMESTER];
     const rawSchedule: string | null = localStorage.getItem(LOCAL_STORAGE_SCHEDULE);
     if (rawSchedule === null) {
@@ -41,7 +41,7 @@ export function getLocalStoragePlan(clear: boolean): sem[] {
 }
 
 function App(): JSX.Element {
-    const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan(false));
+    const [currSemesters,setCurrSemesters] = React.useState<semester[]>(getLocalStoragePlan(false));
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
     const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
@@ -94,7 +94,7 @@ function App(): JSX.Element {
                 break;
             }
         } 
-        const newSememester:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
+        const newSememester:semester[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSememester));
         const newList = [...listOfCourseLists];
@@ -116,7 +116,7 @@ function App(): JSX.Element {
     function clearSemesters() { 
         //Clears all semesters except for the first. Resets plan to initial state. 
 
-        const semesterReset: sem[] =  [
+        const semesterReset: semester[] =  [
             {
                 cnt: 1,        
                 year: "Freshman",
@@ -157,12 +157,12 @@ function App(): JSX.Element {
         if (semesterCnt === 1) {
             return;
         }
-        const semPop:sem[] = currSemesters;
-        semPop.pop();
-        setCurrSemesters(semPop);
-        setClassYear(semPop[semPop.length-1].year);
-        setSeason(semPop[semPop.length-1].season);
-        setSemesterCnt(semPop[semPop.length-1].cnt);
+        const popSemester:semester[] = currSemesters.map(c=>c);
+        popSemester.pop();
+        setCurrSemesters(popSemester);
+        setClassYear(popSemester[popSemester.length-1].year);
+        setSeason(popSemester[popSemester.length-1].season);
+        setSemesterCnt(popSemester[popSemester.length-1].cnt);
         subtractCredits();
         popLists();
     }
@@ -205,7 +205,7 @@ function App(): JSX.Element {
         setUploadVisible(true);
     }
 
-    function buildCurrSemesters(data: sem[]) {
+    function buildCurrSemesters(data: semester[]) {
         let newClassList: Class [][] = [];
         let totalCredits = 0;
         data.map((semesters)=>{

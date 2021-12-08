@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import { Button, Table } from "react-bootstrap";
 import { Class } from "../interfaces/course";
-import { sem } from "../interfaces/sem";
+import { semester } from "../interfaces/semester";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
 import { listHandlers } from "../interfaces/listHandlers";
 import Course from "./Course";
@@ -12,7 +12,7 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 export function Semester({semester, lists, semesterCnt, credits}: 
-    {semester: sem, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
+    {semester: semester, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>(semester.year);
@@ -33,12 +33,12 @@ export function Semester({semester, lists, semesterCnt, credits}:
     }
 
     return (
-        <div>
+        <div className="semesterCard">
             <div className="semester-title" data-testid="sem-title">
                 <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
                 <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
             </div>
-            <Table striped bordered size="sm">
+            <Table  striped bordered size="sm">
                 <thead>
                     <tr>
                         <th>Remove</th>

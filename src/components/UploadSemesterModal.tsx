@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import {sem} from "../interfaces/sem";
+import { semester } from "../interfaces/semester";
 import { importClass } from "../interfaces/importPlan";
 import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
@@ -10,7 +10,7 @@ import { creditsHandlers } from "../interfaces/creditsHandlers";
 
 
 export function UploadSemesterModal({credits, visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: 
-    {credits: creditsHandlers, visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
+    {credits: creditsHandlers, visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: semester[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
     const hide = () => setVisible(false);
 
@@ -72,13 +72,13 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
     }
 
     function saveUpload(data: importClass[]) {
-        let semesterList: sem[] = [];
+        let semesterList: semester[] = [];
         
         let i = 0;
         for (i;i<data[data.length-1].cnt;i++) {
             const year = buildYear(i);
             const season = buildSeason(i);
-            const semesterTemplate: sem = {
+            const semesterTemplate: semester = {
                 cnt:i+1,
                 year: year,
                 season: season,
