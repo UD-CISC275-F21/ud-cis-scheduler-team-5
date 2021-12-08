@@ -203,7 +203,6 @@ function App(): JSX.Element {
 
     function importDataFromCSV() {
         setUploadVisible(true);
-        return 0;
     }
 
     function buildCurrSemesters(data: sem[]) {
@@ -218,11 +217,10 @@ function App(): JSX.Element {
 
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newClassList));
+
         const newSemesterList = data.map(s=>s);
         setCurrSemesters(newSemesterList);
         window.location.reload();
-        alert(totalCredits);
-
     }
 
 
