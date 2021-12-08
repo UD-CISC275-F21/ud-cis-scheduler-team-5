@@ -59,6 +59,12 @@ function App(): JSX.Element {
         console.log(`listOfCourseLists is : ${JSON.stringify(listOfCourseLists)}`);
     },[listOfCourseLists]);
 
+    useEffect(() => {
+        let totalCreditsListener = 0;
+        currSemesters.forEach(s=>s.courses.forEach(c=>totalCreditsListener+=c.credits));      
+        setGlobalCredits(totalCreditsListener);  
+    });
+
     function addSemester() {
         //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
         let newSeason = season;
@@ -201,31 +207,24 @@ function App(): JSX.Element {
     }
 
     function buildCurrSemesters(data: sem[]) {
-        console.log(data);
-        /*
-        let i = 0;
-        
-        let newList: string[][] = [[]];
-        for (i=0;i<data.length-1;i++) {
-            newList = newList.concat([[]]);
-        }
-        for (i=0;i<data.length;i++){
-            console.log(data[i].cnt);
-            newList[i] = data[i].courses.map(c=>c.id);
-        }
-        */
-        let newSemesterList: Class [][] = [];
+        let newClassList: Class [][] = [];
+        let totalCredits = 0;
         data.map((semesters)=>{
-            newSemesterList = newSemesterList.concat([semesters.courses]);
+            newClassList = newClassList.concat([semesters.courses]);
+            semesters.courses.forEach(c=>totalCredits+=c.credits);
         });
         
-        setlistOfCourseLists(newSemesterList);
+        setlistOfCourseLists(newClassList);
 
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
-        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newSemesterList));
+        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newClassList));
+        const newSemesterList = data.map(s=>s);
+        setCurrSemesters(newSemesterList);
         window.location.reload();
-        
+        alert(totalCredits);
+
     }
+
 
     return (
         <div className="App">
@@ -241,7 +240,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
+            <UploadSemesterModal credits={credits} visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
