@@ -19,7 +19,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
 
 
     function saveEdit() {
-        const editClass:Class = {name: courseName, id:courseId, description: courseDesc, credits: courseCred, prereqs: coursePreR};
+        const editClass:Class = {name: courseName, id:courseId, description: courseDesc, credits: courseCred, prereqs: coursePreR, specreq: reqId};
         let cIdx = -1;//index of edit class set to -1 for test purposes. If ogClass id is not in the currentClasses
         for (let index = 0; index < currClasses.length; index++) {
             if (currClasses[index].id === ogClass.id) {
@@ -31,31 +31,19 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
         const newClasses:Class[] = [...currClasses];
         newClasses[cIdx] = editClass;
 
-        if(reqId === "Six additional credits of technical electives"){    //Yeah if I was a TA I would not want to read any of this
+        if(reqId === "Six additional credits of technical electives"){   
             credits.setTechElectiveCredits(credits.techElectiveCredits+editClass.credits);
-            const copyTechList: Class[][] = lists.listOfTechElectives.map(techList => [...techList]);
-            copyTechList[semesterCnt-1] = [...copyTechList[semesterCnt-1].filter(techcourses => techcourses.id != ogClass.id), editClass];
-            lists.setListOfTechElectives(copyTechList);
             if(prevReq === "12 credits for an approved focus area") {  
                 credits.setFocusAreaCredits(credits.focusAreaCredits-editClass.credits);   //remove credits from focus area if you switched from focus area to tech electives
-                const copyFocusList: Class[][] = lists.listOfFocusClasses.map(focusList=> [...focusList]);
-                copyFocusList[semesterCnt-1] = copyFocusList[semesterCnt-1].filter(focuscourses => focuscourses.id != ogClass.id);
-                lists.setlistOfCourseLists(copyFocusList);
-            }
+            } 
         } else if (reqId === "12 credits for an approved focus area"){
             credits.setFocusAreaCredits(credits.focusAreaCredits+editClass.credits);
-            const copyFocusList: Class[][] = lists.listOfFocusClasses.map(focusList => [...focusList]);
-            copyFocusList[semesterCnt-1] = [...copyFocusList[semesterCnt-1].filter(focuscourses => focuscourses.id != ogClass.id), editClass];
-            lists.setListOfFocusClasses(copyFocusList);
             if(prevReq === "Six additional credits of technical electives"){
                 credits.setTechElectiveCredits(credits.techElectiveCredits-editClass.credits); //vice versa of above case
-                const copyTechList: Class[][] = lists.listOfTechElectives.map(techList=> [...techList]);
-                copyTechList[semesterCnt-1] = copyTechList[semesterCnt-1].filter(techcourses => techcourses.id != ogClass.id);
-                lists.setlistOfCourseLists(copyTechList);
             }
-        }
+        } 
 
-        const copyList: Class[][] = lists.listOfCourseLists.map(courseList => [...courseList]); //Something about this is broken
+        const copyList: Class[][] = lists.listOfCourseLists.map(courseList => [...courseList]);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1].filter(courses => courses.id != ogClass.id), editClass];
         lists.setlistOfCourseLists(copyList);
         setCurrCourse(newClasses);

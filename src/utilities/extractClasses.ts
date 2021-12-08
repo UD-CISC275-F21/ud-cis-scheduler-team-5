@@ -12,7 +12,7 @@ courseData.map((course:rawClass) => {
     }
     const courseId = course.id;
     const newCourse:Class = { id:courseId, name:course.name, credits:course.credits, 
-        description:course.description, prereqs:course.prereqs };
+        description:course.description, prereqs:course.prereqs, specreq:""};
     courseMap[dept].push(newCourse);
 });
 
