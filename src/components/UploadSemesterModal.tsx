@@ -1,17 +1,15 @@
 import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import {sem} from "../interfaces/sem";
+import { semester } from "../interfaces/semester";
 import { importClass } from "../interfaces/importPlan";
-import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
 import { courseMap } from "../utilities/extractClasses";
+import { creditsHandlers } from "../interfaces/creditsHandlers";
 
 
 
-//export function UploadSemesterModal({visible, setVisible}: {visible: boolean, setVisible: (b: boolean) => void, plan: sem[], setPlan: (s: sem[])=>void}): JSX.Element {
-export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: 
-    {visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: sem[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
-
+export function UploadSemesterModal({credits, visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: 
+    {credits: creditsHandlers, visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: semester[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
     const hide = () => setVisible(false);
 
@@ -67,19 +65,19 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
                 const newNode:importClass[] = [{cnt:newSemCnt1,year:newSemYear,season:newSemSeason,id:newClassID}];
                 planCooking = planCooking.concat(newNode);
             }
-            
         });    
         
         saveUpload(planCooking);
     }
 
     function saveUpload(data: importClass[]) {
-        let semesterList: sem[] = [];
+        let semesterList: semester[] = [];
+        
         let i = 0;
         for (i;i<data[data.length-1].cnt;i++) {
             const year = buildYear(i);
             const season = buildSeason(i);
-            const semesterTemplate: sem = {
+            const semesterTemplate: semester = {
                 cnt:i+1,
                 year: year,
                 season: season,
@@ -87,35 +85,32 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
             }; // create a template to build a semester
             semesterList = semesterList.concat(semesterTemplate);
         }
-
+        let totalCredits = 0;
         data.forEach(d=>{
-            console.log(semesterList);
-            console.log(data);
             semesterList[d.cnt-1].season = d.season;
             semesterList[d.cnt-1].year = d.year;
 
             // Look up course 
-
-            courseData.filter(c=>c.id.indexOf(d.id));
-
-            const x: Class[] = courseMap[d.id.slice(0,4)].filter(c=>c.id.indexOf(d.id)!==-1);
+            //courseData.filter(c=>c.id.indexOf(d.id));
+            const x: Class[] = courseMap[d.id.slice(0,4)].filter(c=>c.id.indexOf(d.id.slice(0,4))!==-1);
             const creditNumber = x[0].credits;
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs, specreq:""}];
             
-            //successfully concatenates class from catalog to courseList
-
-            const courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list
+            totalCredits += creditNumber;
+            removeSpecialReqCredits(classFound[0]);
             
+            //successfully concatenates class from catalog to courseList
+            const courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list
             semesterList[d.cnt-1].courses = courses;
         });
 
-
+        credits.setGlobalCredits(totalCredits);
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);
         setClassYear(semesterList[semesterList.length-1].year);
-        setPlan(semesterList);
+        setPlan(semesterList.map(s=>s));
+
         hide();
-        return 1;
     }
 
     function buildSeason(cnt: number):string {
@@ -135,6 +130,14 @@ export function UploadSemesterModal({visible, setVisible, setPlan, setSemesterCn
             return "Junior";
         } else {
             return "Senior";
+        }
+    }
+
+    function removeSpecialReqCredits(course: Class){
+        if(course.specreq == "Six additional credits of technical electives"){
+            credits.setTechElectiveCredits(credits.techElectiveCredits-course.credits);
+        } else if (course.specreq == "12 credits for an approved focus area"){
+            credits.setFocusAreaCredits(credits.focusAreaCredits-course.credits);
         }
     }
 

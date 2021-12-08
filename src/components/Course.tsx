@@ -49,7 +49,7 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
         }
     }
 
-    console.log(course);
+    
     return (
         <tr>
             <td>
