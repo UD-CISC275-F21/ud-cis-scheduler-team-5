@@ -35,32 +35,37 @@ function WelcomeMsg({show, setShow}:{show:boolean, setShow:(b:boolean)=>void}): 
                             <Carousel.Caption>
                                 <h3 className="caroHead">Adding Courses</h3>
                                 <p className="caroPara">To add a course, click on the Add New Course Button. You will then be prompted to search for a course.
-                                    You can start by selected a department (type or use the dropdown menu), or you can directly search for a 
-                                    course in the Course Search box. The course description and prerequisites will be visible one the course
-                                    is selected.
+                                    You can start by selecting a department (type or use the dropdown menu), or you can directly search for a 
+                                    course in the Course Search box. The course description and prerequisites will be visible once the course
+                                    is selected. Click add course to add the course to the respective semester.
                                 </p>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item id="item">
                             <Carousel.Caption>
                                 <h3 className="caroHead">Adding Semesters</h3>
-                                <p className = "caroPara">
-
+                                <p className = "caroPara">To add a new semester to the plan, click on the Add Semester button. This will add a 
+                                new semester table to the end of your current plan. You can edit the Year and Season of the added semester with
+                                the Edit Semester button.
                                 </p>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item id="item">
                             <Carousel.Caption>
                                 <h3 className="caroHead">Saving Schedule</h3>
-                                <p className="caroPara">
-
+                                <p className="caroPara">There are 2 ways to save your schedule. For editing convienience, clicking the Save
+                                Schedule button will store your schedule within the website. If you reload the page after clicking Save Schedule,
+                                your plan will still be there. For sharing with an adivsor, clicking the Download Plan button will create a csv file 
+                                to download onto your computer. 
                                 </p>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item id="item">
                             <Carousel.Caption>
                                 <h3 className="caroHead">Uploading Schedule</h3>
-                                <p className="caroPara">
+                                <p className="caroPara">After saving a schedule, the schedule can be imported to the website to automatically
+                                fill your plan. Be sure not to edit this file when you download it, as it may cause unexpected
+                                outcomes on the website.
 
                                 </p>
                             </Carousel.Caption>
