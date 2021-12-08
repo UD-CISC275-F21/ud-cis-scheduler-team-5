@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { semester } from "../interfaces/semester";
 import { importClass } from "../interfaces/importPlan";
-import courseData from "../assets/courseData.json";
 import { Class } from "../interfaces/course";
 import { courseMap } from "../utilities/extractClasses";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
