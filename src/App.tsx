@@ -47,6 +47,7 @@ function App(): JSX.Element {
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
     const [allDegreeReqVisible, setAllDegreeReqVisible] = useState<boolean>(false);
     const [uploadVisible, setUploadVisible] = useState<boolean>(false);
+    const [showWelcome, setShowWelcome] = useState<boolean>(true);
     
     const [listOfCourseLists, setlistOfCourseLists] = useState<Class[][]>(getLocalStorageList());  
     const [listOfTechElectives, setListOfTechElectives] = useState<Class[][]>([[]]);
@@ -252,7 +253,7 @@ function App(): JSX.Element {
 
     return (
         <div className="App">
-            <WelcomeMsg></WelcomeMsg>
+            <WelcomeMsg show={showWelcome} setShow={setShowWelcome}></WelcomeMsg>
             <div>UD CIS Scheduler</div>
             <Button data-testid="degree-button" onClick={()=>{
                 showDegreeReq(); //console.log(listOfCourseLists);

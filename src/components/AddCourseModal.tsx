@@ -87,7 +87,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             handleDeptClick(validDepts[0]);
             setVisibleDepts(validDepts);
         }else{
-            setCourseSearch("Course ID");
+            setCourseSearch(partOfDept);
             setDept("Course Department");
             setCourseId("Course ID");
             setVisibleDepts(validDepts);
@@ -97,9 +97,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
     function handleCourseSearch(partOfID:string){
-        setCourseSearch(partOfID);
         const len = partOfID.length;
-        if(len < 4){
+        console.log("Part of id is: ", partOfID);
+        if(len <= 4){
+            handleDeptSearch(partOfID);
             return;
         }
         if(courseMap[partOfID.slice(0,4)] === undefined){
@@ -113,6 +114,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             
            
         }
+        setCourseSearch(partOfID);
         return;
     }
 
@@ -126,6 +128,11 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
     function handleIDClick(cID:string) {
+        console.log("the cid is ", cID);
+        if(cID === "None"){
+            console.log("User selected the None option");
+            return;
+        }
         setErrorAddCourse(false);
         let cIdx = -1;
         for(let i = 0; i < visibleCourses.length; i++){
@@ -136,16 +143,17 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
         if(cIdx != -1){
             setCourseId(cID);
+            setCourseSearch(cID);
             setCourseName(visibleCourses[cIdx].name);
             console.log(visibleCourses[cIdx].name);
             setCourseDesc(visibleCourses[cIdx].description);
             setCourseCred(visibleCourses[cIdx].credits);
+            console.log("hell0");
             setCoursePreR(getPrereqs(visibleCourses[cIdx].id));
         }
     }
 
     function getPrereqs(selectedCourse:string) : string{
-        console.log("Looking for ", selectedCourse);
         const deptCourses = courseMap[selectedCourse.slice(0,4)];
         //let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
