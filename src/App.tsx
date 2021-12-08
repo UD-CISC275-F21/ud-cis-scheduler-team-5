@@ -72,6 +72,10 @@ function App(): JSX.Element {
         console.log(`listOfFocusClasses is : ${JSON.stringify(listOfFocusClasses)}`);
     },[listOfFocusClasses]);
 
+    const showGuide = () => {
+        setShowWelcome(true);
+    };
+
     function addSemester() {
         //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
         let newSeason = season;
@@ -254,7 +258,14 @@ function App(): JSX.Element {
     return (
         <div className="App">
             <WelcomeMsg show={showWelcome} setShow={setShowWelcome}></WelcomeMsg>
-            <div>UD CIS Scheduler</div>
+            <Row>
+                <Col md={10}>
+                    <h2>UD CIS Scheduler</h2>
+                </Col>
+                <Col>
+                    <Button onClick={showGuide}>Help</Button>
+                </Col>
+            </Row>
             <Button data-testid="degree-button" onClick={()=>{
                 showDegreeReq(); //console.log(listOfCourseLists);
             }}>Show Degree Requirements</Button>

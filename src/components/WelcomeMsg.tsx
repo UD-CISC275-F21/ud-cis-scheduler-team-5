@@ -66,7 +66,6 @@ function WelcomeMsg({show, setShow}:{show:boolean, setShow:(b:boolean)=>void}): 
                                 <p className="caroPara">After saving a schedule, the schedule can be imported to the website to automatically
                                 fill your plan. Be sure not to edit this file when you download it, as it may cause unexpected
                                 outcomes on the website.
-
                                 </p>
                             </Carousel.Caption>
                         </Carousel.Item>
