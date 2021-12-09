@@ -10,11 +10,11 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
     {course:Class, currCourses:Class[], setCurrCourses:(courses:Class[]) => void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
     const [visible, setVisible] = React.useState<boolean>(false);
     
-    function editCourse():void{
+    function editCourse():void{ // selects course in semester to edit attributes.
         setVisible(true);
     }
 
-    function removeCourse():void{
+    function removeCourse():void{   //  removes the selected course from a semester.
         //probably want to put a "Are You Sure?" warning here
         let newCourses:Class[] = [];
         for (let index = 0; index < currCourses.length; index++) {
@@ -28,7 +28,7 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
         setCurrCourses(newCourses);
     }
 
-    function removelistOfCourseLists() { 
+    function removelistOfCourseLists() {    //  removes a course from a list of each semesters courses in the selected semester.
         for(let i = 0; i < lists.listOfCourseLists[semesterCnt-1].length; i++){
             if(lists.listOfCourseLists[semesterCnt-1][i].id === course.id) {
                 credits.setGlobalCredits(credits.globalCredits - lists.listOfCourseLists[semesterCnt-1][i].credits);
@@ -41,7 +41,7 @@ function Course({course, currCourses, setCurrCourses, lists, semesterCnt, credit
         }
     }
 
-    function removeSpecialReqCredits(course: Class){
+    function removeSpecialReqCredits(course: Class){    //  removes speical requirements the removed course may have fulfilled. 
         if(course.specreq == "Six additional credits of technical electives"){
             credits.setTechElectiveCredits(credits.techElectiveCredits-course.credits);
         } else if (course.specreq == "12 credits for an approved focus area"){
