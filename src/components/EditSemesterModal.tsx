@@ -4,9 +4,6 @@ import { Button, Form, Modal } from "react-bootstrap";
 export function EditSemesterModal({classYear, season, visible, setClassYear, setSeason, setVisible}: 
     {classYear: string, season: string, visible: boolean, setClassYear: (s: string) => void, setSeason: (s: string) => void, setVisible: (b: boolean) => void}): JSX.Element {
     
-    /* function saveEdit(){
-        
-    } */
 
     const hide = () => setVisible(false);
     

@@ -7,8 +7,6 @@ import DEGREEREQS from "../assets/degreereqs.json";
 
 export function EditCourseModal({ogClass, currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt, credits} :
     {ogClass: Class, currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}) : JSX.Element {
-    //console.log("in EditCourseModal with course: ", ogClass.id);
-    //console.log("Curr Classes length: ", currClasses.length);
     const [courseId, setCourseId] = React.useState<string>(ogClass.id);
     const [courseName, setCourseName] = React.useState<string>(ogClass.name);
     const [courseDesc, setCourseDesc] = React.useState<string>(ogClass.description);
@@ -18,12 +16,11 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
     const [prevReq, setPrevReq] = useState<string>("");
 
 
-    function saveEdit() {
+    function saveEdit() {   // saves edited course to plan.
         const editClass:Class = {name: courseName, id:courseId, description: courseDesc, credits: courseCred, prereqs: coursePreR, specreq: reqId};
         let cIdx = -1;//index of edit class set to -1 for test purposes. If ogClass id is not in the currentClasses
         for (let index = 0; index < currClasses.length; index++) {
             if (currClasses[index].id === ogClass.id) {
-                //console.log("Found the matching course at idx=", index);
                 cIdx = index;
                 break;
             }
@@ -51,9 +48,9 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
         setVisible(false);
     }
 
-    const hide = () => setVisible(false);
+    const hide = () => setVisible(false);   
 
-    function handleReqClick(req: string) { 
+    function handleReqClick(req: string) {  //  allows editing or course for which degree requirement it fulfills
         setPrevReq(reqId);
         setReqId(req); 
     }

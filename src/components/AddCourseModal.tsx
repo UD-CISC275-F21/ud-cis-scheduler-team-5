@@ -4,7 +4,6 @@ import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
 import { listHandlers } from "../interfaces/listHandlers";
-//import classes from "../assets/classes.json";
 import { courseMap } from "../utilities/extractClasses";
 
 
@@ -21,9 +20,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
     const [courseSearch, setCourseSearch] = React.useState<string>("Course ID");
     const [deptSearch, setDeptSearch] = React.useState<string>("Department");
+    
 
 
-    function saveAdd() {
+    function saveAdd() {    // adds selected course to current plan in the selected semester.
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR, "specreq":""};
         const prereqs = newClass.prereqs;  //changing app to make it complatibale with new courseData.josn
@@ -33,7 +33,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         addlistOfCourseLists(newClass);
         hide();
     }
-    const hide = () => {
+    const hide = () => {    //  hides modal when not using.
         console.log(errorAddCourse);
         setErrorAddCourse(false);
         setCourseSearch("Course ID");
@@ -49,20 +49,20 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setVisible(false);
     };
 
-    function handleDeptSearch(partOfDept:string){
+    function handleDeptSearch(partOfDept:string){   //  searches courseMap data file for the department record
         setDeptSearch(partOfDept);
         const len = partOfDept.length;
         const depts:string[] = Object.keys(courseMap);
-        //console.log("First attempt: ", depts[0].slice(0,len));
+        console.log("First attempt: ", depts[0].slice(0,len));
         let validDepts:string[] = [];
-        validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept.toUpperCase());
+        validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
         if(validDepts.length===0){
             return;
         }else if(validDepts.length === 1 && len === 4){
             handleDeptClick(validDepts[0]);
             setVisibleDepts(validDepts);
         }else{
-            setCourseSearch(partOfDept);
+            setCourseSearch("Course ID");
             setDept("Course Department");
             setCourseId("Course ID");
             setVisibleDepts(validDepts);
@@ -71,29 +71,26 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         
     }
 
-    function handleCourseSearch(partOfID:string){
+    function handleCourseSearch(partOfID:string){   // searches found department for course ID codes
+        setCourseSearch(partOfID);
         const len = partOfID.length;
-        //console.log("Part of id is: ", partOfID);
-        if(len <= 4){
-            handleDeptSearch(partOfID);
+        if(len < 4){
             return;
         }
         if(courseMap[partOfID.slice(0,4)] === undefined){
-            //console.log("Not a valid department");
+            console.log("Not a valid department");
         }else{
             const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
-            setVisibleCourses(validCourses);
             if(validCourses.length === 1 && len === 7){
                 handleIDClick(validCourses[0].id);
             }
             
            
         }
-        setCourseSearch(partOfID);
         return;
     }
 
-    function handleDeptClick(selectedDept:string) {
+    function handleDeptClick(selectedDept:string) { //  selects department from dropdown to browse that deparment's courses.
         const deptCourses:Class[] = courseMap[selectedDept];
         setCourseId("Course ID");
         setDeptSearch(selectedDept);
@@ -102,12 +99,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setDept(selectedDept);
     }
 
-    function handleIDClick(cID:string) {
-        console.log("the cid is ", cID);
-        if(cID === "None"){
-            //console.log("User selected the None option");
-            return;
-        }
+    function handleIDClick(cID:string) {    //  selects course ID from the dropdown and displays course attributes to the user.
         setErrorAddCourse(false);
         let cIdx = -1;
         for(let i = 0; i < visibleCourses.length; i++){
@@ -118,17 +110,16 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
         if(cIdx != -1){
             setCourseId(cID);
-            setCourseSearch(cID);
             setCourseName(visibleCourses[cIdx].name);
-            //console.log(visibleCourses[cIdx].name);
+            console.log(visibleCourses[cIdx].name);
             setCourseDesc(visibleCourses[cIdx].description);
             setCourseCred(visibleCourses[cIdx].credits);
-            //console.log("hell0");
             setCoursePreR(getPrereqs(visibleCourses[cIdx].id));
         }
     }
 
-    function getPrereqs(selectedCourse:string) : string{
+    function getPrereqs(selectedCourse:string) : string {   //  displays prereqs attribute from the Class object found in deptCourses.
+        console.log("Looking for ", selectedCourse);
         const deptCourses = courseMap[selectedCourse.slice(0,4)];
         //let loc = -1;
         for(let i = 0; i < deptCourses.length; i++){
@@ -143,7 +134,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
 
-    function addlistOfCourseLists(c: Class){
+    function addlistOfCourseLists(c: Class){    // adds to record of courses in selected semester. 
         credits.setGlobalCredits(credits.globalCredits+courseCred);
         const copyList: Class[][] = lists.listOfCourseLists.map(courseList=> [...courseList]);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
@@ -166,11 +157,11 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                     placeholder={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
-                        <Dropdown className="dropdown">
+                        <Dropdown>
                             <Dropdown.Toggle className="DDDept" variant="secondary" id="dropdown-basic" data-testid="dept-dropdown">
                                 {dept}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown-menu" data-testid="dept-drop-menu">
+                            <Dropdown.Menu className="dropdown" data-testid="dept-drop-menu">
                                 {visibleDepts.map(dept=>{
                                     return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
                                 })
@@ -185,15 +176,15 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "CourseSearch">Course Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
+                                    placeholder={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
-                        <Dropdown className="dropdown">
-                            <Dropdown.Toggle className="DDCourseID" id="dropdown-basic">
+                        <Dropdown>
+                            <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
                                 {courseId}
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu className="dropdown-menu" data-testid="course-drop-menu">
+                            <Dropdown.Menu data-testid="course-drop-menu">
                                 {visibleCourses.map(c =>  {
                                     return (
                                         <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);

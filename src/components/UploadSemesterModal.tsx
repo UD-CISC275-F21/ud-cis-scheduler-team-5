@@ -11,9 +11,9 @@ import { creditsHandlers } from "../interfaces/creditsHandlers";
 export function UploadSemesterModal({credits, visible, setVisible, setPlan, setSemesterCnt, setSeason, setClassYear}: 
     {credits: creditsHandlers, visible: boolean, setVisible: (b: boolean) => void, setPlan: (s: semester[])=>void, setSemesterCnt: (s: number)=>void, setSeason: (s: string)=>void, setClassYear: (s: string)=>void}): JSX.Element {
 
-    const hide = () => setVisible(false);
+    const hide = () => setVisible(false);   //  sets visibility of the uplay semester modal
 
-    function upload(e: React.ChangeEvent<HTMLInputElement>) {
+    function upload(e: React.ChangeEvent<HTMLInputElement>) {   //  opens an uploaded file to convert to the plan data file
         if (e.currentTarget.files !== null){
             const file = e.currentTarget.files[0];
             const readfile = new FileReader();
@@ -28,7 +28,7 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
         }
     }
 
-    function parseData(csv: string) {
+    function parseData(csv: string) {   //  parases though each field and creates a list of couseIDs to search for the courseMap
         const headerEnd = csv.indexOf("\n");
         let newPlanRaw: string[] = [];
         let newLine: string;
@@ -66,23 +66,21 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
                 planCooking = planCooking.concat(newNode);
             }
         });    
-        
         saveUpload(planCooking);
     }
 
-    function saveUpload(data: importClass[]) {
+    function saveUpload(data: importClass[]) {  //  searches a list of courseIDs from the course map and adds them to the plan data file.
         let semesterList: semester[] = [];
-        
         let i = 0;
         for (i;i<data[data.length-1].cnt;i++) {
             const year = buildYear(i);
             const season = buildSeason(i);
-            const semesterTemplate: semester = {
+            const semesterTemplate: semester = {    // create a template for each semester we will be adding courses to.
                 cnt:i+1,
                 year: year,
                 season: season,
                 courses: []
-            }; // create a template to build a semester
+            }; 
             semesterList = semesterList.concat(semesterTemplate);
         }
         let totalCredits = 0;
@@ -91,29 +89,26 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
             semesterList[d.cnt-1].year = d.year;
 
             // Look up course 
-            //courseData.filter(c=>c.id.indexOf(d.id));
             const x: Class[] = courseMap[d.id.slice(0,4)].filter(c=>c.id.indexOf(d.id)!==-1);
             const creditNumber = x[0].credits;
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs, specreq:""}];
             
             totalCredits += creditNumber;
             removeSpecialReqCredits(classFound[0]);
-            
-            //successfully concatenates class from catalog to courseList
-            const courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list
+            const courses = semesterList[d.cnt-1].courses.concat(classFound);
             semesterList[d.cnt-1].courses = courses;
         });
 
+        const semesterListTmp = semesterList.map(s=>s);
         credits.setGlobalCredits(totalCredits);
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);
         setClassYear(semesterList[semesterList.length-1].year);
-        setPlan(semesterList.map(s=>s));
-
+        setPlan(semesterListTmp);
         hide();
     }
 
-    function buildSeason(cnt: number):string {
+    function buildSeason(cnt: number):string {  // sets the season while building the semester template
         if (cnt%2 !== 0) {
             return "Spring";
         } else {
@@ -121,7 +116,7 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
         }
     }
 
-    function buildYear(cnt: number):string {
+    function buildYear(cnt: number):string {  // sets the year while building the semester template
         if (cnt === 0 || cnt === 1) {
             return "Freshman";
         } else if (cnt === 2 || cnt === 3) {
@@ -133,7 +128,7 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
         }
     }
 
-    function removeSpecialReqCredits(course: Class){
+    function removeSpecialReqCredits(course: Class){    
         if(course.specreq == "Six additional credits of technical electives"){
             credits.setTechElectiveCredits(credits.techElectiveCredits-course.credits);
         } else if (course.specreq == "12 credits for an approved focus area"){
