@@ -232,12 +232,12 @@ function App(): JSX.Element {
                 showDegreeReq(); //console.log(listOfCourseLists);
             }}>Show Degree Requirements</Button>
             <AllDegreeReqs visible={allDegreeReqVisible} setVisible={setAllDegreeReqVisible} listOfCourseLists={listOfCourseLists} credits={credits}></AllDegreeReqs>
-            <Button className="semesterControls" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
-            <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
-            <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
-            <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
-            <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
-            <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
+            <Button className="buttonControls" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
+            <Button className="buttonControls" onClick={clearSemesters}>Clear Semesters</Button>
+            <Button className="buttonControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
+            <Button className="downloadData buttonControls" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
+            <Button className="saveData buttonControls" onClick={exportDataFromCSV}>Download Plan</Button>
+            <Button className="saveData buttonControls" onClick={importDataFromCSV}>Upload Schedule</Button>
             <UploadSemesterModal credits={credits} visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">

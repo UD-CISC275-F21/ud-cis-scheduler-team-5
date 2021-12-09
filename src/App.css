@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  background-color: #ffffff;
+  height: 100%;
+  height:fit-content;
+}
+
+.button {
+  width: 20px;
+
 }
 
 .App-logo {
@@ -48,9 +56,10 @@
   margin-top: 10px;
 }
 
-.semesterControls {
+.buttonControls {
   margin-left: 5px;
   margin-right: 5px;
+  color: white;
 }
 
 .addCourse {
@@ -99,9 +108,9 @@
   margin-bottom: 10px; /* Added */
 }
 
-.dropdown{
-  height:10em;
-  max-height:10em;
+.dropdown-menu{
+  height:40em;
+  max-height:40em;
   overflow-y:auto;
 }
 

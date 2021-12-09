@@ -92,7 +92,7 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
 
             // Look up course 
             //courseData.filter(c=>c.id.indexOf(d.id));
-            const x: Class[] = courseMap[d.id.slice(0,4)].filter(c=>c.id.indexOf(d.id.slice(0,4))!==-1);
+            const x: Class[] = courseMap[d.id.slice(0,4)].filter(c=>c.id.indexOf(d.id)!==-1);
             const creditNumber = x[0].credits;
             const classFound:Class[] = [{id:x[0].id,name:x[0].name,description:x[0].description,credits:creditNumber,prereqs:x[0].prereqs, specreq:""}];
             
