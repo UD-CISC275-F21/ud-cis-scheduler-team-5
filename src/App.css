@@ -99,10 +99,10 @@
   margin-bottom: 10px; /* Added */
 }
 
-.dropdown{
-  height:10em;
-  max-height:10em;
-  overflow-y:auto;
+.dropdown-menu{
+
+  max-height:20em;
+  overflow-y: auto;
 }
 
 

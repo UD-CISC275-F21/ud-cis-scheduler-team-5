@@ -160,7 +160,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Dropdown.Toggle className="DDDept" variant="secondary" id="dropdown-basic" data-testid="dept-dropdown">
                                 {dept}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown" data-testid="dept-drop-menu">
+                            <Dropdown.Menu  className="dropdown" data-testid="dept-drop-menu">
                                 {visibleDepts.map(dept=>{
                                     return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
                                 })
@@ -194,20 +194,12 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={6}>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label data-testid = "CourseId">Selected Course</Form.Label>
-                                <Form.Control as="textarea" rows={1} 
-                                    placeholder={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
-                            </Form.Group>
-                            {errorAddCourse && <p>Cannot add this course!</p>}
-                        </Form>
-                    </Col>
                     <Col>
-                        <h3>Description</h3>
+                        <br/>
+                        <h3 className="text-center"><strong>{courseId}</strong></h3>            
+                        <h3 className="text-center">Description</h3>
                         <p>{courseDesc}</p>
-                        <h3>Prerequisites</h3>
+                        <h3 className="text-center">Prerequisites</h3>
                         <p style={{color: "red"}}>{coursePreR}</p>
                     </Col>
                 </Row>
