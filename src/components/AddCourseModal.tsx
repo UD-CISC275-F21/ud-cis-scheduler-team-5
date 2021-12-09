@@ -32,6 +32,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setCurrCourse(newClasses.concat(newClass));
         addlistOfCourseLists(newClass);
         hide();
+        console.log("can you hear me?");
     }
     const hide = () => {
         console.log(errorAddCourse);
