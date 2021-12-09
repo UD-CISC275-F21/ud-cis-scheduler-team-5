@@ -11,8 +11,7 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 
-export function Semester({semester, lists, semesterCnt, credits}: 
-    {semester: semester, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
+export function Semester({semester, lists, semesterCnt, credits}: {semester: semester, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
     const [classYear,setClassYear] = React.useState<string>(semester.year);
@@ -20,15 +19,13 @@ export function Semester({semester, lists, semesterCnt, credits}:
     const [currClasses, setCurrClasses] = React.useState<Class[]>(semester.courses);
     const [visible, setVisible] = React.useState<boolean>(false);
 
+    semester.courses = currClasses.map(c=>c);
 
-    semester.courses = currClasses;
-    //console.log(semester.courses);
-
-    function editCard() {
+    function editCard() {   // sets visiblity of the edit course modal.
         setVisible(true);
     }
 
-    function addCourse() : void {
+    function addCourse() : void {   // sets visibility to the add course modal.
         setAddCourseVisible(true);
     }
 

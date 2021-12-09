@@ -7,13 +7,13 @@ import "../App.css";
 function WelcomeMsg({show, setShow}:{show:boolean, setShow:(b:boolean)=>void}): JSX.Element {
     const [slide, setSlide] = useState(0);
 
-    const hide = () => {
+    const hide = () => {    //  sets visibility of the welcome message
         setShow(false);
         setSlide(0);
     };
 
-    const handleClick = (nextSlide: number, e:Record<string, unknown> | null) => {
-        setSlide(nextSlide);
+    const handleClick = (nextSlide: number, e:Record<string, unknown> | null) => {  // each click cycles thorugh a series of how-to's
+        setSlide(nextSlide);    
         console.log(e);
     };
 

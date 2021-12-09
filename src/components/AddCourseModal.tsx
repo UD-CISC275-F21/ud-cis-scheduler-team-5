@@ -4,7 +4,6 @@ import { Button, Dropdown,  Modal, Col, Row, Form} from "react-bootstrap";
 import { Class } from "../interfaces/course";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
 import { listHandlers } from "../interfaces/listHandlers";
-//import classes from "../assets/classes.json";
 import { courseMap } from "../utilities/extractClasses";
 
 

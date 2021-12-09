@@ -113,7 +113,7 @@
 }
 
 .dropdown-menu{
-  height:40em;
+  height:auto;
   max-height:40em;
   overflow-y:auto;
 }
