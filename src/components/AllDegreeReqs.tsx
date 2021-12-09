@@ -11,7 +11,7 @@ import { Class } from "../interfaces/course";
 export function AllDegreeReqs({visible, setVisible, listOfCourseLists, credits}: 
     {visible: boolean, setVisible: (v: boolean)=>void , listOfCourseLists: Class[][], credits: creditsHandlers}): JSX.Element {
 
-    function checkDegreeReq(aReq: DegreeReq) {
+    function checkDegreeReq(aReq: DegreeReq) {  // checks each record of courses in each semester for a degree requirement.
         let i = 0;
         let j = 0;
         for(i = 0; i < listOfCourseLists.length; i++){
@@ -24,7 +24,7 @@ export function AllDegreeReqs({visible, setVisible, listOfCourseLists, credits}:
         return false;
     }
 
-    function checkSpecialReq(aReq: DegreeReq){
+    function checkSpecialReq(aReq: DegreeReq){  // checks each record of courses in each semester for a special requirement.
         if(aReq.id === "Six additional credits of technical electives" && credits.techElectiveCredits === 6){
             return true;
         } else if(aReq.id === "12 credits for an approved focus area" && credits.focusAreaCredits === 12){
@@ -34,7 +34,7 @@ export function AllDegreeReqs({visible, setVisible, listOfCourseLists, credits}:
         }
     }
 
-    function displayWhichReq(aReq: DegreeReq){
+    function displayWhichReq(aReq: DegreeReq){  // displays requirement specifics.
         if(aReq.id === "Six additional credits of technical electives"){
             return true;
         } else {
@@ -42,7 +42,7 @@ export function AllDegreeReqs({visible, setVisible, listOfCourseLists, credits}:
         }
     }
 
-    function hide(){
+    function hide(){    // hides shows modal.
         setVisible(!visible);
     }
 
