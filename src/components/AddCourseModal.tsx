@@ -34,6 +34,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         hide();
     }
     const hide = () => {
+        console.log(errorAddCourse);
         setErrorAddCourse(false);
         setCourseSearch("Course ID");
         setDeptSearch("Course Department");
@@ -153,7 +154,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "DeptSearch">Department Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
+                                    placeholder={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
                         <Dropdown>
@@ -175,7 +176,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "CourseSearch">Course Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
+                                    placeholder={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
                         <Dropdown>
@@ -194,20 +195,12 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={6}>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label data-testid = "CourseId">Selected Course</Form.Label>
-                                <Form.Control as="textarea" rows={1} 
-                                    value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
-                            </Form.Group>
-                            {errorAddCourse && <p>Cannot add this course!</p>}
-                        </Form>
-                    </Col>
                     <Col>
-                        <h3>Description</h3>
+                        <br/>
+                        <h3 className="text-center"><strong>{courseId}</strong></h3>            
+                        <h3 className="text-center">Description</h3>
                         <p>{courseDesc}</p>
-                        <h3>Prerequisites</h3>
+                        <h3 className="text-center">Prerequisites</h3>
                         <p style={{color: "red"}}>{coursePreR}</p>
                     </Col>
                 </Row>
