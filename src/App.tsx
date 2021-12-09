@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Button } from "react-bootstrap";
+import { Col, Row, Button, Container } from "react-bootstrap";
 import "./App.css";
 import Semester from "./components/Semester";
 import { sem } from "./interfaces/sem";
@@ -258,24 +258,34 @@ function App(): JSX.Element {
     return (
         <div className="App">
             <WelcomeMsg show={showWelcome} setShow={setShowWelcome}></WelcomeMsg>
-            <Row>
-                <Col md={10}>
-                    <h2>UD CIS Scheduler</h2>
-                </Col>
-                <Col>
-                    <Button onClick={showGuide}>Help</Button>
-                </Col>
-            </Row>
-            <Button data-testid="degree-button" onClick={()=>{
+            <Button id="helpButton" onClick={showGuide}>Help</Button>
+
+            <h2>UD CIS Scheduler</h2>
+
+            <Button className="control-buttons" data-testid="degree-button" onClick={()=>{
                 showDegreeReq(); //console.log(listOfCourseLists);
             }}>Show Degree Requirements</Button>
             <AllDegreeReqs visible={allDegreeReqVisible} setVisible={setAllDegreeReqVisible} listOfCourseLists={listOfCourseLists} credits={credits}></AllDegreeReqs>
-            <Button className="semesterControls" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
-            <Button className="semesterControls" onClick={clearSemesters}>Clear Semesters</Button>
-            <Button className="semesterControls" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
-            <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
-            <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
-            <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
+            <Container>
+                <Row>
+                    <Col>Semester Controls</Col>
+                    <Col>Import/Export Schedule</Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button className="control-buttons" data-testid="add-sem-button" onClick={addSemester}>Add Semester</Button>
+                        <Button className="control-buttons" onClick={clearSemesters}>Clear Semesters</Button>
+                        <Button className="control-buttons" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
+                    </Col>
+                    <Col>
+                        <Button className="control-buttons" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
+                        <Button className="control-buttons" onClick={exportDataFromCSV}>Download Plan</Button>
+                        <Button className="control-buttons" onClick={importDataFromCSV}>Upload Schedule</Button>
+                    </Col>
+
+                </Row>
+            </Container>
+            
             <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">

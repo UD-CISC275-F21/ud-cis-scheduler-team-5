@@ -37,6 +37,7 @@
   }
 }
 
+
 .Welcome {
   color: #0c0f16;
   border-color: #4649d1;
@@ -46,8 +47,12 @@
 
 .semesterControls {
   margin-left: 5px;
-  margin-right: 5px;
 }
+
+.control-buttons{
+  margin-left: 5px;
+}
+
 
 .addCourse {
   background-color: white;
@@ -126,10 +131,20 @@
 }
 
 .caroHead{
+  text-align:center;
   vertical-align:0em;
 }
 
 #welcomeModal{
   margin-left:auto;
   margin-right:auto;
+}
+
+#helpButton{
+  justify-content:right;
+  display:flex;
+  color:white;
+  background-color: gray;
+  border-color:black;
+  width:auto;
 }
