@@ -199,6 +199,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                         <br/>
                         <h3 className="text-center"><strong>{courseId}</strong></h3>            
                         <h3 className="text-center">Description</h3>
+                        <p>{courseDesc}</p>
                         <h3 className="text-center">Prerequisites</h3>
                         <p style={{color: "red"}}>{coursePreR}</p>
                     </Col>
