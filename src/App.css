@@ -37,6 +37,9 @@
   }
 }
 
+.semesterCard {
+  min-height: 400px;
+}
 
 .Welcome {
   color: #0c0f16;
