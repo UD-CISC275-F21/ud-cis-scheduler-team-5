@@ -4,28 +4,28 @@ import App from "./App";
 
 async function addACourse(){
     const addButton= screen.getByTestId("add-new-course");   //Open Modal
-        addButton.click();
+    addButton.click();
 
-        const deptDropdownButton = await screen.getByRole("button", {name: "Course Department"}); //Select Department
-        deptDropdownButton.click();
-        const dropMenu = screen.getByTestId("dept-drop-menu");
-        const deptText = getByRole(dropMenu, "button", {name: "CISC"});
-        deptText.click();
-        await waitFor(() => {
-            expect(deptDropdownButton.innerHTML).toBe("CISC");
-        });
+    const deptDropdownButton = await screen.getByRole("button", {name: "Course Department"}); //Select Department
+    deptDropdownButton.click();
+    const dropMenu = screen.getByTestId("dept-drop-menu");
+    const deptText = getByRole(dropMenu, "button", {name: "CISC"});
+    deptText.click();
+    await waitFor(() => {
+        expect(deptDropdownButton.innerHTML).toBe("CISC");
+    });
 
-        const courseDropdownButton = screen.getByRole("button", {name: "Course ID"}); //Select Class
-        courseDropdownButton.click();
-        const courseMenu = screen.getByTestId("course-drop-menu");
-        const courseText = getByRole(courseMenu, "button", {name: "CISC108"});
-        courseText.click();
-        await waitFor(() => {
-            expect(courseDropdownButton.innerHTML).toBe("CISC108");
-        });
+    const courseDropdownButton = screen.getByRole("button", {name: "Course ID"}); //Select Class
+    courseDropdownButton.click();
+    const courseMenu = screen.getByTestId("course-drop-menu");
+    const courseText = getByRole(courseMenu, "button", {name: "CISC108"});
+    courseText.click();
+    await waitFor(() => {
+        expect(courseDropdownButton.innerHTML).toBe("CISC108");
+    });
 
-        const addCourseButton = screen.getByRole("button", {name: "Add Course"}); //Add Class
-        addCourseButton.click();
+    const addCourseButton = screen.getByRole("button", {name: "Add Course"}); //Add Class
+    addCourseButton.click();
 }
 
 describe("App", () => {
@@ -100,7 +100,7 @@ describe("App", () => {
         const degreeButton = screen.getByTestId("degree-button");
         degreeButton.click();
         const globalCreditCounter = screen.getByTestId("global-credit-counter");
-        expect(globalCreditCounter.innerHTML).toBe("Credit Count: 3 out of 124 needed")
+        expect(globalCreditCounter.innerHTML).toBe("Credit Count: 3 out of 124 needed");
         
     });
 
@@ -133,7 +133,7 @@ describe("App", () => {
         const degreeButton = screen.getByTestId("degree-button");
         degreeButton.click();
         const globalCreditCounter = screen.getByTestId("global-credit-counter");
-        expect(globalCreditCounter.innerHTML).toBe("Credit Count: 0 out of 124 needed")
+        expect(globalCreditCounter.innerHTML).toBe("Credit Count: 0 out of 124 needed");
     });
 
     it("saves schedule to browser local storage", async () => {
