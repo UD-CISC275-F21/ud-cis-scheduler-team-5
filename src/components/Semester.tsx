@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import { Button, Table } from "react-bootstrap";
 import { Class } from "../interfaces/course";
-import { sem } from "../interfaces/sem";
+import { semester } from "../interfaces/semester";
 import { creditsHandlers } from "../interfaces/creditsHandlers";
 import { listHandlers } from "../interfaces/listHandlers";
 import Course from "./Course";
@@ -12,11 +12,11 @@ import { AddCourseModal } from "./AddCourseModal";
 
 
 export function Semester({semester, lists, semesterCnt, credits}: 
-    {semester: sem, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
+    {semester: semester, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}): JSX.Element {
   
     const [addCourseVisible, setAddCourseVisible] = React.useState<boolean>(false);
-    const [classYear,setClassYear] = React.useState<string>("____ Year");
-    const [season,setSeason] = React.useState<string>("____ Semester");
+    const [classYear,setClassYear] = React.useState<string>(semester.year);
+    const [season,setSeason] = React.useState<string>(semester.season);
     const [currClasses, setCurrClasses] = React.useState<Class[]>(semester.courses);
     const [visible, setVisible] = React.useState<boolean>(false);
 
@@ -33,12 +33,12 @@ export function Semester({semester, lists, semesterCnt, credits}:
     }
 
     return (
-        <div>
+        <div className="semesterCard">
             <div className="semester-title" data-testid="sem-title">
                 <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
                 <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
             </div>
-            <Table striped bordered size="sm">
+            <Table  striped bordered size="sm">
                 <thead>
                     <tr>
                         <th>Remove</th>
@@ -64,37 +64,6 @@ export function Semester({semester, lists, semesterCnt, credits}:
             </Table>
         </div>
     );
-        
-    /*
-
-    return <BootstrapCard className="border-dark">
-        <Col>
-            <div className="semester-title" data-testid="sem-title">
-                <strong>{classYear}: {season} <button onClick={editCard}>Edit Semester</button></strong>
-                <EditSemesterModal classYear={classYear} season={season} setClassYear={setClassYear} setSeason = {setSeason} visible={visible} setVisible={setVisible}></EditSemesterModal>
-            </div>
-            <Row>
-                <Col><strong>Remove Course</strong></Col>
-                <Col><strong>Course ID</strong></Col>
-                <Col><strong>Course Name</strong></Col>
-                <Col><strong>Credits</strong></Col>
-                <Col><strong>Edit Course</strong></Col>
-            </Row>
-
-            {currClasses.map(c => {
-                return (
-                    <Row key = {c.id}>
-                        <Course course={c} currCourses={currClasses} setCurrCourses={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></Course>
-                    </Row>
-                );
-            })
-            }
-            <p></p>
-            <Button className="addCourse" data-testid="add-new-course" onClick={addCourse}>Add New Course</Button>
-            <AddCourseModal currClasses={currClasses} visible={addCourseVisible} setVisible={setAddCourseVisible} setCurrCourse={setCurrClasses} lists={lists} semesterCnt={semesterCnt} credits={credits}></AddCourseModal>
-        </Col>
-    </BootstrapCard>;
-    */
 }
 
 export default Semester;

@@ -8,7 +8,7 @@ import { listHandlers } from "../interfaces/listHandlers";
 import { courseMap } from "../utilities/extractClasses";
 
 
-export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt} :
+export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse, lists, semesterCnt, credits} :
     {currClasses:Class[], visible: boolean, setVisible: (b: boolean) => void, setCurrCourse: (c:Class[]) => void, lists: listHandlers, semesterCnt: number, credits: creditsHandlers}) : JSX.Element {
     const [courseId, setCourseId] = React.useState<string>("Course ID");
     const [courseName, setCourseName] = React.useState<string>("Course Name");
@@ -16,7 +16,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [courseCred, setCourseCred] = React.useState<number>(0);
     const [coursePreR, setCoursePreR] = React.useState<string>("");
     const [dept, setDept] = React.useState<string>("Course Department");
-    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+    const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, "prereqs":"None", "specreq":""}]);
     const [visibleDepts, setVisibleDepts] = React.useState<string[]>(Object.keys(courseMap));
     const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
     const [courseSearch, setCourseSearch] = React.useState<string>("Course ID");
@@ -25,39 +25,13 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function saveAdd() {
         const newClasses:Class[] = [...currClasses];
-        const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR};
+        const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR, "specreq":""};
         const prereqs = newClass.prereqs;  //changing app to make it complatibale with new courseData.josn
         console.log(newClass);
-        /*if(prereqs[0] === "000"){//This is an error code if the the inputted course is not found in courseMap
-            setErrorAddCourse(true);
-            console.log("That's an unrecognized course");
-        }else if(prereqs[0] === "N/A" || prereqs[0] === "" || prereqs.length===0){
-            setCurrCourse(newClasses.concat(newClass));
-            credits.setGlobalCredits(credits.globalCredits+courseCred);
-            addlistOfCourseLists(newClass);
-            hide();
-        }else{
-            let loc = -1;
-            for(let i = 0; i < lists.listOfCourseLists.length-1; i++){
-                for(let j = 0; j < lists.listOfCourseLists[i].length; j++){
-                    for(let k = 0; k < prereqs.length; k++){
-                        console.log("Checking course: ", lists.listOfCourseLists[i][j]);
-                        if(lists.listOfCourseLists[i][j].id === prereqs[k]){
-                            loc = i;
-                        }
-                    }
-                }
-            }
-            if(loc != -1){*/
         setCoursePreR(prereqs);
         setCurrCourse(newClasses.concat(newClass));
         addlistOfCourseLists(newClass);
         hide();
-        /*}else{
-                setErrorAddCourse(true);
-                console.log("Can't add that course yet!");
-            }  
-        }*/
     }
     const hide = () => {
         setErrorAddCourse(false);
@@ -69,7 +43,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setCourseDesc("Course Description");
         setCourseCred(0);
         setCoursePreR("");
-        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, "prereqs":"None"}]);
+        setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, "prereqs":"None", "specreq":""}]);
         setVisibleDepts(Object.keys(courseMap));
         setVisible(false);
     };
@@ -91,7 +65,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setDept("Course Department");
             setCourseId("Course ID");
             setVisibleDepts(validDepts);
-            setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, prereqs:"None"}]);
+            setVisibleCourses([{"id":"None", "name":"None", "description":"None", "credits":0, "prereqs":"None", "specreq":""}]);
         }
         
     }
@@ -165,28 +139,11 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             }
         }
         return "";
-        /*let prereqs:string;
-        if(loc !== -1){
-            prereqs = deptCourses[loc].prereqs;
-            console.log(prereqs);
-            for(let i = 0; i < prereqs.length; i++){
-                const tmp = prereqs[i].split(" ");
-                if(tmp[1] === undefined){
-                    prereqs = tmp[0];
-                }else{
-                    console.log("idx 0: ", tmp[0], "\tidx1: ", tmp[1]);
-                    prereqs = tmp[0] + tmp[1];
-                }
-            }
-        }else{
-            prereqs = "N/A";
-        }
-        console.log("Prereqs: ", prereqs, "\tLength: ", prereqs.length);
-        return prereqs;*/
     }
 
 
     function addlistOfCourseLists(c: Class){
+        credits.setGlobalCredits(credits.globalCredits+courseCred);
         const copyList: Class[][] = lists.listOfCourseLists.map(courseList=> [...courseList]);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
         lists.setlistOfCourseLists(copyList);

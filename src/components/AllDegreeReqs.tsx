@@ -51,8 +51,8 @@ export function AllDegreeReqs({visible, setVisible, listOfCourseLists, credits}:
             <Modal.Title>Degree Requirements</Modal.Title>
             <Button onClick={hide}>Close</Button>
         </Modal.Header>
-        
-        <strong className="degree-subtitle">Credit Count: {credits.globalCredits} out of 124 needed</strong>
+
+        <strong className="degree-subtitle" data-testid="global-credit-counter">Credit Count: {credits.globalCredits} out of 124 needed</strong>
         <Table data-testid="degreeReqs">
             <th className="degree-subtitle">Core Requirements</th>
             <tbody>

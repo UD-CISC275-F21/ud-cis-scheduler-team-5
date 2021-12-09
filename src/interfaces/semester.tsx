@@ -1,5 +1,5 @@
 import { Class } from "./course";
-export interface sem {
+export interface semester {
     cnt: number,
     year: string,
     season: string,
