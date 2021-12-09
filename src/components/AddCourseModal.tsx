@@ -166,11 +166,11 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                     placeholder={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
-                        <Dropdown>
+                        <Dropdown className="dropdown">
                             <Dropdown.Toggle className="DDDept" variant="secondary" id="dropdown-basic" data-testid="dept-dropdown">
                                 {dept}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown" data-testid="dept-drop-menu">
+                            <Dropdown.Menu className="dropdown-menu" data-testid="dept-drop-menu">
                                 {visibleDepts.map(dept=>{
                                     return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
                                 })
@@ -188,12 +188,12 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                     value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
-                        <Dropdown>
-                            <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
+                        <Dropdown className="dropdown">
+                            <Dropdown.Toggle className="DDCourseID" id="dropdown-basic">
                                 {courseId}
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu data-testid="course-drop-menu">
+                            <Dropdown.Menu className="dropdown-menu" data-testid="course-drop-menu">
                                 {visibleCourses.map(c =>  {
                                     return (
                                         <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
