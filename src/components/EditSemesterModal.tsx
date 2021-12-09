@@ -13,7 +13,7 @@ export function EditSemesterModal({classYear, season, visible, setClassYear, set
     return (
         <Modal show={visible} onHide={hide}>
             <Modal.Header>
-                <Modal.Title>Edit Course</Modal.Title>
+                <Modal.Title>Edit Semester</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>

@@ -53,7 +53,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setDeptSearch(partOfDept);
         const len = partOfDept.length;
         const depts:string[] = Object.keys(courseMap);
-        console.log("First attempt: ", depts[0].slice(0,len));
+        //console.log("First attempt: ", depts[0].slice(0,len));
         let validDepts:string[] = [];
         validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept.toUpperCase());
         if(validDepts.length===0){
@@ -73,13 +73,13 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
 
     function handleCourseSearch(partOfID:string){
         const len = partOfID.length;
-        console.log("Part of id is: ", partOfID);
+        //console.log("Part of id is: ", partOfID);
         if(len <= 4){
             handleDeptSearch(partOfID);
             return;
         }
         if(courseMap[partOfID.slice(0,4)] === undefined){
-            console.log("Not a valid department");
+            //console.log("Not a valid department");
         }else{
             const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
             setVisibleCourses(validCourses);
@@ -105,7 +105,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     function handleIDClick(cID:string) {
         console.log("the cid is ", cID);
         if(cID === "None"){
-            console.log("User selected the None option");
+            //console.log("User selected the None option");
             return;
         }
         setErrorAddCourse(false);
@@ -120,10 +120,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             setCourseId(cID);
             setCourseSearch(cID);
             setCourseName(visibleCourses[cIdx].name);
-            console.log(visibleCourses[cIdx].name);
+            //console.log(visibleCourses[cIdx].name);
             setCourseDesc(visibleCourses[cIdx].description);
             setCourseCred(visibleCourses[cIdx].credits);
-            console.log("hell0");
+            //console.log("hell0");
             setCoursePreR(getPrereqs(visibleCourses[cIdx].id));
         }
     }
@@ -185,7 +185,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "CourseSearch">Course Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    placeholder={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
+                                    value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
                         <Dropdown>
