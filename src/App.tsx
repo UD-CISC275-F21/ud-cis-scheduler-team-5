@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import "./App.css";
 import Semester from "./components/Semester";
-import { sem } from "./interfaces/sem";
+import { semester } from "./interfaces/semester";
 import WelcomeMsg from "./components/WelcomeMsg";
 import { Class } from "./interfaces/course";
 import { AllDegreeReqs } from "./components/AllDegreeReqs";
@@ -12,7 +12,7 @@ export const LOCAL_STORAGE_SCHEDULE = "cisc-degree-schedule";
 export const LOCAL_STORAGE_LISTOFCOURSELISTS = "cisc-degree-listofcourseLists"; 
 export const INITIAL_LISTOFCOURSELISTS: Class[][] = [[]];
 
-export const INITIAL_SEMESTER: sem[] =  [
+export const INITIAL_SEMESTER: semester[] =  [
     {
         cnt: 1,        
         year: "Freshman",
@@ -30,7 +30,7 @@ export function getLocalStorageList(): Class[][] {
     }
 }
 
-export function getLocalStoragePlan(clear: boolean): sem[] {
+export function getLocalStoragePlan(clear: boolean): semester[] {
     if (clear === true) return [...INITIAL_SEMESTER];
     const rawSchedule: string | null = localStorage.getItem(LOCAL_STORAGE_SCHEDULE);
     if (rawSchedule === null) {
@@ -41,7 +41,7 @@ export function getLocalStoragePlan(clear: boolean): sem[] {
 }
 
 function App(): JSX.Element {
-    const [currSemesters,setCurrSemesters] = React.useState<sem[]>(getLocalStoragePlan(false));
+    const [currSemesters,setCurrSemesters] = React.useState<semester[]>(getLocalStoragePlan(false));
     const [classYear,setClassYear] = React.useState<string>(currSemesters[currSemesters.length-1].year);
     const [season,setSeason] = React.useState<string>(currSemesters[currSemesters.length-1].season);
     const [semesterCnt,setSemesterCnt] = React.useState<number>(currSemesters[currSemesters.length-1].cnt);
@@ -58,6 +58,12 @@ function App(): JSX.Element {
     useEffect(() => {
         console.log(`listOfCourseLists is : ${JSON.stringify(listOfCourseLists)}`);
     },[listOfCourseLists]);
+
+    useEffect(() => {
+        let totalCreditsListener = 0;
+        currSemesters.forEach(s=>s.courses.forEach(c=>totalCreditsListener+=c.credits));      
+        setGlobalCredits(totalCreditsListener);  
+    });
 
     function addSemester() {
         //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
@@ -88,7 +94,7 @@ function App(): JSX.Element {
                 break;
             }
         } 
-        const newSememester:sem[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
+        const newSememester:semester[] = [{cnt: semesterCnt+1,year: newYear,season: newSeason,courses: []}];
         setSemesterCnt(semesterCnt+1);
         setCurrSemesters(currSemesters.concat(newSememester));
         const newList = [...listOfCourseLists];
@@ -110,7 +116,7 @@ function App(): JSX.Element {
     function clearSemesters() { 
         //Clears all semesters except for the first. Resets plan to initial state. 
 
-        const semesterReset: sem[] =  [
+        const semesterReset: semester[] =  [
             {
                 cnt: 1,        
                 year: "Freshman",
@@ -125,6 +131,7 @@ function App(): JSX.Element {
         setClassYear("Freshman");
         setSeason("Fall");
         setSemesterCnt(1);
+       
     }
 
     function popLists() {
@@ -150,12 +157,12 @@ function App(): JSX.Element {
         if (semesterCnt === 1) {
             return;
         }
-        const semPop:sem[] = currSemesters;
-        semPop.pop();
-        setCurrSemesters(semPop);
-        setClassYear(semPop[semPop.length-1].year);
-        setSeason(semPop[semPop.length-1].season);
-        setSemesterCnt(semPop[semPop.length-1].cnt);
+        const popSemester:semester[] = currSemesters.map(c=>c);
+        popSemester.pop();
+        setCurrSemesters(popSemester);
+        setClassYear(popSemester[popSemester.length-1].year);
+        setSeason(popSemester[popSemester.length-1].season);
+        setSemesterCnt(popSemester[popSemester.length-1].cnt);
         subtractCredits();
         popLists();
     }
@@ -196,35 +203,26 @@ function App(): JSX.Element {
 
     function importDataFromCSV() {
         setUploadVisible(true);
-        return 0;
     }
 
-    function buildCurrSemesters(data: sem[]) {
-        console.log(data);
-        /*
-        let i = 0;
-        
-        let newList: string[][] = [[]];
-        for (i=0;i<data.length-1;i++) {
-            newList = newList.concat([[]]);
-        }
-        for (i=0;i<data.length;i++){
-            console.log(data[i].cnt);
-            newList[i] = data[i].courses.map(c=>c.id);
-        }
-        */
-        let newSemesterList: Class [][] = [];
+    function buildCurrSemesters(data: semester[]) {
+        let newClassList: Class [][] = [];
+        let totalCredits = 0;
         data.map((semesters)=>{
-            newSemesterList = newSemesterList.concat([semesters.courses]);
+            newClassList = newClassList.concat([semesters.courses]);
+            semesters.courses.forEach(c=>totalCredits+=c.credits);
         });
         
-        setlistOfCourseLists(newSemesterList);
+        setlistOfCourseLists(newClassList);
 
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
-        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newSemesterList));
+        localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newClassList));
+
+        const newSemesterList = data.map(s=>s);
+        setCurrSemesters(newSemesterList);
         window.location.reload();
-        
     }
+
 
     return (
         <div className="App">
@@ -240,7 +238,7 @@ function App(): JSX.Element {
             <Button className="downloadData" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
             <Button className="saveData" onClick={exportDataFromCSV}>Download Plan</Button>
             <Button className="saveData" onClick={importDataFromCSV}>Upload Schedule</Button>
-            <UploadSemesterModal visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
+            <UploadSemesterModal credits={credits} visible={uploadVisible} setVisible={setUploadVisible} setPlan={(data) => buildCurrSemesters(data)} setSemesterCnt={setSemesterCnt} setClassYear={setClassYear} setSeason={setSeason}></UploadSemesterModal>
             <Row className="semesterRows">
                 <Col id="FallSemesters">
                     {currSemesters.map(s=>{
