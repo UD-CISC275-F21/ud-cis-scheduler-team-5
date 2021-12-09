@@ -57,11 +57,11 @@ function App(): JSX.Element {
     const credits = {globalCredits, setGlobalCredits, techElectiveCredits, setTechElectiveCredits, focusAreaCredits, setFocusAreaCredits};
     const lists = {listOfCourseLists, setlistOfCourseLists};
 
-    useEffect(() => {
+    useEffect(() => {   
         console.log(`listOfCourseLists is : ${JSON.stringify(listOfCourseLists)}`);
     },[listOfCourseLists]);
 
-    useEffect(() => {
+    useEffect(() => {   // updates credits
         let totalCreditsListener = 0;
         currSemesters.forEach(s=>s.courses.forEach(c=>totalCreditsListener+=c.credits));      
         setGlobalCredits(totalCreditsListener);  
@@ -72,11 +72,11 @@ function App(): JSX.Element {
     };
 
     function addSemester() {
-        //Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
+        // Adds semester to the list of semesters in the user's plan. Semester attributes set depending on the last semester attributes. 
         let newSeason = season;
         let newYear = classYear;
         switch (season) {
-        case "Fall":
+        case "Fall":                // places in either the left, fall bucket, or right, spring bucket
             setSeason("Spring");
             newSeason = "Spring";
             break;
@@ -108,7 +108,7 @@ function App(): JSX.Element {
         setlistOfCourseLists(newList);
     }
 
-    function resetCredits() {
+    function resetCredits() {   // resets credits when called in "clearSemesters()"
         setGlobalCredits(0);
         setTechElectiveCredits(0);
         setFocusAreaCredits(0);
@@ -119,8 +119,7 @@ function App(): JSX.Element {
         }
     }
 
-    function clearSemesters() { 
-        //Clears all semesters except for the first. Resets plan to initial state. 
+    function clearSemesters() { // Clears all semesters except for the first. Resets plan to initial state. 
 
         const semesterReset: semester[] =  [
             {
@@ -140,13 +139,13 @@ function App(): JSX.Element {
        
     }
 
-    function popLists() {
+    function popLists() {   // pops off the last list when called in "rmSemester()"
         const poppedList = [...listOfCourseLists];
         poppedList.pop();
         setlistOfCourseLists(poppedList);
     }
 
-    function subtractCredits() {
+    function subtractCredits() {    // subtracts credits from the removed semester, called in "rmSemester()"
         console.log(listOfCourseLists);
         for(let i = 0; i < listOfCourseLists[semesterCnt-1].length; i++){
             setGlobalCredits(globalCredits-listOfCourseLists[semesterCnt-1][i].credits);
@@ -158,8 +157,8 @@ function App(): JSX.Element {
         }
     }
 
-    function rmSemester() {
-        //Removes the last semester from the list.
+    function rmSemester() {     // Removes the last semester from the list, called from remove semester button.
+        
         if (semesterCnt === 1) {
             return;
         }
@@ -173,17 +172,16 @@ function App(): JSX.Element {
         popLists();
     }
 
-    function saveData() {
-        //Saves list of semesters and courselist to local storage.
+    function saveData() {   // Saves list of semesters and courselist to local storage, called from save button.
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(currSemesters));
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(listOfCourseLists));
     }
 
-    function showDegreeReq(){
+    function showDegreeReq(){   //  Shows degree requirements modal
         setAllDegreeReqVisible(!allDegreeReqVisible);
     }
 
-    function prepCSV(c: Class): string {
+    function prepCSV(c: Class): string {    // filters out commas in prep for csv export, called in "exportDataFromCSV()"
         let i = 0;
         const len = c.description.length;
         let newDes = "";
@@ -193,7 +191,7 @@ function App(): JSX.Element {
         return newDes;
     }
 
-    function exportDataFromCSV() {
+    function exportDataFromCSV() {  //  converts schedule to CSV and downloads to computer, called from download plan button.
         const csvCols = ["Semester Num", "Semester Year", "Semester Season", "CourseID", "Course Name", "Course Description", "Credits"];
         const content = currSemesters.map(s => [
             [s.courses.map(c=>[s.cnt,s.year,s.season,c.id,c.name,prepCSV(c),c.credits,]).join(" \n ")]
@@ -207,20 +205,19 @@ function App(): JSX.Element {
         link.click();
     }
 
-    function importDataFromCSV() {
+    function importDataFromCSV() {  //  shows modal to upload semester plan csv.
         setUploadVisible(true);
     }
 
-    function buildCurrSemesters(data: semester[]) {
+    function buildCurrSemesters(data: semester[]) { //  converts csv data to a useable plan
         let newClassList: Class [][] = [];
         let totalCredits = 0;
         data.map((semesters)=>{
             newClassList = newClassList.concat([semesters.courses]);
-            semesters.courses.forEach(c=>totalCredits+=c.credits);
+            semesters.courses.forEach(c=> totalCredits += c.credits );
         });
         
         setlistOfCourseLists(newClassList);
-
         localStorage.setItem(LOCAL_STORAGE_SCHEDULE, JSON.stringify(data));
         localStorage.setItem(LOCAL_STORAGE_LISTOFCOURSELISTS, JSON.stringify(newClassList));
 
@@ -243,8 +240,8 @@ function App(): JSX.Element {
             <AllDegreeReqs visible={allDegreeReqVisible} setVisible={setAllDegreeReqVisible} listOfCourseLists={listOfCourseLists} credits={credits}></AllDegreeReqs>
             <Container>
                 <Row>
-                    <Col>Semester Controls</Col>
-                    <Col>Import/Export Schedule</Col>
+                    <Col><h6>Semester Controls</h6></Col>
+                    <Col><h6>Import/Export Schedule</h6></Col>
                 </Row>
                 <Row>
                     <Col>
@@ -253,9 +250,9 @@ function App(): JSX.Element {
                         <Button className="control-buttons" data-testid="remove-sem-button" onClick={rmSemester}>Remove Semester</Button>
                     </Col>
                     <Col>
-                        <Button className="control-buttons" data-testid="save-local-storage" onClick={saveData}>Save Schedule</Button>
+                        <Button className="control-buttons" data-testid="save-local-storage" onClick={saveData}>Save Plan</Button>
                         <Button className="control-buttons" onClick={exportDataFromCSV}>Download Plan</Button>
-                        <Button className="control-buttons" onClick={importDataFromCSV}>Upload Schedule</Button>
+                        <Button className="control-buttons" onClick={importDataFromCSV}>Upload Plan</Button>
                     </Col>
 
                 </Row>

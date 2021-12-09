@@ -103,12 +103,12 @@ export function UploadSemesterModal({credits, visible, setVisible, setPlan, setS
             const courses = semesterList[d.cnt-1].courses.concat(classFound); // Concat found course to semester course list
             semesterList[d.cnt-1].courses = courses;
         });
-
+        const semesterListTmp = semesterList.map(s=>s);
         credits.setGlobalCredits(totalCredits);
         setSeason(semesterList[semesterList.length-1].season);
         setSemesterCnt(semesterList[semesterList.length-1].cnt);
         setClassYear(semesterList[semesterList.length-1].year);
-        setPlan(semesterList.map(s=>s));
+        setPlan(semesterListTmp);
 
         hide();
     }
