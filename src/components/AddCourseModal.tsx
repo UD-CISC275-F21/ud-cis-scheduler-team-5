@@ -24,7 +24,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     
 
 
-    function saveAdd() {
+    function saveAdd() {    // adds selected course to current plan in the selected semester.
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR, "specreq":""};
         const prereqs = newClass.prereqs;  //changing app to make it complatibale with new courseData.josn
@@ -34,7 +34,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         addlistOfCourseLists(newClass);
         hide();
     }
-    const hide = () => {
+    const hide = () => {    //  hides modal when not using.
         console.log(errorAddCourse);
         setErrorAddCourse(false);
         setCourseSearch("Course ID");
@@ -50,7 +50,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setVisible(false);
     };
 
-    function handleDeptSearch(partOfDept:string){
+    function handleDeptSearch(partOfDept:string){   //  searches courseMap data file for the department record
         setDeptSearch(partOfDept);
         const len = partOfDept.length;
         const depts:string[] = Object.keys(courseMap);
@@ -72,7 +72,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         
     }
 
-    function handleCourseSearch(partOfID:string){
+    function handleCourseSearch(partOfID:string){   // searches found department for course ID codes
         setCourseSearch(partOfID);
         const len = partOfID.length;
         if(len < 4){
@@ -91,7 +91,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         return;
     }
 
-    function handleDeptClick(selectedDept:string) {
+    function handleDeptClick(selectedDept:string) { //  selects department from dropdown to browse that deparment's courses.
         const deptCourses:Class[] = courseMap[selectedDept];
         setCourseId("Course ID");
         setDeptSearch(selectedDept);
@@ -100,7 +100,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setDept(selectedDept);
     }
 
-    function handleIDClick(cID:string) {
+    function handleIDClick(cID:string) {    //  selects course ID from the dropdown and displays course attributes to the user.
         setErrorAddCourse(false);
         let cIdx = -1;
         for(let i = 0; i < visibleCourses.length; i++){
@@ -119,7 +119,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
     }
 
-    function getPrereqs(selectedCourse:string) : string{
+    function getPrereqs(selectedCourse:string) : string {   //  displays prereqs attribute from the Class object found in deptCourses.
         console.log("Looking for ", selectedCourse);
         const deptCourses = courseMap[selectedCourse.slice(0,4)];
         //let loc = -1;
@@ -135,7 +135,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
 
-    function addlistOfCourseLists(c: Class){
+    function addlistOfCourseLists(c: Class){    // adds to record of courses in selected semester. 
         credits.setGlobalCredits(credits.globalCredits+courseCred);
         const copyList: Class[][] = lists.listOfCourseLists.map(courseList=> [...courseList]);
         copyList[semesterCnt-1] = [...copyList[semesterCnt-1], c];
