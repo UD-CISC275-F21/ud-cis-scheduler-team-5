@@ -153,7 +153,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "DeptSearch">Department Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
+                                    placeholder={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
                         <Dropdown>
@@ -175,7 +175,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "CourseSearch">Course Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
+                                    placeholder={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
                         <Dropdown>
@@ -199,7 +199,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "CourseId">Selected Course</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    value={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
+                                    placeholder={courseId} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseId(ev.target.value)}></Form.Control>
                             </Form.Group>
                             {errorAddCourse && <p>Cannot add this course!</p>}
                         </Form>
