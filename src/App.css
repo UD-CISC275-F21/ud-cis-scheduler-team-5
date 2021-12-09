@@ -56,11 +56,10 @@
   margin-top: 10px;
 }
 
-.buttonControls {
+.control-buttons{
   margin-left: 5px;
-  margin-right: 5px;
-  color: white;
 }
+
 
 .addCourse {
   background-color: white;
@@ -123,4 +122,36 @@
 #SpringSemesters{
   max-width: 35%;
   margin-right:1em;
+}
+
+.carousel{
+  height: 22em;
+  border: 3px solid black;
+}
+
+#item{
+  height: 20em;
+}
+
+.caroPara{
+  text-align:left;
+}
+
+.caroHead{
+  text-align:center;
+  vertical-align:0em;
+}
+
+#welcomeModal{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#helpButton{
+  justify-content:right;
+  display:flex;
+  color:white;
+  background-color: gray;
+  border-color:black;
+  width:auto;
 }
