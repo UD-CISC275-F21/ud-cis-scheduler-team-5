@@ -30,7 +30,8 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
         }
         const newClasses:Class[] = [...currClasses];
         newClasses[cIdx] = editClass;
-
+        
+        credits.setGlobalCredits(credits.globalCredits-ogClass.credits+courseCred);
         if(reqId === "Six additional credits of technical electives"){   
             credits.setTechElectiveCredits(credits.techElectiveCredits+editClass.credits);
             if(prevReq === "12 credits for an approved focus area") {  
@@ -82,7 +83,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
                     </Form.Group>
                     <Form.Group>
                         <Form.Label data-testid = "CourseCred">Course Credits</Form.Label>
-                        <Form.Control as="textarea" rows={1} 
+                        <Form.Control as="textarea" aria-label="course-credit-input" rows={1} 
                             value={courseCred} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => setCourseCred(Number(ev.target.value))}> </Form.Control>
                     </Form.Group>
                     <Form.Group>
@@ -97,7 +98,7 @@ export function EditCourseModal({ogClass, currClasses, visible, setVisible, setC
                                 {reqId}
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu>
+                            <Dropdown.Menu data-testid="req-drop-menu">
                                 {DEGREEREQS.filter(reqs => reqs.id.includes("credits")).map(req =>  {
                                     return (
                                         <Dropdown.Item onClick={() => handleReqClick(req.id)} key={req.id}>{req.id}</Dropdown.Item>);
