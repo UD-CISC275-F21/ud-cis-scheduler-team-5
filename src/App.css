@@ -100,6 +100,7 @@
   margin-left: 1em;
   margin-right: 1em;
   width: 10.5em;
+
 }
 .degree {
   margin: 0 auto; /* Added */
@@ -107,9 +108,13 @@
   margin-bottom: 10px; /* Added */
 }
 
+.dropdown{
+  height:8em;
+}
+
 .dropdown-menu{
-  height:40em;
-  max-height:40em;
+  height:10em;
+  max-height:10em;
   overflow-y:auto;
 }
 
