@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  background-color: #ffffff;
+  height: 100%;
+  height:fit-content;
+}
+
+.button {
+  width: 20px;
+
 }
 
 .App-logo {
@@ -35,4 +43,120 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.semesterCard {
+  min-height: 400px;
+}
+
+.Welcome {
+  color: #0c0f16;
+  border-color: #4649d1;
+  background-color: #b1c8eb;
+  margin-top: 10px;
+}
+
+.control-buttons{
+  margin-left: 5px;
+}
+
+
+.addCourse {
+  background-color: white;
+  color: black;
+  visibility:visible;
+  margin-bottom: 0.5em;
+}
+
+.removeCourse {
+  color: white;
+  border-color: red;
+  background-color: white;
+  margin-top: 0.1em;
+  margin-bottom: 0.2em;
+  text-align: center;
+  line-height: 1em;
+  width: 2em;
+}
+
+.semester {
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+}
+
+.Col {
+  height: 150px;
+
+}
+
+.DDDept {
+  margin-left: 1em;
+  margin-right: 1em;
+  width: auto;
+}
+
+.DDCourseID {
+  margin-left: 1em;
+  margin-right: 1em;
+  width: 10.5em;
+
+}
+.degree {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
+
+.dropdown{
+  height:8em;
+}
+
+.dropdown-menu{
+  height:10;
+  max-height:10em;
+  overflow-y:auto;
+}
+
+
+#FallSemesters{
+  max-width:35%;
+  margin-left:1em;
+}
+
+#SpringSemesters{
+  max-width: 35%;
+  margin-right:1em;
+}
+
+.carousel{
+  height: 22em;
+  border: 3px solid black;
+}
+
+#item{
+  height: 20em;
+}
+
+.caroPara{
+  text-align:left;
+}
+
+.caroHead{
+  text-align:center;
+  vertical-align:0em;
+}
+
+#welcomeModal{
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#helpButton{
+  justify-content:right;
+  display:flex;
+  color:white;
+  background-color: gray;
+  border-color:black;
+  width:auto;
 }
