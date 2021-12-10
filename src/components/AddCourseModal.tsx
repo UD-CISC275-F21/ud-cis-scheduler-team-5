@@ -17,7 +17,6 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     const [dept, setDept] = React.useState<string>("Course Department");
     const [visibleCourses, setVisibleCourses] = React.useState<Class[]>([{"id":"None", "name":"None", "description":"None", "credits":0, "prereqs":"None", "specreq":""}]);
     const [visibleDepts, setVisibleDepts] = React.useState<string[]>(Object.keys(courseMap));
-    const [errorAddCourse, setErrorAddCourse] = React.useState<boolean>(false);
     const [courseSearch, setCourseSearch] = React.useState<string>("Course ID");
     const [deptSearch, setDeptSearch] = React.useState<string>("Department");
     
@@ -27,15 +26,14 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         const newClasses:Class[] = [...currClasses];
         const newClass:Class = {"id":courseId,"name":courseName, "description":courseDesc, "credits":courseCred, "prereqs":coursePreR, "specreq":""};
         const prereqs = newClass.prereqs;  //changing app to make it complatibale with new courseData.josn
-        console.log(newClass);
+        //console.log(newClass);
         setCoursePreR(prereqs);
         setCurrCourse(newClasses.concat(newClass));
         addlistOfCourseLists(newClass);
         hide();
     }
     const hide = () => {    //  hides modal when not using.
-        console.log(errorAddCourse);
-        setErrorAddCourse(false);
+        //console.log(errorAddCourse);
         setCourseSearch("Course ID");
         setDeptSearch("Course Department");
         setDept("Course Department");
@@ -53,7 +51,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         setDeptSearch(partOfDept);
         const len = partOfDept.length;
         const depts:string[] = Object.keys(courseMap);
-        console.log("First attempt: ", depts[0].slice(0,len));
+        //console.log("First attempt: ", depts[0].slice(0,len));
         let validDepts:string[] = [];
         validDepts = depts.filter( dept => dept.slice(0,len) === partOfDept);
         if(validDepts.length===0){
@@ -62,7 +60,7 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
             handleDeptClick(validDepts[0]);
             setVisibleDepts(validDepts);
         }else{
-            setCourseSearch("Course ID");
+            setCourseSearch(partOfDept);
             setDept("Course Department");
             setCourseId("Course ID");
             setVisibleDepts(validDepts);
@@ -72,21 +70,23 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
     function handleCourseSearch(partOfID:string){   // searches found department for course ID codes
-        setCourseSearch(partOfID);
         const len = partOfID.length;
-        if(len < 4){
+        if(len <= 4){
+            handleDeptSearch(partOfID);
             return;
         }
         if(courseMap[partOfID.slice(0,4)] === undefined){
-            console.log("Not a valid department");
+            //console.log("Not a valid department");
         }else{
             const validCourses = courseMap[partOfID.slice(0,4)].filter(c => c.id.slice(0,len) === partOfID);
+            setVisibleCourses(validCourses);
             if(validCourses.length === 1 && len === 7){
                 handleIDClick(validCourses[0].id);
             }
             
            
         }
+        setCourseSearch(partOfID);
         return;
     }
 
@@ -100,7 +100,10 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
     }
 
     function handleIDClick(cID:string) {    //  selects course ID from the dropdown and displays course attributes to the user.
-        setErrorAddCourse(false);
+        if(cID === "None"){
+            //console.log("User selected the None option");
+            return;
+        }
         let cIdx = -1;
         for(let i = 0; i < visibleCourses.length; i++){
             if(visibleCourses[i].id === cID){
@@ -110,8 +113,9 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
         }
         if(cIdx != -1){
             setCourseId(cID);
+            setCourseSearch(cID);
             setCourseName(visibleCourses[cIdx].name);
-            console.log(visibleCourses[cIdx].name);
+            //console.log(visibleCourses[cIdx].name);
             setCourseDesc(visibleCourses[cIdx].description);
             setCourseCred(visibleCourses[cIdx].credits);
             setCoursePreR(getPrereqs(visibleCourses[cIdx].id));
@@ -157,11 +161,11 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                                     placeholder={deptSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleDeptSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
-                        <Dropdown>
+                        <Dropdown className="dropdown">
                             <Dropdown.Toggle className="DDDept" variant="secondary" id="dropdown-basic" data-testid="dept-dropdown">
                                 {dept}
                             </Dropdown.Toggle>
-                            <Dropdown.Menu className="dropdown" data-testid="dept-drop-menu">
+                            <Dropdown.Menu className="dropdown-menu" data-testid="dept-drop-menu">
                                 {visibleDepts.map(dept=>{
                                     return <Dropdown.Item onClick={() => handleDeptClick(dept)} key = {dept}>{dept}</Dropdown.Item>;
                                 })
@@ -176,15 +180,15 @@ export function AddCourseModal({currClasses, visible, setVisible, setCurrCourse,
                             <Form.Group>
                                 <Form.Label data-testid = "CourseSearch">Course Search</Form.Label>
                                 <Form.Control as="textarea" rows={1} 
-                                    placeholder={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
+                                    value={courseSearch} onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => handleCourseSearch(ev.target.value)}></Form.Control>
                             </Form.Group>
                         </Form>
-                        <Dropdown>
+                        <Dropdown className="dropdown">
                             <Dropdown.Toggle id="dropdown-basic" className="DDCourseID">
                                 {courseId}
                             </Dropdown.Toggle>
 
-                            <Dropdown.Menu data-testid="course-drop-menu">
+                            <Dropdown.Menu className="dropdown-menu" data-testid="course-drop-menu">
                                 {visibleCourses.map(c =>  {
                                     return (
                                         <Dropdown.Item onClick={() => handleIDClick(c.id)} key = {c.id}>{c.id}</Dropdown.Item>);
